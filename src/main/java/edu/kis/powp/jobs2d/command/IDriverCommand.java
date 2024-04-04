@@ -5,7 +5,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 /**
  * DriverCommand interface.
  */
-public interface DriverCommand {
+public interface IDriverCommand {
 
     /**
      * Execute command on driver.

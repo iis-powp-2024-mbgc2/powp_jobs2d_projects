@@ -45,7 +45,7 @@ public class CommandManager {
 
             @Override
             public void accept(CommandCounterVisitor commandCounterVisitor) {
-                commandCounterVisitor.visit(this);
+                driverCommands.forEach((c) -> c.accept(commandCounterVisitor));
             }
 
             @Override

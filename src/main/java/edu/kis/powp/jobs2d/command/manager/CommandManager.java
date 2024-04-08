@@ -4,15 +4,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.IDriverCommand;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.visitor.CommandCounterVisitor;
 import edu.kis.powp.observer.Publisher;
 
 /**
  * Command Manager.
  */
 public class CommandManager {
-    private DriverCommand currentCommand = null;
+    private IDriverCommand currentCommand = null;
 
     private Publisher changePublisher = new Publisher();
 
@@ -21,7 +22,7 @@ public class CommandManager {
      *
      * @param commandList Set the command as current.
      */
-    public synchronized void setCurrentCommand(DriverCommand commandList) {
+    public synchronized void setCurrentCommand(IDriverCommand commandList) {
         this.currentCommand = commandList;
         changePublisher.notifyObservers();
     }
@@ -32,10 +33,10 @@ public class CommandManager {
      * @param commandList list of commands representing a compound command.
      * @param name        name of the command.
      */
-    public synchronized void setCurrentCommand(List<DriverCommand> commandList, String name) {
+    public synchronized void setCurrentCommand(List<IDriverCommand> commandList, String name) {
         setCurrentCommand(new ICompoundCommand() {
 
-            List<DriverCommand> driverCommands = commandList;
+            List<IDriverCommand> driverCommands = commandList;
 
             @Override
             public void execute(Job2dDriver driver) {
@@ -43,7 +44,12 @@ public class CommandManager {
             }
 
             @Override
-            public Iterator<DriverCommand> iterator() {
+            public void accept(CommandCounterVisitor commandCounterVisitor) {
+                driverCommands.forEach((c) -> c.accept(commandCounterVisitor));
+            }
+
+            @Override
+            public Iterator<IDriverCommand> iterator() {
                 return driverCommands.iterator();
             }
 
@@ -60,7 +66,7 @@ public class CommandManager {
      *
      * @return Current command.
      */
-    public synchronized DriverCommand getCurrentCommand() {
+    public synchronized IDriverCommand getCurrentCommand() {
         return currentCommand;
     }
 

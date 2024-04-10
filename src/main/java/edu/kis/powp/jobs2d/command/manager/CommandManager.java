@@ -6,7 +6,7 @@ import java.util.List;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.IDriverCommand;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
-import edu.kis.powp.jobs2d.command.visitor.CommandCounterVisitor;
+import edu.kis.powp.jobs2d.command.visitor.ICommandVisitor;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -44,8 +44,8 @@ public class CommandManager {
             }
 
             @Override
-            public void accept(CommandCounterVisitor commandCounterVisitor) {
-                driverCommands.forEach((c) -> c.accept(commandCounterVisitor));
+            public void accept(ICommandVisitor commandVisitor) {
+                commandVisitor.visit(this);
             }
 
             @Override

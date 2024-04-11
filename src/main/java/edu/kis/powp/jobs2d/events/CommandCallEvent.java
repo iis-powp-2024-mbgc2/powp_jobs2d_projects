@@ -2,9 +2,9 @@ package edu.kis.powp.jobs2d.events;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
 
-public class ExecuteCommandEvent {
+public class CommandCallEvent {
     private final DriverCommand command;
-    public ExecuteCommandEvent(DriverCommand command) {
+    public CommandCallEvent(DriverCommand command) {
         this.command = command;
     }
 

@@ -6,8 +6,6 @@ import java.util.List;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
-import edu.kis.powp.jobs2d.events.CommandListener;
-import edu.kis.powp.jobs2d.events.ExecuteCommandEvent;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -17,12 +15,6 @@ public class CommandManager {
     private DriverCommand currentCommand = null;
 
     private Publisher changePublisher = new Publisher();
-
-    private List<CommandListener> listeners;
-
-    public CommandManager(List<CommandListener> listeners) {
-        this.listeners = listeners;
-    }
 
     /**
      * Set current command.
@@ -47,10 +39,7 @@ public class CommandManager {
 
             @Override
             public void execute(Job2dDriver driver) {
-                driverCommands.forEach((c) -> {
-                    c.execute(driver);
-                    listeners.forEach((l) -> l.notify(new ExecuteCommandEvent(c)));
-                });
+                driverCommands.forEach((c) -> c.execute(driver));
             }
 
             @Override

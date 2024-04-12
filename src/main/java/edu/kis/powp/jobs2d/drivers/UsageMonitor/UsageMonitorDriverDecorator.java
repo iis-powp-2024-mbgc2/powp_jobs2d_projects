@@ -14,11 +14,9 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
     private int lastX = 0, lastY = 0;
 
 
-
     public UsageMonitorDriverDecorator(Job2dDriver driver) {
         this.driver = driver;
     }
-
 
 
     @Override
@@ -41,7 +39,6 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
         logDistance();
         driver.operateTo(x, y);
     }
-
 
     private void updateLastCoords(int x, int y) {
         lastX = x;

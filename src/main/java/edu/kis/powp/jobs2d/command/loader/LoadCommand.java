@@ -11,12 +11,15 @@ import java.util.List;
 public class LoadCommand {
 
     public static List<DriverCommand> loadCommandsFromFile(String fileName) {
+        List<DriverCommand> commands = new ArrayList<>();
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line = reader.readLine();
 
             while (line != null) {
-                System.out.println(line);
+                //Logic to add command from file
+
                 line = reader.readLine();
             }
 
@@ -25,6 +28,6 @@ public class LoadCommand {
             throw new RuntimeException(e);
         }
 
-        return new ArrayList<>();
+        return commands;
     }
 }

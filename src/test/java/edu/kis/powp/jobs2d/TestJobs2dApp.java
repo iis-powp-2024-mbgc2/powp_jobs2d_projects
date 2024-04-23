@@ -87,12 +87,16 @@ public class TestJobs2dApp {
         UsageMonitorDriverDecorator usageMonitorDriver2 = new UsageMonitorDriverDecorator(driver);
         DriverFeature.addDriver("Special line Simulator with usage monitor", usageMonitorDriver2);
 
+        driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        DriverUsageDecorator usageMonitorDriverDecorator = new DriverUsageDecorator(driver);
+        DriverFeature.addDriver("Basic line simulator with usage monitor", usageMonitorDriverDecorator);
+
         DriverFeature.updateDriverInfo();
 
         DriversComposite driversComposite = new DriversComposite();
         driversComposite.addDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         driversComposite.addDriver(new LoggerDriver(true));
-        DriverFeature.addDriver("BasicLine with Logger", driversComposite);
+        DriverFeature.addDriver("Basic line with Logger", driversComposite);
     }
 
     private static void setupWindows(Application application) {

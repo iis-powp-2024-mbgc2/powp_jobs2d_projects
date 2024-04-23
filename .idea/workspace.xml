@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="041b8e56-5c1f-4dbc-b87a-7f1d0bfccaca" name="Changes" comment="Add Job2dDriverMonitor to LineDriverAdapter">
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/kis/powp/jobs2d/drivers/Job2dDriverMonitor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/kis/powp/jobs2d/drivers/adapter/LineDriverAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/kis/powp/jobs2d/drivers/adapter/LineDriverAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/kis/powp/jobs2d/drivers/DriverUsageDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/kis/powp/jobs2d/drivers/DriverUsageDecorator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/kis/powp/jobs2d/TestJobs2dApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/kis/powp/jobs2d/TestJobs2dApp.java" afterDir="false" />
     </list>
     <list id="56a55432-e17c-4971-a6b8-0d8141b4d9e9" name="Changes by agolus" comment="" />
-    <list id="f66fc24b-d755-48a0-9092-246daae33a05" name="Changes by Olek" comment="" />
+    <list id="f66fc24b-d755-48a0-9092-246daae33a05" name="Changes by Olek" comment="">
+      <change beforePath="$PROJECT_DIR$/src/test/java/edu/kis/powp/jobs2d/TestJobs2dApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/edu/kis/powp/jobs2d/TestJobs2dApp.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,6 +46,14 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/src/test/java/edu/kis/powp/jobs2d/TestJobs2dApp.java">
+      <ranges>
+        <range start1="88" end1="88" start2="88" end2="92" changelist="041b8e56-5c1f-4dbc-b87a-7f1d0bfccaca" />
+        <range start1="94" end1="95" start2="98" end2="99" changelist="f66fc24b-d755-48a0-9092-246daae33a05" />
+      </ranges>
+    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -106,7 +117,7 @@
       <workItem from="1713438226062" duration="2986000" />
       <workItem from="1713441222727" duration="703000" />
       <workItem from="1713716285383" duration="3434000" />
-      <workItem from="1713900162451" duration="1069000" />
+      <workItem from="1713900162451" duration="1732000" />
     </task>
     <task id="LOCAL-00001" summary="Add printing usage">
       <option name="closed" value="true" />

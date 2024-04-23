@@ -7,7 +7,7 @@ public class DriverUsageDecorator implements Job2dDriver {
 
     private final int PRINT_WAIT_TIME_MS = 300;
     private boolean isPrintAvailable = true;
-    private int startX = 0, startY = 0;
+    private int currentX = 0, currentY = 0;
     private double headDistance = 0, opDistance = 0;
     private final Job2dDriver driver;
 
@@ -17,23 +17,32 @@ public class DriverUsageDecorator implements Job2dDriver {
 
     @Override
     public void setPosition(int x, int y) {
+        opDistance += getUpdatedUsage(x, y);
+        setCurrentCoords(x, y);
+
         driver.setPosition(x, y);
-        headDistance += getUpdatedUsage(x, y);
     }
 
     @Override
     public void operateTo(int x, int y) {
-        driver.operateTo(x, y);
         headDistance += getUpdatedUsage(x, y);
         opDistance += getUpdatedUsage(x, y);
+        setCurrentCoords(x, y);
+
         printUsage();
+        driver.operateTo(x, y);
+    }
+
+    private void setCurrentCoords(int x, int y) {
+        currentX = x;
+        currentY = y;
     }
 
     private void printUsage() {
         if (!isPrintAvailable) { return; }
 
         isPrintAvailable = false;
-        Thread thread = new Thread(() -> {
+        new Thread(() -> {
             try {
                 Thread.sleep(PRINT_WAIT_TIME_MS);
             } catch (InterruptedException e) {
@@ -42,12 +51,11 @@ public class DriverUsageDecorator implements Job2dDriver {
             Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.info("Usage: \n" + "   Op distance: " + opDistance + "\n   Head distance: " + headDistance);
             isPrintAvailable = true;
-        });
-        thread.start();
+        }).start();
     }
 
     private double getUpdatedUsage(int endX, int endY) {
-        return Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+        return Math.sqrt(Math.pow(endX - currentX, 2) + Math.pow(endY - currentY, 2));
     }
 }
 

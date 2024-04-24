@@ -62,4 +62,18 @@ public class CompoundCommand implements ICompoundCommand {
     public String toString() {
         return name;
     }
+
+    public CompoundCommand copy() {
+        CompoundCommand copiedCompoundCommand = new CompoundCommand(this.name);
+        for (DriverCommand command : this.commands) {
+            try {
+                DriverCommand copyCommand = command.copy();
+                copiedCompoundCommand.addCommand(copyCommand);
+            } catch(CloneNotSupportedException e) {
+                System.out.println(e);
+            }
+        }
+
+        return copiedCompoundCommand;
+    }
 }

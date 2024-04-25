@@ -16,4 +16,6 @@ public interface DriverCommand extends Cloneable {
 
     public DriverCommand copy() throws CloneNotSupportedException;
 
+    public void accept(CommandVisitor commandVisitor);
+
 }

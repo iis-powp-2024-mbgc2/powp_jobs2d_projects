@@ -3,16 +3,22 @@ package edu.kis.powp.jobs2d.command;
 import edu.kis.powp.jobs2d.Job2dDriver;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class CompoundCommand implements ICompoundCommand {
-    private final List<DriverCommand> commands = new ArrayList<>();
+    private List<DriverCommand> commands = new ArrayList<>();
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String name;
 
     public CompoundCommand(String name) {
+        this.name = name;
+    }
+
+    public CompoundCommand(List<DriverCommand> commands, String name) {
+        this.commands = commands;
         this.name = name;
     }
 
@@ -40,17 +46,22 @@ public class CompoundCommand implements ICompoundCommand {
         }
     }
 
-    public void clearCommand(){
+    public void clearCommand() {
         commands.clear();
     }
 
-    public List<DriverCommand> getCommands(){
+    public List<DriverCommand> getCommands() {
         return commands;
     }
 
     @Override
     public void execute(Job2dDriver driver) {
         iterator().forEachRemaining((c) -> c.execute(driver));
+    }
+
+    @Override
+    public void accept(CommandVisitor commandVisitor) {
+        commandVisitor.visit(this);
     }
 
     @Override

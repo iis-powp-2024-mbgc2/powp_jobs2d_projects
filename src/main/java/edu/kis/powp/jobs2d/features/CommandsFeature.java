@@ -13,7 +13,6 @@ public class CommandsFeature {
         LoggerCommandChangeObserver loggerObserver = new LoggerCommandChangeObserver();
         commandManager.getChangePublisher().addSubscriber(loggerObserver);
     }
-
     /**
      * Get manager of application driver command.
      *

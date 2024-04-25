@@ -2,11 +2,11 @@ package edu.kis.powp.jobs2d.command.manager;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.CommandVisitor;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -68,6 +68,22 @@ public class CommandManager {
      */
     public synchronized DriverCommand getCurrentCommand() {
         return currentCommand;
+    }
+
+    public synchronized String getStatisticCommand() {
+        if (currentCommand != null) {
+            CommandStatisticVisitor statisticVisitor = new CommandStatisticVisitor();
+            currentCommand.accept(statisticVisitor);
+
+            int totalSubCommandsCount = statisticVisitor.getOperateToCount() + statisticVisitor.getSetPositionCount();
+            int operateToCommandsCount = statisticVisitor.getOperateToCount();
+            double totalCommandLength = statisticVisitor.getTotalLength();
+
+            return "Number of sub-commands used: " + totalSubCommandsCount + "\nNumber of operateTo commands used: " +
+                    operateToCommandsCount + "\nTotal command length: " + totalCommandLength;
+        } else {
+            return "No statistics to display";
+        }
     }
 
     public synchronized void clearCurrentCommand() {

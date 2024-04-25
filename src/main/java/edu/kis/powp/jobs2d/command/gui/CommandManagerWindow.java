@@ -19,6 +19,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private CommandManager commandManager;
 
     private JTextArea currentCommandField;
+    private JTextArea statisticCommandField;
     private DefaultDrawerFrame commandPreviewPanel;
     private DrawPanelController drawPanelController;
 
@@ -57,17 +58,25 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(currentCommandField, c);
 
+        statisticCommandField = new JTextArea("");
+        statisticCommandField.setEditable(false);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        content.add(statisticCommandField, c);
+
         commandPreviewPanel = new DefaultDrawerFrame();
         drawPanelController = new DrawPanelController();
         drawPanelController.initialize(commandPreviewPanel.getDrawArea());
-        previewLineDriver = new LineDriverAdapter(drawPanelController,new BasicLine(),"preview");
+        previewLineDriver = new LineDriverAdapter(drawPanelController, new BasicLine(), "preview");
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridx = 0;
         c.weighty = 5;
         JPanel drawArea = commandPreviewPanel.getDrawArea();
         drawArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        content.add(drawArea ,c);
+        content.add(drawArea, c);
 
         JButton btnClearCommand = new JButton("Clear command");
         btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
@@ -89,6 +98,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
+        updateStatisticCommandField();
     }
 
     public void updateCurrentCommandField() {
@@ -96,6 +106,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
         drawPanelController.clearPanel();
         commandManager.getCurrentCommand().execute(previewLineDriver);
+    }
+
+    public void updateStatisticCommandField() {
+        statisticCommandField.setText(commandManager.getStatisticCommand());
     }
 
     public void deleteObservers() {

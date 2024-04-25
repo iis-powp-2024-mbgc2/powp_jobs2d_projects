@@ -21,8 +21,8 @@ public class OperateToCommand implements DriverCommand {
     }
 
     @Override
-    public DriverCommand copy() throws CloneNotSupportedException {
-        return (DriverCommand) super.clone();
+    public OperateToCommand clone() throws CloneNotSupportedException {
+        return (OperateToCommand) super.clone();
     }
 
     public void accept(CommandVisitor commandVisitor) {

@@ -61,18 +61,8 @@ public class CommandManager {
             }
 
             @Override
-            public ICompoundCommand copy() {
-                CompoundCommand copiedCompoundCommand = new CompoundCommand(name);
-                for (DriverCommand command : commandList) {
-                    try {
-                        DriverCommand copyCommand = command.copy();
-                        copiedCompoundCommand.addCommand(copyCommand);
-                    } catch(CloneNotSupportedException e) {
-                        System.out.println(e);
-                    }
-                }
-
-                return copiedCompoundCommand;
+            public ICompoundCommand clone() throws CloneNotSupportedException {
+                return (ICompoundCommand) super.clone();
             }
         });
 

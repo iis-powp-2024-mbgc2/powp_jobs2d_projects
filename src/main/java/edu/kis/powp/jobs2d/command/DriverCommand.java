@@ -5,7 +5,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 /**
  * DriverCommand interface.
  */
-public interface DriverCommand extends Cloneable {
+public interface DriverCommand {
 
     /**
      * Execute command on driver.
@@ -13,8 +13,6 @@ public interface DriverCommand extends Cloneable {
      * @param driver driver.
      */
     public void execute(Job2dDriver driver);
-
-    public DriverCommand copy() throws CloneNotSupportedException;
 
     public void accept(CommandVisitor commandVisitor);
 

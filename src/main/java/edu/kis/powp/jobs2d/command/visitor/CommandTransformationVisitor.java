@@ -1,5 +1,6 @@
-package edu.kis.powp.jobs2d.command;
+package edu.kis.powp.jobs2d.command.visitor;
 
+import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.transformations.Transformation;
 
 import java.awt.Point;

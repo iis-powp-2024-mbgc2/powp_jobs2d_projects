@@ -1,7 +1,7 @@
 package edu.kis.powp.jobs2d;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.CommandTransformationVisitor;
+import edu.kis.powp.jobs2d.command.visitor.CommandTransformationVisitor;
 import edu.kis.powp.jobs2d.transformations.Transformation;
 import edu.kis.powp.jobs2d.transformations.VerticalFlipTransformation;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;

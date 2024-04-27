@@ -1,6 +1,8 @@
 package edu.kis.powp.jobs2d.command.loader;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.OperateToCommand;
+import edu.kis.powp.jobs2d.command.SetPositionCommand;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,7 +20,26 @@ public class LoadCommand {
             String line = reader.readLine();
 
             while (line != null) {
-                //Logic to add command from file
+                String[] parts = line.split("\\|");
+
+                if (parts.length == 3) {
+                    String commandName = parts[0];
+                    int x = Integer.parseInt(parts[1]);
+                    int y = Integer.parseInt(parts[2]);
+
+                    switch (commandName) {
+                        case "SetPositionTo":
+                            commands.add(new SetPositionCommand(x, y));
+                            break;
+                        case "OperateTo":
+                            commands.add(new OperateToCommand(x, y));
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unknown command: " + commandName);
+                    }
+                } else {
+                    throw new IllegalArgumentException("Invalid command format: " + line);
+                }
 
                 line = reader.readLine();
             }

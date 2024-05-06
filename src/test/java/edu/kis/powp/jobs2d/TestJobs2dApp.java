@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.ImporterFactory;
+import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.*;
@@ -52,9 +54,16 @@ public class TestJobs2dApp {
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
     }
-  
+
     private static void setupVisitorTest(Application application) {
         application.addTest("Show current command stats", new VisitorTest());
+    }
+
+    private static void setupCommandTransformationVisitorTests(Application application) {
+        application.addTest("Flip command ↔ horizontally", new CommandHorizontalFlipTest());
+        application.addTest("Flip command ↕ vertically", new CommandVerticalFlipTest());
+        application.addTest("Scale command (scale = 2)", new CommandScaleTest(2));
+        application.addTest("Rotate command (degrees = 15)", new CommandRotateTest(15));
     }
 
     /**
@@ -128,6 +137,10 @@ public class TestJobs2dApp {
         new MouseClickConverter(application.getFreePanel());
     }
 
+    private static void setupImporters() {
+         ImporterFactory.addImporter("json", new JsonCommandImporter());
+    }
+
     /**
      * Launch the application.
      */
@@ -143,9 +156,11 @@ public class TestJobs2dApp {
                 setupPresetTests(app);
                 setupCommandTests(app);
                 setupVisitorTest(app);
+                setupCommandTransformationVisitorTests(app);
                 setupLogger(app);
                 setupWindows(app);
                 setupMouseHandler(app);
+                setupImporters();
 
                 app.setVisibility(true);
             }

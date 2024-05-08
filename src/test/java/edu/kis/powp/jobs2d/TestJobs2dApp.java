@@ -8,10 +8,12 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.CommandFormat;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -144,6 +146,14 @@ public class TestJobs2dApp {
         ImporterFactory.addImporter("json", new JsonCommandImporter());
     }
 
+    private static void setupFormats(Application application)
+    {
+        application.addComponentMenu(CommandFormat.class, "Format");
+        application.addComponentMenuElement(CommandFormat.class, "Set format to A4", (ActionEvent e) ->  CommandFormat.setFormatA4());
+        application.addComponentMenuElement(CommandFormat.class, "Set format to A3", (ActionEvent e) ->  CommandFormat.setFormatA3());
+        application.addComponentMenuElement(CommandFormat.class, "Set format to B3", (ActionEvent e) ->  CommandFormat.setFormatB3());
+    }
+
     /**
      * Launch the application.
      */
@@ -162,6 +172,7 @@ public class TestJobs2dApp {
                 setupCommandTransformationVisitorTests(app);
                 setupLogger(app);
                 setupWindows(app);
+                setupFormats(app);
                 setupMouseHandler(app);
                 setupImporters();
 

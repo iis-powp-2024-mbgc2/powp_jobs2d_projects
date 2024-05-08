@@ -144,8 +144,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 if(commandManager.getCurrentCommand() instanceof CompoundCommand)
                     if(!((CompoundCommand) commandManager.getCurrentCommand()).checkBoundaries())
                         throw new IndexOutOfBoundsException();
-
-
             }
         }
         catch(IndexOutOfBoundsException e)

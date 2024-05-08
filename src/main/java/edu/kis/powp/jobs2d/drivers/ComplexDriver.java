@@ -5,20 +5,16 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverController implements Job2dDriver {
+public class ComplexDriver implements Job2dDriver {
 
     private final List<Job2dDriver> drivers;
 
-    public DriverController() {
+    public ComplexDriver() {
         this.drivers = new ArrayList<>();
     }
 
-    public DriverController(List<Job2dDriver> drivers) {
+    public ComplexDriver(List<Job2dDriver> drivers) {
         this.drivers = drivers;
-    }
-
-    public List<Job2dDriver> getDrivers() {
-        return drivers;
     }
 
     public void addDriver(Job2dDriver driver) {

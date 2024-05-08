@@ -10,7 +10,7 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.drivers.DriverController;
+import edu.kis.powp.jobs2d.drivers.ComplexDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.events.SelectLoadSecretCommandOptionListener;
 import edu.kis.powp.jobs2d.events.SelectRunCurrentCommandOptionListener;
@@ -57,12 +57,27 @@ public class TestJobs2dApp {
      */
     private static void setupDrivers(Application application) {
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        DriverController driverController = new DriverController();
-        driverController.addDriver(new LoggerDriver());
-        driverController.addDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "Basic Line Simulator"));
-        driverController.addDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "Special Line Simulator"));
 
-        DriverFeature.addDrivers(driverController);
+        final Job2dDriver loggerDriver = new LoggerDriver();
+        final Job2dDriver basicLineDriver = new LineDriverAdapter(
+                drawerController,
+                LineFactory.getBasicLine(), "Basic Line"
+        );
+        final Job2dDriver specialLineDriver = new LineDriverAdapter(
+                drawerController,
+                LineFactory.getSpecialLine(),
+                "Special Line"
+        );
+
+        ComplexDriver complexDriver = new ComplexDriver();
+        complexDriver.addDriver(loggerDriver);
+        complexDriver.addDriver(basicLineDriver);
+        complexDriver.addDriver(specialLineDriver);
+
+        DriverFeature.addDriver("Logger", loggerDriver);
+        DriverFeature.addDriver("Basic Line", basicLineDriver);
+        DriverFeature.addDriver("Special Line", specialLineDriver);
+        DriverFeature.addDriver("Special and Basic line with Logger", complexDriver);
         DriverFeature.updateDriverInfo();
     }
 

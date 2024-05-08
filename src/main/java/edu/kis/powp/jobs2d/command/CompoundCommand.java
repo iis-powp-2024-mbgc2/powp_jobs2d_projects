@@ -54,6 +54,35 @@ public class CompoundCommand implements ICompoundCommand {
         return commands;
     }
 
+    public boolean checkBoundaries()
+    {
+        for(DriverCommand command : commands)
+        {
+            if(command instanceof OperateToCommand)
+            {
+                int x = ((OperateToCommand) command).getX();
+                int y = ((OperateToCommand) command).getY();
+
+                if(!CommandFormat.checkY(y) || !CommandFormat.checkX(x))
+                {
+                    return false;
+                }
+
+            }
+            if(command instanceof SetPositionCommand)
+            {
+                int x = ((SetPositionCommand) command).getX();
+                int y = ((SetPositionCommand) command).getY();
+
+                if(!CommandFormat.checkY(y) || !CommandFormat.checkX(x))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public void execute(Job2dDriver driver) {
         iterator().forEachRemaining((c) -> c.execute(driver));

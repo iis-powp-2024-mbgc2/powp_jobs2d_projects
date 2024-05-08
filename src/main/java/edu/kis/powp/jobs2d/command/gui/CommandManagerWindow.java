@@ -15,9 +15,7 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.CommandImporter;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ImporterFactory;
+import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
@@ -121,10 +119,43 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 String content = new String(Files.readAllBytes(Paths.get(filePath)));
                 DriverCommand command = importer.importCommands(content);
                 commandManager.setCurrentCommand(command);
+
+                if(commandManager.getCurrentCommand() instanceof OperateToCommand)
+                {
+                    int x = ((OperateToCommand) commandManager.getCurrentCommand()).getX();
+                    int y = ((OperateToCommand) commandManager.getCurrentCommand()).getY();
+
+                    if(!CommandFormat.checkY(y) || !CommandFormat.checkX(x))
+                    {
+                        throw new IndexOutOfBoundsException();
+                    }
+
+                }
+                if(commandManager.getCurrentCommand() instanceof SetPositionCommand)
+                {
+                    int x = ((SetPositionCommand) commandManager.getCurrentCommand()).getX();
+                    int y = ((SetPositionCommand) commandManager.getCurrentCommand()).getY();
+
+                    if(!CommandFormat.checkY(y) || !CommandFormat.checkX(x))
+                    {
+                        throw new IndexOutOfBoundsException();
+                    }
+                }
+                if(commandManager.getCurrentCommand() instanceof CompoundCommand)
+                    if(!((CompoundCommand) commandManager.getCurrentCommand()).checkBoundaries())
+                        throw new IndexOutOfBoundsException();
+
+
             }
-        } catch (Exception e) {
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+            logger.warning("Command is out of bounds of format: " + CommandFormat.getFormatName());
+        }
+        catch (Exception e) {
             logger.warning("Error while importing command from file: " + e.getMessage());
         }
+
     }
 
     private void clearCommand() {

@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.ImporterFactory;
+import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.*;
@@ -48,13 +50,16 @@ public class TestJobs2dApp {
         application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
 
         application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
+        application.addTest("Load deeply complex command", new SelectLoadDeeplyComplexCommandOptionListener());
 
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
     }
-  
-    private static void setupVisitorTest(Application application) {
+
+    private static void setupVisitorTests(Application application) {
         application.addTest("Show current command stats", new VisitorTest());
+        application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
+        application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {
@@ -135,6 +140,10 @@ public class TestJobs2dApp {
         new MouseClickConverter(application.getFreePanel());
     }
 
+    private static void setupImporters() {
+        ImporterFactory.addImporter("json", new JsonCommandImporter());
+    }
+
     /**
      * Launch the application.
      */
@@ -149,11 +158,12 @@ public class TestJobs2dApp {
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);
-                setupVisitorTest(app);
+                setupVisitorTests(app);
                 setupCommandTransformationVisitorTests(app);
                 setupLogger(app);
                 setupWindows(app);
                 setupMouseHandler(app);
+                setupImporters();
 
                 app.setVisibility(true);
             }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class LoadCommand {
 
-    public List<DriverCommand> loadCommandsFromFile(String fileName) {
+    public static List<DriverCommand> loadCommandsFromFile(String fileName) {
         List<String> lines = readLinesFromFile(fileName);
         List<DriverCommand> commands = new ArrayList<>();
 
@@ -24,7 +24,7 @@ public class LoadCommand {
         return commands;
     }
 
-    private List<String> readLinesFromFile(String filename) {
+    private static List<String> readLinesFromFile(String filename) {
         List<String> lines = new ArrayList<>();
 
         try {
@@ -45,7 +45,7 @@ public class LoadCommand {
         return lines;
     }
 
-    private DriverCommand getCommandFromLine(String line) {
+    private static DriverCommand getCommandFromLine(String line) {
         String[] parts = line.split("\\|");
 
         if (parts.length == 3) {

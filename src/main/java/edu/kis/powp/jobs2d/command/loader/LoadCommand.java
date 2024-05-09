@@ -1,5 +1,6 @@
 package edu.kis.powp.jobs2d.command.loader;
 
+import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class LoadCommand {
 
-    public static List<DriverCommand> loadCommandsFromFile(String fileName) {
+    public static CompoundCommand loadCommandsFromFile(String fileName) {
         List<String> lines = readLinesFromFile(fileName);
         List<DriverCommand> commands = new ArrayList<>();
 
@@ -21,7 +22,7 @@ public class LoadCommand {
             commands.add(getCommandFromLine(line));
         }
 
-        return commands;
+        return new CompoundCommand(commands, fileName);
     }
 
     private static List<String> readLinesFromFile(String filename) {

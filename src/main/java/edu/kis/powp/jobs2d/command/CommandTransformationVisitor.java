@@ -11,7 +11,7 @@ public class CommandTransformationVisitor implements CommandVisitor {
 
     public CompoundCommand getTransformedCommand() {
         return transformedCommands;
-    }
+    } //tu zwracamy builder.build()
 
     public CommandTransformationVisitor(String commandName, Transformation transformation) {
         String newName = commandName + "_" + transformation.getName();

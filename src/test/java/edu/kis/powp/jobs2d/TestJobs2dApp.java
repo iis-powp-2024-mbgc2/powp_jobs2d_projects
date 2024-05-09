@@ -15,6 +15,7 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.enums.Command;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
@@ -45,12 +46,10 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupCommandTests(Application application) {
-        application.addTest("Load Compound Rectangle command", new SelectLoadCompoundRectangleCommandOptionListener());
-
-        application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
-
-        application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
-        application.addTest("Load deeply complex command", new SelectLoadDeeplyComplexCommandOptionListener());
+        application.addTest("Load Compound Rectangle command", new SelectCommandListener(Command.RECTANGLE));
+        application.addTest("Load secret command", new SelectCommandListener(Command.SECRET));
+        application.addTest("Load recorded command", new SelectCommandListener(Command.RECORDED));
+        application.addTest("Load deeply complex command", new SelectCommandListener(Command.DEEPLY_COMPLEX));
 
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 

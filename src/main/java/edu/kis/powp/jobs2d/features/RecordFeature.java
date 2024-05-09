@@ -35,7 +35,6 @@ public class RecordFeature {
 
     public static void start(){
         isRecording = !isRecording;
-
     }
 
     public static void clear(){

@@ -3,13 +3,17 @@ package edu.kis.powp.jobs2d.features;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
+import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
 import edu.kis.powp.jobs2d.drivers.gui.UpdateDriverInfoObserver;
+import edu.kis.powp.jobs2d.drivers.gui.WrapDriverWithRecordingDecoratorObserver;
 
 public class DriverFeature {
 
     private static DriverManager driverManager = new DriverManager();
     private static Application app;
+
+    private static final RecordingDriverDecorator recordingDriverDecorator = new RecordingDriverDecorator(driverManager.getCurrentDriver());
 
     public static DriverManager getDriverManager() {
         return driverManager;
@@ -25,6 +29,7 @@ public class DriverFeature {
         app.addComponentMenu(DriverFeature.class, "Drivers");
 
         driverManager.getChangePublisher().addSubscriber(new UpdateDriverInfoObserver());
+        driverManager.getChangePublisher().addSubscriber(new WrapDriverWithRecordingDecoratorObserver());
     }
 
     /**
@@ -45,4 +50,8 @@ public class DriverFeature {
         app.updateInfo(driverManager.getCurrentDriver().toString());
     }
 
+    public static void wrapDriverWithRecordingDecorator() {
+        recordingDriverDecorator.setDriver(driverManager.getCurrentDriver());
+        driverManager.setCurrentDriver(recordingDriverDecorator);
+    }
 }

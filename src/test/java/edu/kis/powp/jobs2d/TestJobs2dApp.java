@@ -75,19 +75,17 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
-        Job2dDriver loggerDriver = new LoggerDriver(false);
-        DriverFeature.addDriver("Simple Logger driver", loggerDriver);
-
-        Job2dDriver loggerDriver2 = new LoggerDriver(true);
-        DriverFeature.addDriver("Detailed Logger driver", loggerDriver2);
-
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        DriverFeature.addDriver("Line Simulator with Recording Support", driver);
-        DriverFeature.getDriverManager().setCurrentDriver(driver);
 
-        driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
-        DriverFeature.addDriver("Special Line Simulator with Recording Support", driver);
+        Job2dDriver driver = new LoggerDriver(false);
+        DriverFeature.addDriver("Simple Logger driver", driver);
+
+        driver = new LoggerDriver(true);
+        DriverFeature.addDriver("Detailed Logger driver", driver);
+
+        driver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        DriverFeature.addDriver("Line Simulator", driver);
+
         driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
         DriverFeature.addDriver("Special line Simulator", driver);
 
@@ -99,12 +97,12 @@ public class TestJobs2dApp {
         UsageMonitorDriverDecorator usageMonitorDriver2 = new UsageMonitorDriverDecorator(driver);
         DriverFeature.addDriver("Special line Simulator with usage monitor", usageMonitorDriver2);
 
-        DriverFeature.updateDriverInfo();
-
         DriversComposite driversComposite = new DriversComposite();
         driversComposite.addDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         driversComposite.addDriver(new LoggerDriver(true));
         DriverFeature.addDriver("BasicLine with Logger", driversComposite);
+
+        DriverFeature.updateDriverInfo();
     }
 
     private static void setupWindows(Application application) {

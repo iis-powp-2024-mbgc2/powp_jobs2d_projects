@@ -45,6 +45,11 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/PowpAppBase.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
     </dependencies>
 
 </project>

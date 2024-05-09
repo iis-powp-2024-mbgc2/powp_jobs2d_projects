@@ -12,35 +12,26 @@ import java.util.List;
 
 public class LoadCommand {
 
-    public static List<DriverCommand> loadCommandsFromFile(String fileName) {
+    public List<DriverCommand> loadCommandsFromFile(String fileName) {
+        List<String> lines = readLinesFromFile(fileName);
         List<DriverCommand> commands = new ArrayList<>();
+
+        for (String line : lines) {
+            commands.add(getCommandFromLine(line));
+        }
+
+        return commands;
+    }
+
+    private List<String> readLinesFromFile(String filename) {
+        List<String> lines = new ArrayList<>();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line = reader.readLine();
 
             while (line != null) {
-                String[] parts = line.split("\\|");
-
-                if (parts.length == 3) {
-                    String commandName = parts[0];
-                    int x = Integer.parseInt(parts[1]);
-                    int y = Integer.parseInt(parts[2]);
-
-                    switch (commandName) {
-                        case "SetPositionTo":
-                            commands.add(new SetPositionCommand(x, y));
-                            break;
-                        case "OperateTo":
-                            commands.add(new OperateToCommand(x, y));
-                            break;
-                        default:
-                            throw new IllegalArgumentException("Unknown command: " + commandName);
-                    }
-                } else {
-                    throw new IllegalArgumentException("Invalid command format: " + line);
-                }
-
+                lines.add(line);
                 line = reader.readLine();
             }
 
@@ -49,6 +40,27 @@ public class LoadCommand {
             throw new RuntimeException(e);
         }
 
-        return commands;
+        return lines;
+    }
+
+    private DriverCommand getCommandFromLine(String line) {
+        String[] parts = line.split("\\|");
+
+        if (parts.length == 3) {
+            String commandName = parts[0];
+            int x = Integer.parseInt(parts[1]);
+            int y = Integer.parseInt(parts[2]);
+
+            switch (commandName) {
+                case "SetPositionTo":
+                    return new SetPositionCommand(x, y);
+                case "OperateTo":
+                    return new OperateToCommand(x, y);
+                default:
+                    throw new IllegalArgumentException("Unknown command: " + commandName);
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid command format: " + line);
+        }
     }
 }

@@ -32,6 +32,12 @@ public class CommandStatisticVisitor implements CommandVisitor {
         currentSetPosition = false;
         previousCoordinates.setLocation(currentCoordinates);
         currentCoordinates.setLocation(operateToCommand.getX(), operateToCommand.getY());
+
+        if (currentCoordinates != null && previousCoordinates != null
+                && !previousSetPosition && !currentSetPosition) {
+            operateToLength += Math.sqrt(Math.pow(currentCoordinates.getX() - previousCoordinates.getX(), 2) +
+                    Math.pow(currentCoordinates.getY() - previousCoordinates.getY(), 2));
+        }
     }
 
     @Override
@@ -44,8 +50,8 @@ public class CommandStatisticVisitor implements CommandVisitor {
 
     @Override
     public void visit(ICompoundCommand compoundCommand) {
-        totalLength = 0;
-        operateToLength = 0;
+        double totalLength = 0;
+        double operateToLength = 0;
 
         Iterator<DriverCommand> iterator = compoundCommand.iterator();
         while (iterator.hasNext()) {
@@ -55,11 +61,10 @@ public class CommandStatisticVisitor implements CommandVisitor {
             if (currentCoordinates != null && previousCoordinates != null) {
                 totalLength += Math.sqrt(Math.pow(currentCoordinates.getX() - previousCoordinates.getX(), 2) +
                         Math.pow(currentCoordinates.getY() - previousCoordinates.getY(), 2));
-                if (!previousSetPosition && !currentSetPosition) {
-                    operateToLength += Math.sqrt(Math.pow(currentCoordinates.getX() - previousCoordinates.getX(), 2) +
-                            Math.pow(currentCoordinates.getY() - previousCoordinates.getY(), 2));
-                }
             }
         }
+
+        this.totalLength += totalLength;
+        this.operateToLength += operateToLength;
     }
 }

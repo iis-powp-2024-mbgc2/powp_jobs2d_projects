@@ -17,7 +17,6 @@ public class CommandManager {
     private DriverCommand currentCommand = null;
 
     private Publisher changePublisher = new Publisher();
-    private final VisitorStatisticsGenerator visitorStatisticsGenerator = new VisitorStatisticsGenerator();
 
     /**
      * Set current command.
@@ -70,10 +69,6 @@ public class CommandManager {
      */
     public synchronized DriverCommand getCurrentCommand() {
         return currentCommand;
-    }
-
-    public synchronized String getStatisticCommand() {
-        return visitorStatisticsGenerator.generateStatistics(currentCommand);
     }
 
     public synchronized void clearCurrentCommand() {

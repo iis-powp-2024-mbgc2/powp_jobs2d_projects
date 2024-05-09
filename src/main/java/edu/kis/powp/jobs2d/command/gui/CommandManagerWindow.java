@@ -12,6 +12,7 @@ import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.visitor.VisitorStatisticsGenerator;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
@@ -22,6 +23,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea statisticCommandField;
     private DefaultDrawerFrame commandPreviewPanel;
     private DrawPanelController drawPanelController;
+
+    private final VisitorStatisticsGenerator visitorStatisticsGenerator = new VisitorStatisticsGenerator();
 
     private String observerListString;
     private JTextArea observerListField;
@@ -109,7 +112,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     public void updateStatisticCommandField() {
-        statisticCommandField.setText(commandManager.getStatisticCommand());
+        statisticCommandField.setText(
+                visitorStatisticsGenerator.generateStatistics(commandManager.getCurrentCommand()));
     }
 
     public void deleteObservers() {

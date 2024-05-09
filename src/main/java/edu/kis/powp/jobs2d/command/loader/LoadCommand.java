@@ -5,6 +5,7 @@ import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +28,8 @@ public class LoadCommand {
         List<String> lines = new ArrayList<>();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            File file = new File(filename);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
 
             while (line != null) {

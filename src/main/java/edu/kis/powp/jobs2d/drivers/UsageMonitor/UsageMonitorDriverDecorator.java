@@ -25,7 +25,6 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
 
         updateLastCoords(x, y);
 
-        logDistance();
         driver.setPosition(x, y);
     }
 
@@ -36,7 +35,6 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
 
         updateLastCoords(x, y);
 
-        logDistance();
         driver.operateTo(x, y);
     }
 
@@ -49,9 +47,6 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
         return Point2D.distance(lastX, lastY, x, y);
     }
 
-    private void logDistance() {
-        logger.info(String.format("Current distance made:\n- head distance: %f\n- op distance: %f", UsageMonitorStorage.getHeadDistance(), UsageMonitorStorage.getOpDistance()));
-    }
 
     private void calcAndStoreHeadDistance(int x, int y) {
         double distance = calcDistance(x, y);

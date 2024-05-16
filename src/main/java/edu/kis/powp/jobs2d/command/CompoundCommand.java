@@ -73,4 +73,23 @@ public class CompoundCommand implements ICompoundCommand {
     public String toString() {
         return name;
     }
+
+    @Override
+    public int getX() {
+        return commands.get(0).getX();
+    }
+    @Override
+    public int getY() {
+        return commands.get(0).getY();
+    }
+
+    @Override
+    public void setX(int x) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setY(int y) {
+        throw new UnsupportedOperationException();
+    }
 }

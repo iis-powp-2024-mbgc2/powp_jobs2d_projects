@@ -7,7 +7,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
  */
 public class OperateToCommand implements DriverCommand {
 
-    private final int posX, posY;
+    private int posX, posY;
 
     public OperateToCommand(int posX, int posY) {
         super();
@@ -30,5 +30,13 @@ public class OperateToCommand implements DriverCommand {
     }
     public int getY() {
         return posY;
+    }
+
+    public void setX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setY(int posY) {
+        this.posY = posY;
     }
 }

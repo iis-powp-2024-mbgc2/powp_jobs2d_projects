@@ -6,6 +6,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,6 +36,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea observerListField;
     private ArrayList<Point> points;
     private MouseClickEditor mouseClickEditor;
+
+    private final JPanel drawArea;
     final private Job2dDriver previewLineDriver;
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -89,7 +92,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.gridx = 0;
         c.weighty = 5;
-        JPanel drawArea = commandPreviewPanel.getDrawArea();
+        this.drawArea = commandPreviewPanel.getDrawArea();
         drawArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         content.add(drawArea, c);
 
@@ -120,26 +123,26 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
 
         this.points = new ArrayList<>();
-        this.mouseClickEditor = new MouseClickEditor(drawArea, points, previewLineDriver);
+
     }
 
     private void toggleEdit() {
         System.out.println("toggle edit");
-        ((ICompoundCommand) commandManager.getCurrentCommand()).iterator().forEachRemaining((DriverCommand command) ->{
-            //System.out.println(command);
-            if (command instanceof OperateToCommand) {
-                int x = ((OperateToCommand) command).getX();
-                int y = ((OperateToCommand) command).getY();
-                //System.out.println("operate " + x + ", " + y);
-                points.add(new Point(x,y));
-            }
-            if (command instanceof SetPositionCommand) {
-                int x = ((SetPositionCommand) command).getX();
-                int y = ((SetPositionCommand) command).getY();
-                //System.out.println("set " + x + ", " + y);
-                points.add(new Point(x,y));
-            }
-        });
+        //((ICompoundCommand) commandManager.getCurrentCommand()).iterator().forEachRemaining((DriverCommand command) ->{
+        //    //System.out.println(command);
+        //    if (command instanceof OperateToCommand) {
+        //        int x = ((OperateToCommand) command).getX();
+        //        int y = ((OperateToCommand) command).getY();
+        //        //System.out.println("operate " + x + ", " + y);
+        //        points.add(new Point(x,y));
+        //    }
+        //    if (command instanceof SetPositionCommand) {
+        //        int x = ((SetPositionCommand) command).getX();
+        //        int y = ((SetPositionCommand) command).getY();
+        //        //System.out.println("set " + x + ", " + y);
+        //        points.add(new Point(x,y));
+        //    }
+        //});
     }
 
     private void importCommandFromFile() {
@@ -170,6 +173,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
+        this.mouseClickEditor = new MouseClickEditor(drawArea, (ICompoundCommand) commandManager.getCurrentCommand(), previewLineDriver, drawPanelController);
+        //Iterator<DriverCommand> iterator = ((ICompoundCommand) commandManager.getCurrentCommand()).iterator();
 
         drawPanelController.clearPanel();
         commandManager.getCurrentCommand().execute(previewLineDriver);

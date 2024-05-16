@@ -8,6 +8,7 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver
 import edu.kis.powp.jobs2d.drivers.DriversComposite;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
@@ -128,6 +129,7 @@ public class TestJobs2dApp {
                 CommandsFeature.setupCommandManager();
                 RecordFeature.setupRecorderPlugin(app);
                 DriverFeature.setupDriverPlugin(app);
+                UsageMonitorFeature.setupUsageMonitorPlugin(app);
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);

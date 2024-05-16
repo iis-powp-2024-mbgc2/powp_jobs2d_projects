@@ -11,6 +11,7 @@ import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.DriversComposite;
 import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecorator;

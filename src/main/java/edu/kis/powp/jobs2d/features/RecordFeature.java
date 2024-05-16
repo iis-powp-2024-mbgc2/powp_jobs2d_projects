@@ -1,21 +1,19 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
-import edu.kis.powp.jobs2d.enums.RecordingOption;
-import edu.kis.powp.jobs2d.events.SelectRecordingOptionListener;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-
-import java.util.List;
+import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
+import edu.kis.powp.jobs2d.enums.RecordingOption;
+import edu.kis.powp.jobs2d.events.SelectRecordingOptionListener;
 
 public class RecordFeature {
     private static Application application;
-    private static CompoundCommand recordCommand;
+    private static CompoundCommandBuilder recordCommandBuilder;
 
     private static boolean isRecording = false;
 
     public static void setupRecorderPlugin(Application app) {
-        recordCommand = new CompoundCommand("Record Command");
+        recordCommandBuilder = new CompoundCommandBuilder().setName("Record Command");
         application = app;
 
         SelectRecordingOptionListener startOption = new SelectRecordingOptionListener(RecordingOption.START);
@@ -28,7 +26,7 @@ public class RecordFeature {
     }
     public static void setCommand(DriverCommand command){
         if(isRecording){
-            recordCommand.addCommand(command);
+            recordCommandBuilder.addCommand(command);
         }
     }
 
@@ -38,14 +36,10 @@ public class RecordFeature {
     }
 
     public static void clear(){
-        recordCommand.clearCommand();
-    }
-
-    public static List<DriverCommand> getCommands(){
-        return recordCommand.getCommands();
+        recordCommandBuilder = new CompoundCommandBuilder().setName("Record Command");
     }
 
     public static DriverCommand getRecordedCommand() {
-        return recordCommand;
+        return recordCommandBuilder.build();
     }
 }

@@ -1,8 +1,11 @@
 package edu.kis.powp.jobs2d;
 
 import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
+
+import java.util.List;
 
 public class DeepCopyTest {
     public static void testCompoundCommand() {
@@ -19,7 +22,22 @@ public class DeepCopyTest {
             return;
         }
 
-        if (compoundCommand.getCommands().size() == copiedCompoundCommand.getCommands().size()) {
+        List<DriverCommand> originalCommands = compoundCommand.getCommands();
+        List<DriverCommand> copiedCommands = copiedCompoundCommand.getCommands();
+
+        boolean equal = true;
+        if (originalCommands.size() == copiedCommands.size()) {
+            for (int i = 0; i < originalCommands.size(); i++) {
+                if (!originalCommands.get(i).equals(copiedCommands.get(i))) {
+                    equal = false;
+                    break;
+                }
+            }
+        } else {
+            equal = false;
+        }
+
+        if (equal) {
             System.out.println("Successfully copied commands");
         } else {
             System.out.println("Incorrectly copied commands");
@@ -27,18 +45,29 @@ public class DeepCopyTest {
     }
 
     private static CompoundCommand getCompoundCommand() {
-        CompoundCommand compoundCommand = new CompoundCommand("test");
+        CompoundCommand compoundCommand = new CompoundCommand("glassesTest");
 
-        SetPositionCommand setPositionCommand1 = new SetPositionCommand(10, 10);
-        SetPositionCommand setPositionCommand2 = new SetPositionCommand(100, 100);
+        // rysowanie okularów
+        SetPositionCommand leftTop = new SetPositionCommand(-50, 0);
+        OperateToCommand leftBottom = new OperateToCommand(-50, -100);
+        OperateToCommand leftBridge = new OperateToCommand(-20, -100);
 
-        OperateToCommand operateToCommand1 = new OperateToCommand(0, 0);
-        OperateToCommand operateToCommand2 = new OperateToCommand(-10, -10);
+        SetPositionCommand rightTop = new SetPositionCommand(50, 0);
+        OperateToCommand rightBottom = new OperateToCommand(50, -100);
+        OperateToCommand rightBridge = new OperateToCommand(20, -100);
 
-        compoundCommand.addCommand(setPositionCommand1);
-        compoundCommand.addCommand(setPositionCommand2);
-        compoundCommand.addCommand(operateToCommand1);
-        compoundCommand.addCommand(operateToCommand2);
+        OperateToCommand topBridge = new OperateToCommand(20, 0);
+        OperateToCommand bottomBridge = new OperateToCommand(-20, 0);
+
+        compoundCommand.addCommand(leftTop);
+        compoundCommand.addCommand(leftBottom);
+        compoundCommand.addCommand(leftBridge);
+        compoundCommand.addCommand(rightTop);
+        compoundCommand.addCommand(rightBottom);
+        compoundCommand.addCommand(rightBridge);
+        compoundCommand.addCommand(topBridge);
+        compoundCommand.addCommand(bottomBridge);
+
         return compoundCommand;
     }
 

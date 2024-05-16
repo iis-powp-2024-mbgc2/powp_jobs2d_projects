@@ -1,10 +1,5 @@
 package edu.kis.powp.jobs2d;
 
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
@@ -14,6 +9,10 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
+import edu.kis.powp.jobs2d.drivers.DriversComposite;
+import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.transformators.RotatingDriverDecorator;
@@ -21,6 +20,12 @@ import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecorator;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
+
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -57,6 +62,7 @@ public class TestJobs2dApp {
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
     }
+
 
     private static void setupVisitorTests(Application application) {
         application.addTest("Show current command stats", new VisitorTest());
@@ -171,6 +177,7 @@ public class TestJobs2dApp {
                 CommandsFeature.setupCommandManager();
                 RecordFeature.setupRecorderPlugin(app);
                 DriverFeature.setupDriverPlugin(app);
+                UsageMonitorFeature.setupUsageMonitorPlugin(app);
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
                 setupDrivers(app);
                 setupPresetTests(app);

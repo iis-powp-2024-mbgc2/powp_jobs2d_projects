@@ -57,7 +57,7 @@ public class MouseClickEditor extends MouseClickConverter implements MouseClickL
                 command.setY(position.y);
             });
             drawPanelController.clearPanel();
-            compoundCommand.execute(driver); //TODO zanim to wykonasz, wyczyść ekran
+            compoundCommand.execute(driver);
         }
     }
 

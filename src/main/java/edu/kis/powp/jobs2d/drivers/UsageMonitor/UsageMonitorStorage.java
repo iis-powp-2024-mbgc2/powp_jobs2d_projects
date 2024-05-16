@@ -20,4 +20,17 @@ public class UsageMonitorStorage {
     public static double getOpDistance() {
         return opDistance;
     }
+
+    public static void resetOpDistance() {
+        opDistance = 0;
+    }
+
+    public static void resetHeadDistance() {
+        headDistance = 0;
+    }
+
+    public static void resetAllDistances() {
+        resetHeadDistance();
+        resetOpDistance();
+    }
 }

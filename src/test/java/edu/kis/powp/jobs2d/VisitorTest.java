@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d;
 
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.visitor.CommandCounterVisitor;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 import java.awt.event.ActionEvent;
@@ -12,7 +13,7 @@ public class VisitorTest implements ActionListener {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     @Override
     public void actionPerformed(ActionEvent e) {
-        CommandManager commandManager = CommandsFeature.getCommandManager();
+        ICommandManager commandManager = CommandsFeature.getCommandManager();
 
         CommandCounterVisitor commandCounter = new CommandCounterVisitor();
 

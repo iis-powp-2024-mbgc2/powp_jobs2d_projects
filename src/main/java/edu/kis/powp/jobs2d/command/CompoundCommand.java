@@ -73,4 +73,8 @@ public class CompoundCommand implements ICompoundCommand {
     public String toString() {
         return name;
     }
+
+    public CompoundCommand clone() throws CloneNotSupportedException {
+        return (CompoundCommand) super.clone();
+    }
 }

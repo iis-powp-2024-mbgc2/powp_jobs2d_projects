@@ -21,6 +21,10 @@ public class OperateToCommand implements DriverCommand {
     }
 
     @Override
+    public OperateToCommand clone() throws CloneNotSupportedException {
+        return (OperateToCommand) super.clone();
+    }
+
     public void accept(CommandVisitor commandVisitor) {
         commandVisitor.visit(this);
     }
@@ -31,4 +35,5 @@ public class OperateToCommand implements DriverCommand {
     public int getY() {
         return posY;
     }
+
 }

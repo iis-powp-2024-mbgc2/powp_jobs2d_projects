@@ -1,9 +1,11 @@
 package edu.kis.powp.jobs2d.command.manager;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.CommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
@@ -56,6 +58,11 @@ public class CommandManager implements ICommandManager {
             @Override
             public String toString() {
                 return name;
+            }
+
+            @Override
+            public ICompoundCommand clone() throws CloneNotSupportedException {
+                return (ICompoundCommand) super.clone();
             }
         });
 

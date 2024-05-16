@@ -8,7 +8,8 @@ import java.util.List;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
+//import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 public class SelectLoadSecretCommandOptionListener implements ActionListener {
@@ -31,7 +32,7 @@ public class SelectLoadSecretCommandOptionListener implements ActionListener {
         commands.add(new OperateToCommand(70, 50));
         commands.add(new OperateToCommand(20, 50));
 
-        CommandManager manager = CommandsFeature.getCommandManager();
+        ICommandManager manager = CommandsFeature.getCommandManager();
         manager.setCurrentCommand(commands, "TopSecretCommand");
     }
 }

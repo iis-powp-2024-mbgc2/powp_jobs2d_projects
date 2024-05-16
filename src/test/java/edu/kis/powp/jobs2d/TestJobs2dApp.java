@@ -1,10 +1,5 @@
 package edu.kis.powp.jobs2d;
 
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
@@ -12,8 +7,10 @@ import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.drivers.*;
+import edu.kis.powp.jobs2d.drivers.DriversComposite;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
+import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.transformators.RotatingDriverDecorator;
@@ -21,6 +18,11 @@ import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecorator;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -57,6 +59,7 @@ public class TestJobs2dApp {
 
     }
 
+
     private static void setupVisitorTests(Application application) {
         application.addTest("Show current command stats", new VisitorTest());
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
@@ -91,14 +94,6 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Special Line Simulator with Recording Support", driver);
         driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
         DriverFeature.addDriver("Special line Simulator", driver);
-
-        driver = new LoggerDriver(false);
-        UsageMonitorDriverDecorator usageMonitorDriver = new UsageMonitorDriverDecorator(driver);
-        DriverFeature.addDriver("Usage monitor with logger", usageMonitorDriver);
-
-        driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-        UsageMonitorDriverDecorator usageMonitorDriver2 = new UsageMonitorDriverDecorator(driver);
-        DriverFeature.addDriver("Special line Simulator with usage monitor", usageMonitorDriver2);
 
         DriversComposite driversComposite = new DriversComposite();
         driversComposite.addDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
@@ -156,24 +151,26 @@ public class TestJobs2dApp {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Application app = new Application("Jobs 2D");
-                DrawerFeature.setupDrawerPlugin(app);
-                CommandsFeature.setupCommandManager();
-                RecordFeature.setupRecorderPlugin(app);
-                DriverFeature.setupDriverPlugin(app);
-                MouseSettingsFeature.setupMouseSettingsFeature(app);
-                setupDrivers(app);
-                setupPresetTests(app);
-                setupCommandTests(app);
-                setupVisitorTests(app);
-                setupCommandTransformationVisitorTests(app);
-                setupLogger(app);
-                setupWindows(app);
-                setupImporters();
-                app.setVisibility(true);
-            }
+        EventQueue.invokeLater(() -> {
+            Application app = new Application("Jobs 2D");
+
+            DrawerFeature.setupDrawerPlugin(app);
+            CommandsFeature.setupCommandManager();
+            RecordFeature.setupRecorderPlugin(app);
+            DriverFeature.setupDriverPlugin(app);
+            UsageMonitorFeature.setupUsageMonitorPlugin(app);
+            MouseSettingsFeature.setupMouseSettingsFeature(app);
+
+            setupDrivers(app);
+            setupPresetTests(app);
+            setupCommandTests(app);
+            setupVisitorTests(app);
+            setupCommandTransformationVisitorTests(app);
+            setupLogger(app);
+            setupWindows(app);
+            setupImporters();
+
+            app.setVisibility(true);
         });
     }
 

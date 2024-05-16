@@ -61,6 +61,7 @@ public class TestJobs2dApp {
         application.addTest("Show current command stats", new VisitorTest());
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
+        application.addTest("Check for exceeding command",new ExceedingCanvasCommandVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {

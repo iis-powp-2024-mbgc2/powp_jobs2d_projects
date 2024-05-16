@@ -32,12 +32,6 @@ public class CommandStatisticVisitor implements CommandVisitor {
         currentSetPosition = false;
         previousCoordinates.setLocation(currentCoordinates);
         currentCoordinates.setLocation(operateToCommand.getX(), operateToCommand.getY());
-
-        if (currentCoordinates != null && previousCoordinates != null
-                && !previousSetPosition && !currentSetPosition) {
-            operateToLength += Math.sqrt(Math.pow(currentCoordinates.getX() - previousCoordinates.getX(), 2) +
-                    Math.pow(currentCoordinates.getY() - previousCoordinates.getY(), 2));
-        }
     }
 
     @Override
@@ -58,13 +52,18 @@ public class CommandStatisticVisitor implements CommandVisitor {
 
             DriverCommand command = iterator.next();
             command.accept(this);
-            if (currentCoordinates != null && previousCoordinates != null) {
+            if (!currentSetPosition) {
                 totalLength += Math.sqrt(Math.pow(currentCoordinates.getX() - previousCoordinates.getX(), 2) +
                         Math.pow(currentCoordinates.getY() - previousCoordinates.getY(), 2));
+                if (!previousSetPosition && !currentSetPosition) {
+                    operateToLength += Math.sqrt(Math.pow(currentCoordinates.getX() - previousCoordinates.getX(), 2) +
+                            Math.pow(currentCoordinates.getY() - previousCoordinates.getY(), 2));
+                }
             }
         }
 
         this.totalLength += totalLength;
         this.operateToLength += operateToLength;
+        this.currentSetPosition = true;
     }
 }

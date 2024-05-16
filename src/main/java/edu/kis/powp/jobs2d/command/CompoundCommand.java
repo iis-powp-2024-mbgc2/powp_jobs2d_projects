@@ -3,12 +3,11 @@ package edu.kis.powp.jobs2d.command;
 import edu.kis.powp.jobs2d.Job2dDriver;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CompoundCommand implements ICompoundCommand {
+public class CompoundCommand implements ICompoundCommand, Cloneable {
     private List<DriverCommand> commands = new ArrayList<>();
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String name;
@@ -74,7 +73,18 @@ public class CompoundCommand implements ICompoundCommand {
         return name;
     }
 
-    public CompoundCommand clone() throws CloneNotSupportedException {
-        return (CompoundCommand) super.clone();
+    @Override
+    public CompoundCommand clone() {
+        List<DriverCommand> clonedCommands = new ArrayList<>();
+        for (DriverCommand command : commands) {
+            if (command instanceof Cloneable) {
+                try {
+                    clonedCommands.add(((Cloneable) command).clone());
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return new CompoundCommand(clonedCommands, name);
     }
 }

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,10 +16,11 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.CommandImporter;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ImporterFactory;
+import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.drivers.MouseClickConverter;
+import edu.kis.powp.jobs2d.drivers.EditorDriver;
+import edu.kis.powp.jobs2d.drivers.MouseClickEditor;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
@@ -31,6 +33,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private String observerListString;
     private JTextArea observerListField;
+    private ArrayList<Point> points;
+    private MouseClickEditor mouseClickEditor;
     final private Job2dDriver previewLineDriver;
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -42,6 +46,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private static final long serialVersionUID = 9204679248304669948L;
 
     public CommandManagerWindow(CommandManager commandManager) {
+
         this.setTitle("Command Manager");
         this.setSize(400, 400);
         Container content = this.getContentPane();
@@ -67,6 +72,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 1;
         content.add(currentCommandField, c);
+
+        JButton btnToggleEdit = new JButton("Toggle edit");
+        btnToggleEdit.addActionListener((ActionEvent e)->toggleEdit());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        content.add(btnToggleEdit, c);
 
         commandPreviewPanel = new DefaultDrawerFrame();
         drawPanelController = new DrawPanelController();
@@ -104,6 +117,29 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 1;
         content.add(btnClearObservers, c);
+
+
+        this.points = new ArrayList<>();
+        this.mouseClickEditor = new MouseClickEditor(drawArea, points, previewLineDriver);
+    }
+
+    private void toggleEdit() {
+        System.out.println("toggle edit");
+        ((ICompoundCommand) commandManager.getCurrentCommand()).iterator().forEachRemaining((DriverCommand command) ->{
+            //System.out.println(command);
+            if (command instanceof OperateToCommand) {
+                int x = ((OperateToCommand) command).getX();
+                int y = ((OperateToCommand) command).getY();
+                //System.out.println("operate " + x + ", " + y);
+                points.add(new Point(x,y));
+            }
+            if (command instanceof SetPositionCommand) {
+                int x = ((SetPositionCommand) command).getX();
+                int y = ((SetPositionCommand) command).getY();
+                //System.out.println("set " + x + ", " + y);
+                points.add(new Point(x,y));
+            }
+        });
     }
 
     private void importCommandFromFile() {

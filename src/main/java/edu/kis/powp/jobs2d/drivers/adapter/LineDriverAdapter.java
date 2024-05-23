@@ -11,7 +11,6 @@ public class LineDriverAdapter implements Job2dDriver {
     private ILine line;
     private int startX = 0, startY = 0;
     private String name;
-
     private DrawPanelController drawController;
 
     public LineDriverAdapter(DrawPanelController drawController, ILine line, String name) {

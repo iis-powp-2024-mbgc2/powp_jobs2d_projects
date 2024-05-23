@@ -8,12 +8,11 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.CompoundCommand;
-import edu.kis.powp.jobs2d.command.ImporterFactory;
-import edu.kis.powp.jobs2d.command.JsonCommandImporter;
+import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
+import edu.kis.powp.jobs2d.command.importer.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.command.loader.LoadCommand;
+import edu.kis.powp.jobs2d.command.importer.TxtCommandImporter;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -138,18 +137,13 @@ public class TestJobs2dApp {
         application.addComponentMenuElement(Logger.class, "OFF logging", (ActionEvent e) -> logger.setLevel(Level.OFF));
     }
 
-    private static void loadCommand(Application application) {
-        CompoundCommand command = LoadCommand.loadCommandsFromFile("./src/test/resources/figures/rectangle.txt");
-
-        application.addTest("rectangle.txt", e -> command.execute(DriverFeature.getDriverManager().getCurrentDriver()));
-    }
-
     private static void setupMouseHandler(Application application) {
         new MouseClickConverter(application.getFreePanel());
     }
 
     private static void setupImporters() {
         ImporterFactory.addImporter("json", new JsonCommandImporter());
+        ImporterFactory.addImporter("txt", new TxtCommandImporter());
     }
 
     /**
@@ -171,7 +165,6 @@ public class TestJobs2dApp {
                 setupLogger(app);
                 setupWindows(app);
                 setupMouseHandler(app);
-                loadCommand(app);
                 setupImporters();
 
                 app.setVisibility(true);

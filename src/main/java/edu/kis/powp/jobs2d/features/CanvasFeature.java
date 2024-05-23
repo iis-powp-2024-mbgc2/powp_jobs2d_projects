@@ -26,7 +26,8 @@ public class CanvasFeature {
                 logger.warning("Canvas is not set");
                 return;
             }
-            canvasManager.getCurrentCanvas().getCanvasCommand().execute(DriverFeature.getDriverManager().getCurrentDriver());
+            canvasManager.getCurrentCanvas().getCanvasCommand()
+                    .execute(DriverFeature.getDriverManager().getCurrentDriver());
         });
 
         canvasManager.getChangePublisher().addSubscriber(new UpdateCanvasInfoObserver());

@@ -1,7 +1,6 @@
 package edu.kis.powp.jobs2d.command.canvas;
 
 
-
 public class CanvasA3 extends RectangularCanvas {
 
     public CanvasA3() {

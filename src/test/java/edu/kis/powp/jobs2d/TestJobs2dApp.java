@@ -10,6 +10,8 @@ import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
+import edu.kis.powp.jobs2d.command.canvas.CanvasA3;
+import edu.kis.powp.jobs2d.command.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.*;
@@ -25,6 +27,21 @@ import edu.kis.powp.jobs2d.features.*;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+    /**
+     * Setup test concerning canvas.
+     *
+     * @param application Application context.
+     */
+    private static void setupPresetCanvas(Application application) {
+        CanvasA4 canvasA4 = new CanvasA4();
+        CanvasFeature.addCanvas("Canvas A4", canvasA4);
+
+        CanvasA3 canvasA3 = new CanvasA3();
+        CanvasFeature.addCanvas("Canvas A3", canvasA3);
+
+        CanvasFeature.updateCanvasInfo();
+    }
 
     /**
      * Setup test concerning preset figures in context.
@@ -120,6 +137,9 @@ public class TestJobs2dApp {
         Job2dDriver lineShiftAndRotateAndFlip = FlippingDriverDecorator.getFlipHorizontalDecorator(RotatingDriverDecorator.getRotating90DegClockwiseDecorator(new ScalingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 1.5F)));
         DriverFeature.addDriver("Line Flip, Rotate and Scale", lineShiftAndRotateAndFlip);
 
+        Job2dDriver canvasAwareDriver = new CanvasAwareDriver(drawerController, LineFactory.getBasicLine());
+        DriverFeature.addDriver("Canvas aware driver", canvasAwareDriver);
+
         DriverFeature.updateDriverInfo();
     }
 
@@ -152,6 +172,9 @@ public class TestJobs2dApp {
         application.addComponentMenuElement(Logger.class, "OFF logging", (ActionEvent e) -> logger.setLevel(Level.OFF));
     }
 
+    private static void setupMouseHandler(Application application) {
+        new MouseClickConverter(application.getFreePanel());
+    }
 
     private static void setupImporters() {
         ImporterFactory.addImporter("json", new JsonCommandImporter());
@@ -169,6 +192,7 @@ public class TestJobs2dApp {
                 RecordFeature.setupRecorderPlugin(app);
                 DriverFeature.setupDriverPlugin(app);
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
+                CanvasFeature.setupCanvas(app);
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);
@@ -176,7 +200,10 @@ public class TestJobs2dApp {
                 setupCommandTransformationVisitorTests(app);
                 setupLogger(app);
                 setupWindows(app);
+                setupMouseHandler(app);
+                setupPresetCanvas(app);
                 setupImporters();
+
                 app.setVisibility(true);
             }
         });

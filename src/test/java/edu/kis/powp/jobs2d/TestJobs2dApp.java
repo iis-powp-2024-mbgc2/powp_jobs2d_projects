@@ -52,7 +52,6 @@ public class TestJobs2dApp {
         application.addTest("Load recorded command", new SelectCommandListener(Command.RECORDED));
         application.addTest("Load deeply complex command", new SelectCommandListener(Command.DEEPLY_COMPLEX));
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
-
     }
 
     private static void setupVisitorTests(Application application) {

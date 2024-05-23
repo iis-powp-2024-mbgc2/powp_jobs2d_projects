@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.events;
 import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.factory.CompoundCommandFactory;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.enums.Command;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 import edu.kis.powp.jobs2d.features.RecordFeature;
@@ -18,7 +19,7 @@ public class SelectCommandListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        CommandManager manager = CommandsFeature.getCommandManager();
+        ICommandManager manager = CommandsFeature.getCommandManager();
         switch (command) {
             case RECTANGLE:
                 manager.setCurrentCommand(CompoundCommandFactory.getRectangleAction("RectangleCommand"));

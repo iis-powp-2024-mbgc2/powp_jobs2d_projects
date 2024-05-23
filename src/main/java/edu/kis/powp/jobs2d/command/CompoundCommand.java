@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CompoundCommand extends ICompoundCommand {
+public class CompoundCommand implements ICompoundCommand {
     private List<DriverCommand> commands = new ArrayList<>();
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String name;
@@ -55,7 +55,6 @@ public class CompoundCommand extends ICompoundCommand {
 
     @Override
     public void execute(Job2dDriver driver) {
-        super.execute(driver);
         iterator().forEachRemaining((c) -> c.execute(driver));
     }
 

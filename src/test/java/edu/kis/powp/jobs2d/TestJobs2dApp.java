@@ -139,6 +139,9 @@ public class TestJobs2dApp {
         Job2dDriver lineShiftAndRotateAndFlip = FlippingDriverDecorator.getFlipHorizontalDecorator(RotatingDriverDecorator.getRotating90DegClockwiseDecorator(new ScalingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 1.5F)));
         DriverFeature.addDriver("Line Flip, Rotate and Scale", lineShiftAndRotateAndFlip);
 
+        Job2dDriver canvasAwareDriver = new CanvasAwareDriver(drawerController, LineFactory.getBasicLine());
+        DriverFeature.addDriver("Canvas aware driver", canvasAwareDriver);
+
         DriverFeature.updateDriverInfo();
     }
 

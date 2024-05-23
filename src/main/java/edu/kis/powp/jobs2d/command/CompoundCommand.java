@@ -13,7 +13,13 @@ public final class CompoundCommand implements ICompoundCommand {
     }
 
     public List<DriverCommand> getCommands() {
-        return Collections.unmodifiableList(commands);
+        DeepCopyVisitor deepCopy = new DeepCopyVisitor();
+        List<DriverCommand> copiedCommands = new ArrayList<>();
+        for (DriverCommand command : commands) {
+            command.accept(deepCopy);
+            copiedCommands.add(deepCopy.getCopiedCommand());
+        }
+        return copiedCommands;
     }
 
     @Override

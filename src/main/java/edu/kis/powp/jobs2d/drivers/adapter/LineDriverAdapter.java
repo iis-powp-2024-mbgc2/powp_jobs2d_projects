@@ -4,6 +4,8 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.powp.jobs2d.Job2dDriver;
 
+import java.util.Objects;
+
 /**
  * Line adapter - Job2dDriver with DrawPanelController object.
  */
@@ -39,4 +41,13 @@ public class LineDriverAdapter implements Job2dDriver {
     public String toString() {
         return "2d device simulator - " + name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LineDriverAdapter that = (LineDriverAdapter) o;
+        return line.getClass() == that.line.getClass() && Objects.equals(name, that.name);
+    }
+
 }

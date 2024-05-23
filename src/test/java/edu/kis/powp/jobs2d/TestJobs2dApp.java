@@ -75,31 +75,11 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
-        Job2dDriver loggerDriver = new LoggerDriver(false);
-        DriverFeature.addDriver("Simple Logger driver", loggerDriver);
-
-        Job2dDriver loggerDriver2 = new LoggerDriver(true);
-        DriverFeature.addDriver("Detailed Logger driver", loggerDriver2);
-
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        DriverFeature.addDriver("Line Simulator with Recording Support", driver);
-        DriverFeature.getDriverManager().setCurrentDriver(driver);
+        DriverFeature.addDriver("Basic line driver", new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        DriverFeature.addDriver("Special line driver", new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
 
-        driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
-        DriverFeature.addDriver("Special Line Simulator with Recording Support", driver);
-        driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-        DriverFeature.addDriver("Special line Simulator", driver);
-
-        driver = new LoggerDriver(false);
-        UsageMonitorDriverDecorator usageMonitorDriver = new UsageMonitorDriverDecorator(driver);
-        DriverFeature.addDriver("Usage monitor with logger", usageMonitorDriver);
-
-        driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-        UsageMonitorDriverDecorator usageMonitorDriver2 = new UsageMonitorDriverDecorator(driver);
-        DriverFeature.addDriver("Special line Simulator with usage monitor", usageMonitorDriver2);
-
-        driver = new RealTimeDecoratorDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), application.getFreePanel());
+        Job2dDriver driver = new RealTimeDecoratorDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), application.getFreePanel());
         DriverFeature.addDriver("Basic line Simulator with real time drawing", driver);
         driver = new RealTimeDecoratorDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"), application.getFreePanel());
         DriverFeature.addDriver("Special line Simulator with real time drawing", driver);
@@ -159,6 +139,24 @@ public class TestJobs2dApp {
         ImporterFactory.addImporter("json", new JsonCommandImporter());
     }
 
+    private static void setupFeaturesMenu(Application application) {
+        Job2dDriver loggerDriver = new LoggerDriver(false);
+        AppFeature.addFeature("Simple Logger", loggerDriver);
+
+        Job2dDriver loggerDriver2 = new LoggerDriver(true);
+        AppFeature.addFeature("Detailed Logger", loggerDriver2);
+
+        //overflow
+        Job2dDriver recordingDriver = new RecordingDriverDecorator(DriverFeature.getDriverManager().getCurrentDriver());
+        AppFeature.addFeature("Recording Support", recordingDriver);
+
+        //overflow
+        Job2dDriver usageMonitorDriver = new UsageMonitorDriverDecorator(DriverFeature.getDriverManager().getCurrentDriver());
+        AppFeature.addFeature("Usage monitor", usageMonitorDriver);
+
+
+    }
+
     /**
      * Launch the application.
      */
@@ -179,6 +177,8 @@ public class TestJobs2dApp {
                 setupLogger(app);
                 setupWindows(app);
                 setupImporters();
+                AppFeature.setupFeaturesMenu(app);
+                setupFeaturesMenu(app);
                 app.setVisibility(true);
             }
         });

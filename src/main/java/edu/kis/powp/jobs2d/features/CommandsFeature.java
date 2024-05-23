@@ -1,11 +1,12 @@
 package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
 
 public class CommandsFeature {
 
-    private static CommandManager commandManager;
+    private static ICommandManager commandManager;
 
     public static void setupCommandManager() {
         commandManager = new CommandManager();
@@ -18,7 +19,7 @@ public class CommandsFeature {
      *
      * @return plotterCommandManager.
      */
-    public static CommandManager getCommandManager() {
+    public static ICommandManager getCommandManager() {
         return commandManager;
     }
 }

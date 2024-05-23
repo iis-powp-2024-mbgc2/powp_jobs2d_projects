@@ -139,9 +139,9 @@ public class TestJobs2dApp {
     }
 
     private static void loadCommand(Application application) {
-        CompoundCommand command = LoadCommand.loadCommandsFromFile("./Rectangle.txt");
+        CompoundCommand command = LoadCommand.loadCommandsFromFile("./src/test/resources/figures/rectangle.txt");
 
-        application.addTest("./Rectangle.txt", e -> command.execute(DriverFeature.getDriverManager().getCurrentDriver()));
+        application.addTest("rectangle.txt", e -> command.execute(DriverFeature.getDriverManager().getCurrentDriver()));
     }
 
     private static void setupMouseHandler(Application application) {

@@ -8,12 +8,13 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.ImporterFactory;
-import edu.kis.powp.jobs2d.command.JsonCommandImporter;
+import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
+import edu.kis.powp.jobs2d.command.importer.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.canvas.CanvasA3;
 import edu.kis.powp.jobs2d.command.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.importer.TxtCommandImporter;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -180,6 +181,7 @@ public class TestJobs2dApp {
 
     private static void setupImporters() {
         ImporterFactory.addImporter("json", new JsonCommandImporter());
+        ImporterFactory.addImporter("txt", new TxtCommandImporter());
     }
 
     /**

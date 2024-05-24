@@ -1,0 +1,6 @@
+Rectangle TXT
+SetPositionTo|100|100
+OperateTo|-100|100
+OperateTo|-100|-100
+OperateTo|100|-100
+OperateTo|100|100

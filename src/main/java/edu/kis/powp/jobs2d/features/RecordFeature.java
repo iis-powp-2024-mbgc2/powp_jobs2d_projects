@@ -1,13 +1,10 @@
 package edu.kis.powp.jobs2d.features;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 import edu.kis.powp.jobs2d.enums.RecordingOption;
 import edu.kis.powp.jobs2d.events.SelectRecordingOptionListener;
-import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-
-import java.util.List;
 
 public class RecordFeature {
     private static Application application;

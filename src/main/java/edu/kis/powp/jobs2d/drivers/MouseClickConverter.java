@@ -11,7 +11,9 @@ import java.awt.event.MouseEvent;
 
 public class MouseClickConverter extends MouseAdapter implements MouseClickListener {
     protected final int MOUSE_BUTTON_LEFT = 1;
+    protected final int MOUSE_BUTTON_MID = 2;
     protected final int MOUSE_BUTTON_RIGHT = 3;
+
 
     private final JPanel panel;
 

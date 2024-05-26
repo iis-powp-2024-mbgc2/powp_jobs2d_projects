@@ -15,11 +15,12 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.CommandImporter;
+import edu.kis.powp.jobs2d.command.importer.ICommandImporter;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.CanvasManager;
+
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
@@ -141,7 +142,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
                 String filePath = chooser.getSelectedFile().getAbsolutePath();
                 String fileExtension = filePath.substring(filePath.lastIndexOf(".") + 1);
-                CommandImporter importer = ImporterFactory.getImporter(fileExtension);
+                ICommandImporter importer = ImporterFactory.getImporter(fileExtension);
                 String content = new String(Files.readAllBytes(Paths.get(filePath)));
                 DriverCommand command = importer.importCommands(content);
                 this.canvasManager.checkCanvas(command);

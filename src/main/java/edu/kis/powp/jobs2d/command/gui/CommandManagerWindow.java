@@ -19,6 +19,7 @@ import edu.kis.powp.jobs2d.command.CommandImporter;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
+import edu.kis.powp.jobs2d.drivers.CanvasManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
@@ -34,6 +35,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea observerListField;
 
     private DriverManager driverManager;
+    private CanvasManager canvasManager;
     final private Job2dDriver previewLineDriver;
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -44,13 +46,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
      */
     private static final long serialVersionUID = 9204679248304669948L;
 
-    public CommandManagerWindow(ICommandManager commandManager, DriverManager driverManager1) {
+    public CommandManagerWindow(ICommandManager commandManager, DriverManager driverManager1, CanvasManager canvasManager1) {
         this.setTitle("Command Manager");
         this.setSize(400, 400);
         Container content = this.getContentPane();
         content.setLayout(new GridBagLayout());
 
         this.commandManager = commandManager;
+        this.canvasManager = canvasManager1;
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -141,7 +144,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 CommandImporter importer = ImporterFactory.getImporter(fileExtension);
                 String content = new String(Files.readAllBytes(Paths.get(filePath)));
                 DriverCommand command = importer.importCommands(content);
+                this.canvasManager.checkCanvas(command);
                 commandManager.setCurrentCommand(command);
+
             }
         } catch (Exception e) {
             logger.warning("Error while importing command from file: " + e.getMessage());

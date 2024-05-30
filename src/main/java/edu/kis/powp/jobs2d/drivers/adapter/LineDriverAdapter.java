@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.drivers.adapter;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.ILine;
+import edu.kis.powp.jobs2d.features.LinesRecorder;
 import edu.kis.powp.jobs2d.Job2dDriver;
 
 /**
@@ -12,6 +13,7 @@ public class LineDriverAdapter implements Job2dDriver {
     private int startX = 0, startY = 0;
     private String name;
     private DrawPanelController drawController;
+    private final LinesRecorder linesRecorder = LinesRecorder.getLinesRecorder();
 
     public LineDriverAdapter(DrawPanelController drawController, ILine line, String name) {
         super();
@@ -31,6 +33,9 @@ public class LineDriverAdapter implements Job2dDriver {
         line.setStartCoordinates(this.startX, this.startY);
         this.setPosition(x, y);
         line.setEndCoordinates(x, y);
+        try {
+            linesRecorder.addLine((ILine) line.clone());
+        } catch (CloneNotSupportedException ignored) {}
 
         drawController.drawLine(line);
     }

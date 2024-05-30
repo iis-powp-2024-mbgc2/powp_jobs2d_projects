@@ -84,10 +84,6 @@ public class TestJobs2dApp {
         application.addTest("Flip command ↕ vertically", new CommandVerticalFlipTest());
         application.addTest("Scale command (scale = 2)", new CommandScaleTest(2));
         application.addTest("Rotate command (degrees = 15)", new CommandRotateTest(15));
-        application.addTest("Shift JG (50, 20)", (ActionEvent e) -> {
-            LinesTransformationExecutor linesTransformationExecutor = new LinesTransformationExecutor();
-            linesTransformationExecutor.execute(new ShiftTransformation(50, 20));
-        });
     }
 
     /**

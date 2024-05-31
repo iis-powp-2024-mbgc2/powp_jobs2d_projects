@@ -10,11 +10,18 @@ import java.awt.event.*;
 public class DrawPanelMouseZoomFeature implements MouseWheelListener {
     private final JPanel panel;
     private final LinesTransformationExecutor linesTransformationExecutor;
+    private double zoom;
+    public static final double SCALE_FACTOR = 0.1;
 
     public DrawPanelMouseZoomFeature(JPanel panel) {
         this.panel = panel;
         this.panel.addMouseWheelListener(this);
         this.linesTransformationExecutor = new LinesTransformationExecutor();
+        this.zoom = 1;
+    }
+
+    public double getZoom() {
+        return zoom;
     }
 
     public void removeDriver() {
@@ -24,7 +31,8 @@ public class DrawPanelMouseZoomFeature implements MouseWheelListener {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         int rotation = e.getWheelRotation();
-        Transformation scaleTransformation = new ScaleTransformation(1 + (rotation * 0.1));
+        this.zoom += rotation * SCALE_FACTOR * this.zoom;
+        Transformation scaleTransformation = new ScaleTransformation(this.zoom);
         linesTransformationExecutor.execute(scaleTransformation);
     }
 }

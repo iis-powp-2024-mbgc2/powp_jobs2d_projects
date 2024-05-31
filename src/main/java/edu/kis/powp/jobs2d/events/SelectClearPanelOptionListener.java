@@ -10,6 +10,6 @@ public class SelectClearPanelOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         DrawerFeature.getDrawerController().clearPanel();
-        LinesRecorder.getLinesRecorder().clearLines();
+        LinesRecorder.getLinesRecorder().clearRecordedLines();
     }
 }

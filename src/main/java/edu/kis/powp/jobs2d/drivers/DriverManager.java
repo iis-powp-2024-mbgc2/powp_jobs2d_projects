@@ -2,6 +2,8 @@ package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.LoggerDriver;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapterRecordingFiguresDecorator;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -27,6 +29,14 @@ public class DriverManager {
      */
     public synchronized Job2dDriver getCurrentDriver() {
         return currentDriver;
+    }
+
+    public synchronized Job2dDriver getCurrentTransformingDriver() {
+        if (currentDriver instanceof LineDriverAdapter) {
+            return new LineDriverAdapterRecordingFiguresDecorator((LineDriverAdapter) currentDriver);
+        } else {
+            throw new UnsupportedOperationException("Current driver LineDriverAdapter does not support transformation.");
+        }
     }
 
     public Publisher getChangePublisher() {

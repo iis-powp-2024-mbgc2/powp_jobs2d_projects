@@ -2,17 +2,23 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.legacy.drawer.shape.ILine;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LinesRecorder {
     private final static LinesRecorder instance = new LinesRecorder();
     private final List<ILine> lines;
-    private final List<ILine> unscaledLines;
+    private final List<ILine> untransformedLines;
+
+    public static double zoom;
+    public static Point shift;
 
     private LinesRecorder() {
         lines = new ArrayList<>();
-        unscaledLines = new ArrayList<>();
+        untransformedLines = new ArrayList<>();
+        zoom = 1;
+        shift = new Point(0, 0);
     }
 
     public static LinesRecorder getLinesRecorder() {
@@ -23,19 +29,26 @@ public class LinesRecorder {
         return lines;
     }
 
-    public List<ILine> getUnscaledLines() {
-        return unscaledLines;
+    public List<ILine> getUntransformedLines() {
+        return untransformedLines;
     }
 
     public void addLine(ILine line) {
-        lines.add(line);
         try {
-            unscaledLines.add((ILine) line.clone());
-        } catch (CloneNotSupportedException e) {}
+            lines.add(line);
+            untransformedLines.add((ILine) line.clone());
+        } catch (CloneNotSupportedException ignored) {
+            throw new UnsupportedOperationException("Could not clone line");
+        }
     }
 
-    public void clearRecordedLines() {
+    public void addLine(ILine line, ILine untransformedLine) {
+        lines.add(line);
+        untransformedLines.add(untransformedLine);
+    }
+
+    public void clearLines() {
         lines.clear();
-        unscaledLines.clear();
+        untransformedLines.clear();
     }
 }

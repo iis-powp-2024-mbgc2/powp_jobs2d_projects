@@ -2,7 +2,6 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.jobs2d.transformations.LinesTransformationExecutor;
 import edu.kis.powp.jobs2d.transformations.ShiftTransformation;
-import edu.kis.powp.jobs2d.transformations.Transformation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,19 +10,11 @@ import java.awt.event.MouseEvent;
 
 public class DrawPanelMouseMoveFeature extends MouseAdapter {
     private final JPanel panel;
-    private final LinesTransformationExecutor linesTransformationExecutor;
     private Timer timer;
-    private final Point shift;
 
     public DrawPanelMouseMoveFeature(JPanel panel) {
         this.panel = panel;
         this.panel.addMouseListener(this);
-        this.linesTransformationExecutor = new LinesTransformationExecutor();
-        this.shift = new Point(0, 0);
-    }
-
-    public Point getShift() {
-        return shift;
     }
 
     public void removeDriver() {
@@ -39,12 +30,14 @@ public class DrawPanelMouseMoveFeature extends MouseAdapter {
                 Point currentPosition = MouseInfo.getPointerInfo().getLocation();
                 int shiftX = currentPosition.x - previousPosition.x;
                 int shiftY = previousPosition.y - currentPosition.y;
-                this.shift.x += shiftX;
-                this.shift.y += shiftY;
-                Transformation shiftTransformation = new ShiftTransformation(shiftX, shiftY);
-                linesTransformationExecutor.execute(shiftTransformation);
-                previousPosition.x = currentPosition.x;
-                previousPosition.y = currentPosition.y;
+                if (shiftX != 0 || shiftY != 0) {
+                    LinesRecorder.shift.x += shiftX;
+                    LinesRecorder.shift.y += shiftY;
+                    LinesTransformationExecutor linesTransformationExecutor = new LinesTransformationExecutor();
+                    linesTransformationExecutor.execute(new ShiftTransformation(shiftX, shiftY));
+                    previousPosition.x = currentPosition.x;
+                    previousPosition.y = currentPosition.y;
+                }
             });
             timer.start();
         }

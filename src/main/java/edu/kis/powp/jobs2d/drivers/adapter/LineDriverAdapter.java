@@ -13,7 +13,6 @@ public class LineDriverAdapter implements Job2dDriver {
     private int startX = 0, startY = 0;
     private String name;
     private DrawPanelController drawController;
-    private final LinesRecorder linesRecorder = LinesRecorder.getLinesRecorder();
 
     public LineDriverAdapter(DrawPanelController drawController, ILine line, String name) {
         super();
@@ -33,11 +32,11 @@ public class LineDriverAdapter implements Job2dDriver {
         line.setStartCoordinates(this.startX, this.startY);
         this.setPosition(x, y);
         line.setEndCoordinates(x, y);
-        try {
-            linesRecorder.addLine((ILine) line.clone());
-        } catch (CloneNotSupportedException ignored) {}
-
         drawController.drawLine(line);
+    }
+
+    public ILine getLineCopy() throws CloneNotSupportedException {
+        return (ILine) line.clone();
     }
 
     @Override

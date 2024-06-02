@@ -1,6 +1,8 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapterRecordingMouseClicksDecorator;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.events.MouseClickListener;
 
@@ -51,7 +53,13 @@ public class MouseClickConverter extends MouseAdapter implements MouseClickListe
     }
 
     private void handleDriver(Point position, int buttonPressed) {
-        Job2dDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
+        Job2dDriver driver;
+        Job2dDriver currentDriver = DriverFeature.getDriverManager().getCurrentDriver();
+        if (currentDriver instanceof LineDriverAdapter) {
+            driver = new LineDriverAdapterRecordingMouseClicksDecorator((LineDriverAdapter) currentDriver);
+        } else {
+            throw new UnsupportedOperationException("Current driver is not supported");
+        }
 
         if(buttonPressed == MOUSE_BUTTON_LEFT) {
             driver.operateTo(position.x, position.y);

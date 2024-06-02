@@ -7,7 +7,6 @@ import edu.kis.powp.jobs2d.features.DrawerFeature;
 import java.awt.Point;
 import java.util.List;
 
-
 public class LinesTransformationExecutor {
     private final LinesRecorder linesRecorder;
 
@@ -19,34 +18,36 @@ public class LinesTransformationExecutor {
         DrawerFeature.getDrawerController().clearPanel();
 
         List<ILine> lines = linesRecorder.getLines();
-        List<ILine> unscaledLines = linesRecorder.getUnscaledLines();
+        List<ILine> transformedLines = linesRecorder.getUntransformedLines();
 
         for (int i = 0; i < lines.size(); i++) {
             ILine line = lines.get(i);
-            ILine referenceLine;
+            ILine unscaledLine = transformedLines.get(i);
 
             if (transformation instanceof ScaleTransformation) {
-                referenceLine = unscaledLines.get(i);
-            } else {
-                referenceLine = lines.get(i);
-            }
-            Point transformedStartPoint = transformation.transform(new Point(referenceLine.getStartCoordinateX(), referenceLine.getStartCoordinateY()));
-            Point transformedEndPoint = transformation.transform(new Point(referenceLine.getEndCoordinateX(), referenceLine.getEndCoordinateY()));
+                Point startPoint = new Point(unscaledLine.getStartCoordinateX(), unscaledLine.getStartCoordinateY());
+                Point endPoint = new Point(unscaledLine.getEndCoordinateX(), unscaledLine.getEndCoordinateY());
 
-            line.setStartCoordinates(transformedStartPoint.x, transformedStartPoint.y);
-            line.setEndCoordinates(transformedEndPoint.x, transformedEndPoint.y);
+                Point transformedStartPoint = transformation.transform(startPoint);
+                Point transformedEndPoint = transformation.transform(endPoint);
 
-            DrawerFeature.getDrawerController().drawLine(line);
-        }
-
-        if (!(transformation instanceof ScaleTransformation)) {
-            unscaledLines.forEach(line -> {
-                Point transformedStartPoint = transformation.transform(new Point(line.getStartCoordinateX(), line.getStartCoordinateY()));
-                Point transformedEndPoint = transformation.transform(new Point(line.getEndCoordinateX(), line.getEndCoordinateY()));
+                transformedStartPoint = new ShiftTransformation(LinesRecorder.shift.x, LinesRecorder.shift.y).transform(transformedStartPoint);
+                transformedEndPoint = new ShiftTransformation(LinesRecorder.shift.x, LinesRecorder.shift.y).transform(transformedEndPoint);
 
                 line.setStartCoordinates(transformedStartPoint.x, transformedStartPoint.y);
                 line.setEndCoordinates(transformedEndPoint.x, transformedEndPoint.y);
-            });
+            } else {
+                Point startPoint = new Point(line.getStartCoordinateX(), line.getStartCoordinateY());
+                Point endPoint = new Point(line.getEndCoordinateX(), line.getEndCoordinateY());
+
+                Point transformedStartPoint = transformation.transform(startPoint);
+                Point transformedEndPoint = transformation.transform(endPoint);
+
+                line.setStartCoordinates(transformedStartPoint.x, transformedStartPoint.y);
+                line.setEndCoordinates(transformedEndPoint.x, transformedEndPoint.y);
+            }
+
+            DrawerFeature.getDrawerController().drawLine(line);
         }
     }
 }

@@ -104,6 +104,16 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 1;
         content.add(btnClearObservers, c);
+        this.pack();
+    }
+
+    public JPanel getDrawPanel()
+    {
+        return commandPreviewPanel.getDrawArea();
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 
     private void importCommandFromFile() {

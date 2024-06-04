@@ -1,44 +1,57 @@
 package edu.kis.powp.jobs2d.command;
 
-import edu.kis.legacy.drawer.panel.DefaultDrawerFrame;
-
+import javax.swing.*;
+import java.awt.Dimension;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
-public class ExceedingCanvasCommandVisitor implements CommandVisitor{
+public class ExceedingCanvasCommandVisitor implements CommandVisitor {
 
-    private int width;
-    private int height;
+    private JPanel drawArea;
+    private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public ExceedingCanvasCommandVisitor() {
+    public ExceedingCanvasCommandVisitor(JPanel drawArea) {
+        this.drawArea = drawArea;
+    }
 
-        // TODO canvas abstraction
-        height = DefaultDrawerFrame.getDefaultDrawerFrame().getDrawArea().getSize().height;
-        width = DefaultDrawerFrame.getDefaultDrawerFrame().getDrawArea().getSize().width;
+    private Dimension getDrawAreaSize() {
+        return drawArea.getSize();
     }
 
     @Override
     public void visit(OperateToCommand operateToCommand) {
-        int x = operateToCommand.getX();
-        int y = operateToCommand.getY();
-        if (x > width || x < 0 || y > height || y < 0)
-            System.out.println("exceeding");
+        Dimension size = getDrawAreaSize();
+        int width = size.width;
+        int height = size.height;
+
+        int x = operateToCommand.getX() + width / 2;
+        int y = height / 2 - operateToCommand.getY();
+
+        if (x >= width || x < 0 || y >= height || y < 0) {
+            logger.warning("Exceeding canvas: (" + x + ", " + y + ")");
+        }
     }
 
     @Override
     public void visit(SetPositionCommand setPositionCommand) {
-        int x = setPositionCommand.getX();
-        int y = setPositionCommand.getY();
-        if (x > width || x < 0 || y > height || y < 0)
-            System.out.println("exceeding");
+        Dimension size = getDrawAreaSize();
+        int width = size.width;
+        int height = size.height;
+
+        int x = setPositionCommand.getX() + width / 2;
+        int y = height / 2 - setPositionCommand.getY();
+
+
+        if (x >= width || x < 0 || y >= height || y < 0) {
+            logger.warning("Exceeding canvas: (" + x + ", " + y + ")");
+        }
     }
 
     @Override
     public void visit(ICompoundCommand compoundCommand) {
         Iterator<DriverCommand> it = compoundCommand.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             it.next().accept(this);
         }
     }
-
 }

@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.ExceedingCanvasCommandVisitor;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
@@ -64,7 +65,6 @@ public class TestJobs2dApp {
         application.addTest("Show current command stats", new VisitorTest());
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
-        application.addTest("Check for exceeding command",new ExceedingCanvasCommandVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {
@@ -118,9 +118,10 @@ public class TestJobs2dApp {
 
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
+        ExceedingCanvasCommandVisitor visitor = new ExceedingCanvasCommandVisitor(commandManager.getDrawPanel());
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-                commandManager);
+                commandManager,visitor);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
     }
 

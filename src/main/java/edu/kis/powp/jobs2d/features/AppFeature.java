@@ -2,7 +2,6 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
 
 public class AppFeature {
     private static Application app;

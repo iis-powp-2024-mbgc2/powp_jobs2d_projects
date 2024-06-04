@@ -1,7 +1,5 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
-
 import java.awt.*;
 
 public class RotatingDriverDecorator extends Job2dDriverDecorator implements Transformation {
@@ -13,8 +11,8 @@ public class RotatingDriverDecorator extends Job2dDriverDecorator implements Tra
 
     private final RotationOption rotationOption;
 
-    private RotatingDriverDecorator(Job2dDriver job2dDriver, RotationOption rotationOption) {
-        super(job2dDriver);
+    private RotatingDriverDecorator(RotationOption rotationOption) {
+        super();
         super.setStrategy(this);
         this.rotationOption = rotationOption;
     }
@@ -44,15 +42,15 @@ public class RotatingDriverDecorator extends Job2dDriverDecorator implements Tra
         return new Point(rotatedX, rotatedY);
     }
 
-    static public RotatingDriverDecorator getRotating90DegClockwiseDecorator(Job2dDriver job2dDriver) {
-        return new RotatingDriverDecorator(job2dDriver, RotationOption.ROTATE_90_DEG_CLOCKWISE);
+    static public RotatingDriverDecorator getRotating90DegClockwiseDecorator() {
+        return new RotatingDriverDecorator(RotationOption.ROTATE_90_DEG_CLOCKWISE);
     }
 
-    static public RotatingDriverDecorator getRotating90DegCounterclockwiseDecorator(Job2dDriver job2dDriver) {
-        return new RotatingDriverDecorator(job2dDriver, RotationOption.ROTATE_90_DEG_COUNTERCLOCKWISE);
+    static public RotatingDriverDecorator getRotating90DegCounterclockwiseDecorator() {
+        return new RotatingDriverDecorator(RotationOption.ROTATE_90_DEG_COUNTERCLOCKWISE);
     }
 
-    static public RotatingDriverDecorator getRotating180DegDecorator(Job2dDriver job2dDriver) {
-        return new RotatingDriverDecorator(job2dDriver, RotationOption.ROTATE_180_DEG);
+    static public RotatingDriverDecorator getRotating180DegDecorator() {
+        return new RotatingDriverDecorator(RotationOption.ROTATE_180_DEG);
     }
 }

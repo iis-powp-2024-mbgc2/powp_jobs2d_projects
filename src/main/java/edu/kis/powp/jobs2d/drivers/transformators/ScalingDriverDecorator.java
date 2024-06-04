@@ -1,14 +1,12 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
-
 import java.awt.*;
 
 public class ScalingDriverDecorator extends Job2dDriverDecorator implements Transformation {
     private final float scalingFactor;
 
-    public ScalingDriverDecorator(Job2dDriver job2dDriver, float scaleValue) {
-        super(job2dDriver);
+    public ScalingDriverDecorator(float scaleValue) {
+        super();
         super.setStrategy(this);
         this.scalingFactor = scaleValue;
     }

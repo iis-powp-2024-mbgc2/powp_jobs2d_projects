@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.extended_driver_options.OptionsManagerSingleton;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionsComposite;
 
 public class SelectDriverMenuOptionListener implements ActionListener {
     private DriverManager driverManager;
@@ -18,6 +18,6 @@ public class SelectDriverMenuOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         driverManager.setCurrentDriver(driver);
-        OptionsManagerSingleton.getInstance().setUsingDriver(driver);
+        DriverOptionsComposite.getInstance().setUsingDriver(driver);
     }
 }

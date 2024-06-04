@@ -5,26 +5,26 @@ import edu.kis.powp.jobs2d.features.DriverFeature;
 
 import java.util.ArrayList;
 
-public class OptionsManagerSingleton {
+public class DriverOptionsComposite {
 
     private final ArrayList<DriverOption> driverOptionList;
     private static Job2dDriver usingDriver;
 
-    private static OptionsManagerSingleton instance;
+    private static DriverOptionsComposite instance;
 
 
-    private OptionsManagerSingleton() {
+    private DriverOptionsComposite() {
         this.driverOptionList = new ArrayList<>();
     }
 
 
-    public static OptionsManagerSingleton getInstance() {
+    public static DriverOptionsComposite getInstance() {
         if (instance != null)
             return instance;
 
-        synchronized (OptionsManagerSingleton.class) {
+        synchronized (DriverOptionsComposite.class) {
             if (instance == null)
-                instance = new OptionsManagerSingleton();
+                instance = new DriverOptionsComposite();
 
             return instance;
         }

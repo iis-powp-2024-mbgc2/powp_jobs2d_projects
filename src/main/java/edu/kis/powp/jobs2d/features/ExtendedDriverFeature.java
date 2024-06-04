@@ -3,23 +3,23 @@ package edu.kis.powp.jobs2d.features;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.extended_driver_options.ExtendedDriverClickListener;
 import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
-import edu.kis.powp.jobs2d.extended_driver_options.OptionsManagerSingleton;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionsComposite;
 
 public class ExtendedDriverFeature {
 
     private static Application app;
-    private static OptionsManagerSingleton optionsManagerSingleton;
+    private static DriverOptionsComposite driverOptionsComposite;
 
 
     public static void setupExtendedDriverPlugin(Application application) {
         app = application;
         app.addComponentMenu(ExtendedDriverFeature.class, "Driver options");
 
-        optionsManagerSingleton = OptionsManagerSingleton.getInstance();
+        driverOptionsComposite = DriverOptionsComposite.getInstance();
     }
 
     public static void addOption(String name, DriverOption driverOption) {
-        ExtendedDriverClickListener listener = new ExtendedDriverClickListener(driverOption, optionsManagerSingleton);
+        ExtendedDriverClickListener listener = new ExtendedDriverClickListener(driverOption, driverOptionsComposite);
         app.addComponentMenuElementWithCheckBox(ExtendedDriverFeature.class, name, listener, false);
     }
 

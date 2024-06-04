@@ -7,12 +7,12 @@ import java.util.logging.Logger;
 public class ExtendedDriverClickListener implements ActionListener {
 
     private final DriverOption driverOption;
-    private final OptionsManagerSingleton optionsManagerSingleton;
+    private final DriverOptionsComposite driverOptionsComposite;
     private boolean checked;
 
-    public ExtendedDriverClickListener(DriverOption driverOption, OptionsManagerSingleton optionsManagerSingleton) {
+    public ExtendedDriverClickListener(DriverOption driverOption, DriverOptionsComposite driverOptionsComposite) {
         this.driverOption = driverOption;
-        this.optionsManagerSingleton = optionsManagerSingleton;
+        this.driverOptionsComposite = driverOptionsComposite;
         this.checked = false;
     }
 
@@ -21,9 +21,9 @@ public class ExtendedDriverClickListener implements ActionListener {
         checked = !checked;
 
         if (checked)
-            optionsManagerSingleton.addOption(driverOption);
+            driverOptionsComposite.addOption(driverOption);
         else
-            optionsManagerSingleton.removeOption(driverOption);
+            driverOptionsComposite.removeOption(driverOption);
 
         Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Clicked: " + driverOption.toString());
     }

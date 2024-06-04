@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.drivers;
+package edu.kis.powp.jobs2d.drivers.UsageMonitor;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 
@@ -6,39 +6,36 @@ import java.awt.geom.Point2D;
 import java.util.logging.Logger;
 
 public class UsageMonitorDriverDecorator implements Job2dDriver {
+
     private final Job2dDriver driver;
+
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     private int lastX = 0, lastY = 0;
-    private double headDistance = 0, opDistance = 0;
+
+
     public UsageMonitorDriverDecorator(Job2dDriver driver) {
         this.driver = driver;
     }
 
+
     @Override
     public void setPosition(int x, int y) {
-        headDistance = calcDistance(x, y);
+        calcAndStoreHeadDistance(x, y);
+
         updateLastCoords(x, y);
 
-        logDistance();
         driver.setPosition(x, y);
     }
 
     @Override
     public void operateTo(int x, int y) {
-        headDistance += calcDistance(x, y);
-        opDistance += calcDistance(x, y);
+        calcAndStoreHeadDistance(x, y);
+        calcAndStoreOpDistance(x, y);
+
         updateLastCoords(x, y);
 
-        logDistance();
         driver.operateTo(x, y);
-    }
-
-    public double getHeadDistance() {
-        return headDistance;
-    }
-
-    public double getOpDistance() {
-        return opDistance;
     }
 
     private void updateLastCoords(int x, int y) {
@@ -50,7 +47,15 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
         return Point2D.distance(lastX, lastY, x, y);
     }
 
-    private void logDistance() {
-        logger.info(String.format("Current distance made:\n- head distance: %f\n- op distance: %f", headDistance, opDistance));
+
+    private void calcAndStoreHeadDistance(int x, int y) {
+        double distance = calcDistance(x, y);
+        UsageMonitorStorage.addHeadDistance(distance);
     }
+
+    private void calcAndStoreOpDistance(int x, int y) {
+        double distance = calcDistance(x, y);
+        UsageMonitorStorage.addOpDistance(distance);
+    }
+
 }

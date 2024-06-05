@@ -27,6 +27,8 @@ public class DriversComposite implements Job2dDriver {
         return list.remove(driver);
     }
 
+    public int driversCount() { return this.list.size(); }
+
     @Override
     public void setPosition(int x, int y) {
         for (Job2dDriver driver : list) {

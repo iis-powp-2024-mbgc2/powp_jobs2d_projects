@@ -30,6 +30,7 @@ public class RecordFeature {
         }
     }
 
+
     public static void start(){
         isRecording = !isRecording;
 
@@ -42,4 +43,6 @@ public class RecordFeature {
     public static DriverCommand getRecordedCommand() {
         return recordCommandBuilder.build();
     }
+
+    public static boolean isRecording() { return isRecording; }
 }

@@ -1,5 +1,6 @@
 package edu.kis.powp.jobs2d.drivers;
 
+import com.sun.tools.javac.util.Pair;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 
@@ -42,6 +43,10 @@ public class LoggerDriver implements Job2dDriver {
 
     private String getSimpleMessage(int newX, int newY, String messagePrefix) {
         return messagePrefix + " to x: " + newX + ", y: " + newY;
+    }
+
+    public Pair<Integer, Integer> getPosition() {
+        return new Pair<>(this.posX, this.posY);
     }
 
     @Override

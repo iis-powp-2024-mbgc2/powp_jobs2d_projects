@@ -7,6 +7,10 @@ import java.util.Iterator;
  */
 public interface ICompoundCommand extends DriverCommand {
 
-    public Iterator<DriverCommand> iterator();
+    Iterator<DriverCommand> iterator();
+
+    void interchangeCommands(int x, int y);
+
+    void modifyCoordinates(int commandIndex, int x, int y);
 
 }

@@ -8,11 +8,13 @@ public class ExtendedDriverClickListener implements ActionListener {
     private final DriverOption driverOption;
     private final DriverOptionsComposite driverOptionsComposite;
     private boolean checked;
+    private final int menuIndex;
 
-    public ExtendedDriverClickListener(DriverOption driverOption, DriverOptionsComposite driverOptionsComposite) {
+    public ExtendedDriverClickListener(DriverOption driverOption, DriverOptionsComposite driverOptionsComposite, int menuIndex) {
         this.driverOption = driverOption;
         this.driverOptionsComposite = driverOptionsComposite;
         this.checked = false;
+        this.menuIndex = menuIndex;
     }
 
     @Override
@@ -20,9 +22,9 @@ public class ExtendedDriverClickListener implements ActionListener {
         checked = !checked;
 
         if (checked)
-            driverOptionsComposite.addOption(driverOption);
+            driverOptionsComposite.addOption(new Option(driverOption, menuIndex));
         else
-            driverOptionsComposite.removeOption(driverOption);
+            driverOptionsComposite.removeOption(menuIndex);
     }
 
 }

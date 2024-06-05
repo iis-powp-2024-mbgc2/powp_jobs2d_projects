@@ -9,6 +9,7 @@ public class ExtendedDriverFeature {
 
     private static Application app;
     private static DriverOptionsComposite driverOptionsComposite;
+    private static int firstFreeMenuIndex = 0;
 
 
     public static void setupExtendedDriverPlugin(Application application) {
@@ -19,8 +20,10 @@ public class ExtendedDriverFeature {
     }
 
     public static void addOption(String name, DriverOption driverOption) {
-        ExtendedDriverClickListener listener = new ExtendedDriverClickListener(driverOption, driverOptionsComposite);
+        ExtendedDriverClickListener listener = new ExtendedDriverClickListener(driverOption, driverOptionsComposite, firstFreeMenuIndex);
         app.addComponentMenuElementWithCheckBox(ExtendedDriverFeature.class, name, listener, false);
+
+        firstFreeMenuIndex++;
     }
 
 }

@@ -4,10 +4,11 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DriverOptionsComposite {
 
-    private final ArrayList<DriverOption> driverOptionList;
+    private final ArrayList<Option> driverOptionList;
     private static Job2dDriver usingDriver;
 
     private static DriverOptionsComposite instance;
@@ -37,14 +38,15 @@ public class DriverOptionsComposite {
     }
 
 
-    public void addOption(DriverOption driverOption) {
-        driverOptionList.add(driverOption);
+    public void addOption(Option option) {
+        driverOptionList.add(option);
+        Collections.sort(driverOptionList);
         refresh();
     }
 
 
-    public void removeOption(DriverOption driverOption) {
-        driverOptionList.remove(driverOption);
+    public void removeOption(int menuIndex) {
+        driverOptionList.removeIf(option -> option.getMenuIndex() == menuIndex);
         refresh();
     }
 
@@ -63,7 +65,8 @@ public class DriverOptionsComposite {
 
         Job2dDriver compositeDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
-        for (DriverOption driverOption : driverOptionList) {
+        for (Option option : driverOptionList) {
+            DriverOption driverOption = option.getDriverOption();
             driverOption.setDriver(compositeDriver);
             compositeDriver = driverOption;
         }

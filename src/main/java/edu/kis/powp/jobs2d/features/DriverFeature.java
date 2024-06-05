@@ -5,6 +5,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
 import edu.kis.powp.jobs2d.drivers.gui.UpdateDriverInfoObserver;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionsComposite;
 
 public class DriverFeature {
 
@@ -58,6 +59,7 @@ public class DriverFeature {
             return;
 
         driverManager.setCurrentDriver(driver);
+        DriverOptionsComposite.getInstance().setUsingDriver(driver);
     }
 
 }

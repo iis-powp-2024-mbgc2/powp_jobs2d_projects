@@ -9,6 +9,7 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecorator;
@@ -104,6 +105,7 @@ public class TestJobs2dApp {
         ExtendedDriverFeature.addOption("Rotate", RotatingDriverDecorator.getRotating90DegClockwiseDecorator());
         ExtendedDriverFeature.addOption("Scale", new ScalingDriverDecorator(1.5F));
 
+        ExtendedDriverFeature.addOption("Usage Monitoring", new UsageMonitorDriverDecorator());
     }
 
 

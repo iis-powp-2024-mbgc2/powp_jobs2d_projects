@@ -2,7 +2,6 @@ package edu.kis.powp.jobs2d.extended_driver_options;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
 
 public class ExtendedDriverClickListener implements ActionListener {
 
@@ -24,8 +23,6 @@ public class ExtendedDriverClickListener implements ActionListener {
             driverOptionsComposite.addOption(driverOption);
         else
             driverOptionsComposite.removeOption(driverOption);
-
-        Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).info("Clicked: " + driverOption.toString());
     }
 
 }

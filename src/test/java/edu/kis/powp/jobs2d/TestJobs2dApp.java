@@ -7,7 +7,6 @@ import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.drivers.DriversComposite;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
@@ -96,14 +95,14 @@ public class TestJobs2dApp {
     private static void setupExtendedDrivers() {
         ExtendedDriverFeature.addOption("Detailed Logger", new LoggerDriver(true));
         ExtendedDriverFeature.addOption("Simple Logger", new LoggerDriver(false));
-//
+
         ExtendedDriverFeature.addOption("Recording Support", new RecordingDriverDecorator());
 
         ExtendedDriverFeature.addOption("Shift", new ShiftingDriverDecorator(50, -20));
         ExtendedDriverFeature.addOption("Flip Horizontal", FlippingDriverDecorator.getFlipHorizontalDecorator());
         ExtendedDriverFeature.addOption("Flip Vertical", FlippingDriverDecorator.getFlipVerticalDecorator());
         ExtendedDriverFeature.addOption("Rotate", RotatingDriverDecorator.getRotating90DegClockwiseDecorator());
-        ExtendedDriverFeature.addOption("Scale", new ScalingDriverDecorator( 1.5F));
+        ExtendedDriverFeature.addOption("Scale", new ScalingDriverDecorator(1.5F));
 
     }
 

@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 
 import java.awt.geom.Point2D;
 import java.util.logging.Logger;
@@ -52,5 +53,9 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
 
     private void logDistance() {
         logger.info(String.format("Current distance made:\n- head distance: %f\n- op distance: %f", headDistance, opDistance));
+    }
+
+    public void accept(DriverVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
+import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 
@@ -27,4 +28,7 @@ public class RecordingDriverDecorator implements Job2dDriver{
         return super.toString();
     }
 
+    public void accept(DriverVisitor visitor) {
+        visitor.visit(this);
+    }
 }

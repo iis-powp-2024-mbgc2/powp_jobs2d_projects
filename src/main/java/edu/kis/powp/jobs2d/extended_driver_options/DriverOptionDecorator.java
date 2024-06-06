@@ -11,18 +11,18 @@ public abstract class DriverOptionDecorator implements Job2dDriver {
     }
 
     @Override
-    public void setPosition(int i, int i1) {
+    public void setPosition(int x, int y) {
         if (driver == null)
             return;
 
-        driver.setPosition(i, i1);
+        driver.setPosition(x, y);
     }
 
     @Override
-    public void operateTo(int i, int i1) {
+    public void operateTo(int x, int y) {
         if (driver == null)
             return;
 
-        driver.operateTo(i, i1);
+        driver.operateTo(x, y);
     }
 }

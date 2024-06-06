@@ -1,8 +1,6 @@
 package edu.kis.powp.jobs2d;
 
 import edu.kis.powp.jobs2d.command.visitor.DeepCopyVisitor;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
-import edu.kis.powp.jobs2d.command.DeepCopyVisitor;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 

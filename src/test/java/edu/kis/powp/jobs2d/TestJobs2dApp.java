@@ -12,10 +12,10 @@ import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.RotatingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecoratorTransformation;
+import edu.kis.powp.jobs2d.drivers.transformators.RotatingDriverDecoratorTransformation;
+import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecoratorTransformation;
+import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecoratorTransformation;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 
@@ -94,18 +94,17 @@ public class TestJobs2dApp {
 
 
     private static void setupExtendedDrivers() {
-        ExtendedDriverFeature.addOption("Detailed Logger", new LoggerDriver(true));
-        ExtendedDriverFeature.addOption("Simple Logger", new LoggerDriver(false));
-
-        ExtendedDriverFeature.addOption("Recording Support", new RecordingDriverDecorator());
-
-        ExtendedDriverFeature.addOption("Shift", new ShiftingDriverDecorator(50, -20));
-        ExtendedDriverFeature.addOption("Flip Horizontal", FlippingDriverDecorator.getFlipHorizontalDecorator());
-        ExtendedDriverFeature.addOption("Flip Vertical", FlippingDriverDecorator.getFlipVerticalDecorator());
-        ExtendedDriverFeature.addOption("Rotate", RotatingDriverDecorator.getRotating90DegClockwiseDecorator());
-        ExtendedDriverFeature.addOption("Scale", new ScalingDriverDecorator(1.5F));
+        ExtendedDriverFeature.addOption("Shift", new ShiftingDriverDecoratorTransformation(50, -20));
+        ExtendedDriverFeature.addOption("Flip Horizontal", FlippingDriverDecoratorTransformation.getFlipHorizontalDecorator());
+        ExtendedDriverFeature.addOption("Flip Vertical", FlippingDriverDecoratorTransformation.getFlipVerticalDecorator());
+        ExtendedDriverFeature.addOption("Rotate", RotatingDriverDecoratorTransformation.getRotating90DegClockwiseDecorator());
+        ExtendedDriverFeature.addOption("Scale", new ScalingDriverDecoratorTransformation(1.5F));
 
         ExtendedDriverFeature.addOption("Usage Monitoring", new UsageMonitorDriverDecorator());
+        ExtendedDriverFeature.addOption("Recording Support", new RecordingDriverDecorator());
+
+        ExtendedDriverFeature.addOption("Detailed Logger", new LoggerDriver(true));
+        ExtendedDriverFeature.addOption("Simple Logger", new LoggerDriver(false));
     }
 
 

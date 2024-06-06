@@ -1,12 +1,14 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
 import javax.swing.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class RealTimeDecoratorDriver implements Job2dDriver {
+public class RealTimeDecoratorDriver implements IVisitableDriver {
     private JPanel panel;
     private Queue<Runnable> tasks = new LinkedList<>();
     private int intervalMs = 300;
@@ -67,5 +69,10 @@ public class RealTimeDecoratorDriver implements Job2dDriver {
 
     public void setIntervalMs(int intervalMs) {
         this.intervalMs = intervalMs;
+    }
+
+    @Override
+    public void accept(IDriverVisitor visitor) {
+        visitor.visit(this);
     }
 }

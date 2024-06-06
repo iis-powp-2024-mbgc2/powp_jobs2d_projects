@@ -18,7 +18,7 @@ public class UsageMonitorDriverDecorator extends DriverOptionDecorator {
 
         updateLastCoords(x, y);
 
-        super.driver.setPosition(x, y);
+        super.setPosition(x, y);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class UsageMonitorDriverDecorator extends DriverOptionDecorator {
 
         updateLastCoords(x, y);
 
-        super.driver.operateTo(x, y);
+        super.operateTo(x, y);
     }
 
     private void updateLastCoords(int x, int y) {

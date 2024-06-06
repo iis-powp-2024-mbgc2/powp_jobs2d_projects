@@ -19,7 +19,8 @@ public class LoggerDriver extends DriverOptionDecorator {
         this.logger.info(message);
         this.posX = x;
         this.posY = y;
-        super.driver.setPosition(x, y);
+
+        super.setPosition(x, y);
     }
 
     @Override
@@ -28,7 +29,8 @@ public class LoggerDriver extends DriverOptionDecorator {
         this.logger.info(message);
         this.posX = x;
         this.posY = y;
-        super.driver.operateTo(x, y);
+
+        super.operateTo(x, y);
     }
 
     private String getMessage(int x, int y, String messagePrefix) {

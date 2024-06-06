@@ -13,13 +13,13 @@ public class RecordingDriverDecorator extends DriverOptionDecorator {
 
     @Override
     public void setPosition(int x, int y) {
-        super.driver.setPosition(x, y);
+        super.setPosition(x, y);
         RecordFeature.setCommand(new SetPositionCommand(x, y));
     }
 
     @Override
     public void operateTo(int x, int y) {
-        super.driver.operateTo(x, y);
+        super.operateTo(x, y);
         RecordFeature.setCommand(new OperateToCommand(x, y));
     }
 

@@ -19,12 +19,12 @@ public class TransformationJob2dDriverDecorator extends DriverOptionDecorator {
     @Override
     public void setPosition(int x, int y) {
         Point point = transformation.transform(x, y);
-        driver.setPosition(point.x, point.y);
+        super.setPosition(point.x, point.y);
     }
 
     @Override
     public void operateTo(int x, int y) {
         Point point = transformation.transform(x, y);
-        driver.operateTo(point.x, point.y);
+        super.operateTo(point.x, point.y);
     }
 }

@@ -67,7 +67,7 @@ public class DriverOptionsComposite {
         Job2dDriver compositeDriver = DriverFeature.getDriverManager().getCurrentDriver();
 
         for (Option option : driverOptionList) {
-            DriverOption driverOption = option.getDriverOption();
+            DriverOptionDecorator driverOption = option.getDriverOption();
             driverOption.setDriver(compositeDriver);
             compositeDriver = driverOption;
         }

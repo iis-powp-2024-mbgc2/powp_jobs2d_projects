@@ -1,10 +1,10 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 
 import java.util.logging.Logger;
 
-public class LoggerDriver extends DriverOption {
+public class LoggerDriver extends DriverOptionDecorator {
     private final Logger logger = Logger.getLogger("global");
     private int posX = 0, posY = 0;
     private final boolean isDetailedLogger;

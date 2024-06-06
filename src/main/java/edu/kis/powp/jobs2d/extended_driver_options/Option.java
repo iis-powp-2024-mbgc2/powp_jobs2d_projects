@@ -2,16 +2,16 @@ package edu.kis.powp.jobs2d.extended_driver_options;
 
 public class Option implements Comparable<Option> {
 
-    private final DriverOption driver;
+    private final DriverOptionDecorator driver;
     private final int menuIndex;
 
-    public Option(DriverOption driver, int menuIndex) {
+    public Option(DriverOptionDecorator driver, int menuIndex) {
         this.driver = driver;
         this.menuIndex = menuIndex;
     }
 
 
-    public DriverOption getDriverOption() {
+    public DriverOptionDecorator getDriverOption() {
         return driver;
     }
 

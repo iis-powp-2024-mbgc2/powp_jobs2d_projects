@@ -2,10 +2,10 @@ package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
-import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 
-public class RecordingDriverDecorator extends DriverOption {
+public class RecordingDriverDecorator extends DriverOptionDecorator {
 
 
     public RecordingDriverDecorator() {

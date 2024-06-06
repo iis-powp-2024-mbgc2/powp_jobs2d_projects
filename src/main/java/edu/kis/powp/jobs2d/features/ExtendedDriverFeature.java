@@ -2,7 +2,7 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.extended_driver_options.ExtendedDriverClickListener;
-import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionsComposite;
 
 public class ExtendedDriverFeature {
@@ -19,7 +19,7 @@ public class ExtendedDriverFeature {
         driverOptionsComposite = DriverOptionsComposite.getInstance();
     }
 
-    public static void addOption(String name, DriverOption driverOption) {
+    public static void addOption(String name, DriverOptionDecorator driverOption) {
         ExtendedDriverClickListener listener = new ExtendedDriverClickListener(driverOption, driverOptionsComposite, firstFreeMenuIndex);
         app.addComponentMenuElementWithCheckBox(ExtendedDriverFeature.class, name, listener, false);
 

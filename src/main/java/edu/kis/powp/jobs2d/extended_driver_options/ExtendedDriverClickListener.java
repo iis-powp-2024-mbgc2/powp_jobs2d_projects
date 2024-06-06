@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 public class ExtendedDriverClickListener implements ActionListener {
 
-    private final DriverOption driverOption;
+    private final DriverOptionDecorator driverOption;
     private final DriverOptionsComposite driverOptionsComposite;
     private boolean checked;
     private final int menuIndex;
 
-    public ExtendedDriverClickListener(DriverOption driverOption, DriverOptionsComposite driverOptionsComposite, int menuIndex) {
+    public ExtendedDriverClickListener(DriverOptionDecorator driverOption, DriverOptionsComposite driverOptionsComposite, int menuIndex) {
         this.driverOption = driverOption;
         this.driverOptionsComposite = driverOptionsComposite;
         this.checked = false;

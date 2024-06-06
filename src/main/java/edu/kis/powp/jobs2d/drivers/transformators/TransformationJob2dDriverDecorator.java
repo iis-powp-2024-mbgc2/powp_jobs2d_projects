@@ -1,11 +1,11 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 
 import java.awt.*;
 
 
-public class TransformationJob2dDriverDecorator extends DriverOption {
+public class TransformationJob2dDriverDecorator extends DriverOptionDecorator {
     private Transformation transformation;
 
 

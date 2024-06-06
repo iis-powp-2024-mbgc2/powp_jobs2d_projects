@@ -2,7 +2,7 @@ package edu.kis.powp.jobs2d.extended_driver_options;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 
-public abstract class DriverOption implements Job2dDriver {
+public abstract class DriverOptionDecorator implements Job2dDriver {
 
     protected Job2dDriver driver;
 

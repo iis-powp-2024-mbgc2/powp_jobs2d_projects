@@ -1,10 +1,10 @@
 package edu.kis.powp.jobs2d.drivers.UsageMonitor;
 
-import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 
 import java.awt.geom.Point2D;
 
-public class UsageMonitorDriverDecorator extends DriverOption {
+public class UsageMonitorDriverDecorator extends DriverOptionDecorator {
     private int lastX = 0, lastY = 0;
 
 

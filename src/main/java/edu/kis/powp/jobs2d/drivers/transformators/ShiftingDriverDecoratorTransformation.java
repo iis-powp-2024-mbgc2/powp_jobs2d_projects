@@ -1,13 +1,11 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
-
 import java.awt.*;
 
-public class ShiftingDriverDecorator extends Job2dDriverDecorator implements Transformation {
+public class ShiftingDriverDecoratorTransformation extends TransformationJob2dDriverDecorator implements Transformation {
     private final int shiftInXDirection, shiftInYDirection;
 
-    public ShiftingDriverDecorator(int shiftInXDirection, int shiftInYDirection) {
+    public ShiftingDriverDecoratorTransformation(int shiftInXDirection, int shiftInYDirection) {
         super();
         super.setStrategy(this);
         this.shiftInXDirection = shiftInXDirection;

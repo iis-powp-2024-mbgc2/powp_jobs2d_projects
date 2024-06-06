@@ -1,10 +1,8 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
-
 import java.awt.*;
 
-public class FlippingDriverDecorator extends Job2dDriverDecorator implements Transformation {
+public class FlippingDriverDecoratorTransformation extends TransformationJob2dDriverDecorator implements Transformation {
     enum FlippingDirection {
         FLIP_VERTICALLY,
         FLIP_HORIZONTALLY,
@@ -13,7 +11,7 @@ public class FlippingDriverDecorator extends Job2dDriverDecorator implements Tra
 
     private final FlippingDirection flippingDirection;
 
-    private FlippingDriverDecorator(FlippingDirection flippingDirection) {
+    private FlippingDriverDecoratorTransformation(FlippingDirection flippingDirection) {
         super();
         super.setStrategy(this);
         this.flippingDirection = flippingDirection;
@@ -44,16 +42,16 @@ public class FlippingDriverDecorator extends Job2dDriverDecorator implements Tra
         return new Point(flippedX, flippedY);
     }
 
-    static public FlippingDriverDecorator getFlipHorizontalDecorator() {
-        return new FlippingDriverDecorator(FlippingDirection.FLIP_HORIZONTALLY);
+    static public FlippingDriverDecoratorTransformation getFlipHorizontalDecorator() {
+        return new FlippingDriverDecoratorTransformation(FlippingDirection.FLIP_HORIZONTALLY);
     }
 
-    static public FlippingDriverDecorator getFlipVerticalDecorator() {
-        return new FlippingDriverDecorator(FlippingDirection.FLIP_VERTICALLY);
+    static public FlippingDriverDecoratorTransformation getFlipVerticalDecorator() {
+        return new FlippingDriverDecoratorTransformation(FlippingDirection.FLIP_VERTICALLY);
     }
 
-    static public FlippingDriverDecorator getFlipBothSidesDecorator() {
-        return new FlippingDriverDecorator(FlippingDirection.FLIP_BOTH_SIDES);
+    static public FlippingDriverDecoratorTransformation getFlipBothSidesDecorator() {
+        return new FlippingDriverDecoratorTransformation(FlippingDirection.FLIP_BOTH_SIDES);
     }
 
 }

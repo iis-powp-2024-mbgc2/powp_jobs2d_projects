@@ -6,12 +6,12 @@ import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
 import java.awt.*;
 
 
-public class Job2dDriverDecorator implements DriverOption {
+public class TransformationJob2dDriverDecorator implements DriverOption {
     private Job2dDriver job2dDriver;
     private Transformation transformation;
 
 
-    public Job2dDriverDecorator() {
+    public TransformationJob2dDriverDecorator() {
     }
 
     public void setStrategy(Transformation transformation) {

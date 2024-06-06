@@ -1,26 +1,25 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.extended_driver_options.DriverOption;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 
-public class RecordingDriverDecorator implements DriverOption {
-    private Job2dDriver job2dDriver;
+public class RecordingDriverDecorator extends DriverOption {
+
 
     public RecordingDriverDecorator() {
     }
 
     @Override
     public void setPosition(int x, int y) {
-        job2dDriver.setPosition(x, y);
+        super.driver.setPosition(x, y);
         RecordFeature.setCommand(new SetPositionCommand(x, y));
     }
 
     @Override
     public void operateTo(int x, int y) {
-        job2dDriver.operateTo(x, y);
+        super.driver.operateTo(x, y);
         RecordFeature.setCommand(new OperateToCommand(x, y));
     }
 
@@ -29,8 +28,4 @@ public class RecordingDriverDecorator implements DriverOption {
         return super.toString();
     }
 
-    @Override
-    public void setDriver(Job2dDriver job2dDriver) {
-        this.job2dDriver = job2dDriver;
-    }
 }

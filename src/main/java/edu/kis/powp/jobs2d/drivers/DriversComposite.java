@@ -45,4 +45,8 @@ public class DriversComposite implements Job2dDriver {
                 .map(Job2dDriver::toString)
                 .collect(Collectors.joining(", ", "Composite of ", ""));
     }
+
+    public List<Job2dDriver> getDrivers() {
+        return list;
+    }
 }

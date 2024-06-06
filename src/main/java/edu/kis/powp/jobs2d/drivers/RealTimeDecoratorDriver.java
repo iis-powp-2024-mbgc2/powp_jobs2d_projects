@@ -13,9 +13,9 @@ public class RealTimeDecoratorDriver implements IVisitableDriver {
     private Queue<Runnable> tasks = new LinkedList<>();
     private int intervalMs = 300;
 
-    private final Job2dDriver driver;
+    private final IVisitableDriver driver;
 
-    public RealTimeDecoratorDriver(Job2dDriver driver, JPanel panel) {
+    public RealTimeDecoratorDriver(IVisitableDriver driver, JPanel panel) {
         this.driver = driver;
         this.panel = panel;
         startTaskExecution();
@@ -69,6 +69,10 @@ public class RealTimeDecoratorDriver implements IVisitableDriver {
 
     public void setIntervalMs(int intervalMs) {
         this.intervalMs = intervalMs;
+    }
+
+    public IVisitableDriver getDriver() {
+        return driver;
     }
 
     @Override

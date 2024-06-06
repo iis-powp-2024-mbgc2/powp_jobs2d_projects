@@ -31,22 +31,22 @@ public class DriverCountingVisitor implements IDriverVisitor {
 
     @Override
     public void visit(RealTimeDecoratorDriver realTimeDecoratorDriver) {
-        count++;
+        realTimeDecoratorDriver.getDriver().accept(this);
     }
 
     @Override
     public void visit(UsageMonitorDriverDecorator usageMonitorDriverDecorator) {
-        count++;
+        usageMonitorDriverDecorator.getDriver().accept(this);
     }
 
     @Override
     public void visit(RecordingDriverDecorator recordingDriverDecorator) {
-        count++;
+        recordingDriverDecorator.getDriver().accept(this);
     }
 
     @Override
     public void visit(TransformingJob2dDriverDecorator transformingJob2dDriverDecorator) {
-        count++;
+        transformingJob2dDriverDecorator.getDriver().accept(this);
     }
 
 }

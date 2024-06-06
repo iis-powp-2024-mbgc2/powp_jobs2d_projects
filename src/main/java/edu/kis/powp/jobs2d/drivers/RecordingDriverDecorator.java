@@ -8,8 +8,8 @@ import edu.kis.powp.jobs2d.features.RecordFeature;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 
 public class RecordingDriverDecorator implements IVisitableDriver {
-    private final Job2dDriver job2dDriver;
-    public RecordingDriverDecorator(Job2dDriver driver) {
+    private final IVisitableDriver job2dDriver;
+    public RecordingDriverDecorator(IVisitableDriver driver) {
         job2dDriver = driver;
     }
     @Override
@@ -27,6 +27,10 @@ public class RecordingDriverDecorator implements IVisitableDriver {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public IVisitableDriver getDriver() {
+        return job2dDriver;
     }
 
     @Override

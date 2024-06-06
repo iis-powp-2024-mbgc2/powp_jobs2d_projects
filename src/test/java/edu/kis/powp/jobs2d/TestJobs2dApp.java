@@ -84,7 +84,7 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Detailed Logger driver", loggerDriver2);
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        IVisitableDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         DriverFeature.addDriver("Line Simulator with Recording Support", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
 
@@ -116,11 +116,11 @@ public class TestJobs2dApp {
         Job2dDriver lineFlippedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new VerticalFlipTransformation());
         DriverFeature.addDriver("Line vertical Flip", lineFlippedDriver);
 
-        Job2dDriver lineShiftedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ShiftTransformation(50, -20));
+        IVisitableDriver lineShiftedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ShiftTransformation(50, -20));
         Job2dDriver lineShiftedAndFlippedDriver = new TransformingJob2dDriverDecorator(lineShiftedDriver, new HorizontalFlipTransformation());
         DriverFeature.addDriver("Line Shift (50,-20) and horizontal Flip", lineShiftedAndFlippedDriver);
 
-        Job2dDriver lineScaledDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ScaleTransformation(1.5));
+        IVisitableDriver lineScaledDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ScaleTransformation(1.5));
         Job2dDriver lineScaledAndRotatedDriver = new TransformingJob2dDriverDecorator(lineScaledDriver, new RotateTransformation(90));
         DriverFeature.addDriver("Line Scale 1.5 and Rotate 90deg", lineScaledAndRotatedDriver);
 

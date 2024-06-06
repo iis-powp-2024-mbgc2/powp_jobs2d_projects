@@ -9,10 +9,10 @@ import java.awt.*;
 
 
 public class TransformingJob2dDriverDecorator implements IVisitableDriver {
-    private final Job2dDriver job2dDriver;
+    private final IVisitableDriver job2dDriver;
     private final Transformation transformation;
 
-    public TransformingJob2dDriverDecorator(Job2dDriver job2dDriver, Transformation transformation) {
+    public TransformingJob2dDriverDecorator(IVisitableDriver job2dDriver, Transformation transformation) {
         this.job2dDriver = job2dDriver;
         this.transformation = transformation;
     }
@@ -27,6 +27,10 @@ public class TransformingJob2dDriverDecorator implements IVisitableDriver {
     public void operateTo(int x, int y) {
         Point point = transformation.transform(new Point(x, y));
         job2dDriver.operateTo(point.x, point.y);
+    }
+
+    public IVisitableDriver getDriver() {
+        return job2dDriver;
     }
 
     @Override

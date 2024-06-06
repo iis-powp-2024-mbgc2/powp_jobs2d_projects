@@ -8,11 +8,11 @@ import java.awt.geom.Point2D;
 import java.util.logging.Logger;
 
 public class UsageMonitorDriverDecorator implements IVisitableDriver {
-    private final Job2dDriver driver;
+    private final IVisitableDriver driver;
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private int lastX = 0, lastY = 0;
     private double headDistance = 0, opDistance = 0;
-    public UsageMonitorDriverDecorator(Job2dDriver driver) {
+    public UsageMonitorDriverDecorator(IVisitableDriver driver) {
         this.driver = driver;
     }
 
@@ -54,6 +54,10 @@ public class UsageMonitorDriverDecorator implements IVisitableDriver {
 
     private void logDistance() {
         logger.info(String.format("Current distance made:\n- head distance: %f\n- op distance: %f", headDistance, opDistance));
+    }
+
+    public IVisitableDriver getDriver() {
+        return driver;
     }
 
     @Override

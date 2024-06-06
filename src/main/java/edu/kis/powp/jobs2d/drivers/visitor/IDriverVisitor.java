@@ -1,7 +1,7 @@
 package edu.kis.powp.jobs2d.drivers.visitor;
 
 import edu.kis.powp.jobs2d.drivers.*;
-import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
 
 public interface IDriverVisitor {

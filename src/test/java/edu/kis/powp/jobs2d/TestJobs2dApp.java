@@ -16,6 +16,7 @@ import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.jobs2d.transformations.*;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
@@ -60,6 +61,7 @@ public class TestJobs2dApp {
         application.addTest("Show current command stats", new VisitorTest());
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
+        application.addTest("Count drivers", new DriverCountingVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {

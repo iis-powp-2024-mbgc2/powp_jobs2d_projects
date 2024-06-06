@@ -34,6 +34,4 @@ public class Job2dDriverTest {
         @Override
         public void accept(DriverVisitor visitor) { System.out.println("Driver accept action..."); }
     }
-
-    ;
 }

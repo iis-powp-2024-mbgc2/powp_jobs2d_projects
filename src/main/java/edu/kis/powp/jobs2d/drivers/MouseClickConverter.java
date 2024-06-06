@@ -1,8 +1,7 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.events.MouseClickListener;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

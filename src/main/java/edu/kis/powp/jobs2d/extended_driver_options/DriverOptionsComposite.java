@@ -5,10 +5,11 @@ import edu.kis.powp.jobs2d.features.DriverFeature;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class DriverOptionsComposite {
 
-    private final ArrayList<Option> driverOptionList;
+    private final List<Option> driverOptionList;
     private static Job2dDriver usingDriver;
 
     private static DriverOptionsComposite instance;

@@ -18,6 +18,8 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CommandImporter;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
+import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.visitor.VisitorStatisticsGenerator;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -27,8 +29,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private ICommandManager commandManager;
 
     private JTextArea currentCommandField;
+    private JTextArea statisticCommandField;
     private DefaultDrawerFrame commandPreviewPanel;
     private DrawPanelController drawPanelController;
+
+    private final VisitorStatisticsGenerator visitorStatisticsGenerator = new VisitorStatisticsGenerator();
 
     private String observerListString;
     private JTextArea observerListField;
@@ -70,6 +75,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 1;
         content.add(currentCommandField, c);
+
+        statisticCommandField = new JTextArea("");
+        statisticCommandField.setEditable(false);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        content.add(statisticCommandField, c);
 
         this.driverManager = driverManager1;
         driverManager.setCurrentDriver(new LineDriverAdapter(drawPanelController,new BasicLine(),"preview"));
@@ -151,6 +164,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
+        updateStatisticCommandField();
     }
 
     private void runCommand(){
@@ -162,6 +176,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
         drawPanelController.clearPanel();
         commandManager.getCurrentCommand().execute(previewLineDriver);
+    }
+
+    public void updateStatisticCommandField() {
+        statisticCommandField.setText(
+                visitorStatisticsGenerator.generateStatistics(commandManager.getCurrentCommand()));
     }
 
     public void deleteObservers() {

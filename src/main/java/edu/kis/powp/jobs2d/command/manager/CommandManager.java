@@ -68,6 +68,4 @@ public class CommandManager implements ICommandManager {
     public Publisher getChangePublisher() {
         return changePublisher;
     }
-
-
 }

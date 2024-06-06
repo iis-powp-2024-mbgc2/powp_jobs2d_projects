@@ -1,5 +1,6 @@
-package edu.kis.powp.jobs2d.command;
+package edu.kis.powp.jobs2d.command.visitor;
 
+import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 import edu.kis.powp.jobs2d.transformations.Transformation;
 
@@ -52,7 +53,7 @@ public class CommandTransformationVisitor implements CommandVisitor {
     }
 
     /**
-     * Functional interface for OperateToCommand and SetPositionCommand constructors.
+     * Functional interface for OperationToCommand and SetPositionCommand constructors.
      */
     @FunctionalInterface
     private interface CommandCreator {

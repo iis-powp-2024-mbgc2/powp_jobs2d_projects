@@ -6,8 +6,6 @@ import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorat
 
 public interface IDriverVisitor {
 
-    int getCount();
-
     void visit(DriversComposite driversComposite);
 
     void visit(LoggerDriver loggerDriver);

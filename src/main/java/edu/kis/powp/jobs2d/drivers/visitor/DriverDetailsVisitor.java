@@ -11,6 +11,7 @@ public class DriverDetailsVisitor implements DriverVisitor {
     public String getDetails() { return this.details; }
 
     public String getDetails(IDriver driver) {
+        driver.accept(this);
         return details;
     }
 

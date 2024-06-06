@@ -61,7 +61,7 @@ public class TestJobs2dApp {
         application.addTest("Show current command stats", new VisitorTest());
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
-        application.addTest("Count drivers", new DriverCountingVisitorTest());
+        application.addTest("Count loaded drivers", new DriverCountingVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {

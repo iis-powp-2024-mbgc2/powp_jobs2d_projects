@@ -23,7 +23,7 @@ public class DriverCountingVisitorTest implements ActionListener {
         DriverCountingVisitor driverCountingVisitor = new DriverCountingVisitor();
         driver.accept(driverCountingVisitor);
 
-        logger.info("Number of drivers: " + driverCountingVisitor.getCount());
+        logger.info("Currently loaded drivers " + driverCountingVisitor.getCount());
 
     }
 }

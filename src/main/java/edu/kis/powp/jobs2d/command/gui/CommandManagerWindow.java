@@ -26,7 +26,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private CommandManager commandManager;
 
     private JTextArea currentCommandField;
-    private DefaultDrawerFrame commandPreviewPanel;
+    private JPanelRectCanvas commandPreviewPanel;
     private DrawPanelController drawPanelController;
 
     private String observerListString;
@@ -68,15 +68,15 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(currentCommandField, c);
 
-        commandPreviewPanel = new DefaultDrawerFrame();
+        commandPreviewPanel = new JPanelRectCanvas();
         drawPanelController = new DrawPanelController();
-        drawPanelController.initialize(commandPreviewPanel.getDrawArea());
+        drawPanelController.initialize(commandPreviewPanel);
         previewLineDriver = new LineDriverAdapter(drawPanelController, new BasicLine(), "preview");
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridx = 0;
         c.weighty = 5;
-        JPanel drawArea = commandPreviewPanel.getDrawArea();
+        JPanel drawArea = commandPreviewPanel;
         drawArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         content.add(drawArea, c);
 
@@ -107,9 +107,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         this.pack();
     }
 
-    public JPanel getDrawPanel()
+    public Canvas getDrawPanel()
     {
-        return commandPreviewPanel.getDrawArea();
+        return commandPreviewPanel;
     }
 
     public CommandManager getCommandManager() {

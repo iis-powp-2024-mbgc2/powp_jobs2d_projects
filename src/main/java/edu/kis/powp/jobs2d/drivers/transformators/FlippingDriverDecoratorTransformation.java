@@ -1,10 +1,8 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
-
 import java.awt.*;
 
-public class FlippingDriverDecorator extends Job2dDriverDecorator implements Transformation {
+public class FlippingDriverDecoratorTransformation extends TransformationJob2dDriverDecorator implements Transformation {
     enum FlippingDirection {
         FLIP_VERTICALLY,
         FLIP_HORIZONTALLY,
@@ -13,8 +11,8 @@ public class FlippingDriverDecorator extends Job2dDriverDecorator implements Tra
 
     private final FlippingDirection flippingDirection;
 
-    private FlippingDriverDecorator(Job2dDriver job2dDriver, FlippingDirection flippingDirection) {
-        super(job2dDriver);
+    private FlippingDriverDecoratorTransformation(FlippingDirection flippingDirection) {
+        super();
         super.setStrategy(this);
         this.flippingDirection = flippingDirection;
     }
@@ -26,7 +24,7 @@ public class FlippingDriverDecorator extends Job2dDriverDecorator implements Tra
         switch (flippingDirection) {
             case FLIP_BOTH_SIDES: {
                 flippedX = -x;
-                flippedY =  -y;
+                flippedY = -y;
                 break;
             }
             case FLIP_VERTICALLY: {
@@ -44,15 +42,16 @@ public class FlippingDriverDecorator extends Job2dDriverDecorator implements Tra
         return new Point(flippedX, flippedY);
     }
 
-    static public FlippingDriverDecorator getFlipHorizontalDecorator(Job2dDriver job2dDriver) {
-        return new FlippingDriverDecorator(job2dDriver, FlippingDirection.FLIP_HORIZONTALLY);
+    static public FlippingDriverDecoratorTransformation getFlipHorizontalDecorator() {
+        return new FlippingDriverDecoratorTransformation(FlippingDirection.FLIP_HORIZONTALLY);
     }
 
-    static public FlippingDriverDecorator getFlipVerticalDecorator(Job2dDriver job2dDriver) {
-        return new FlippingDriverDecorator(job2dDriver, FlippingDirection.FLIP_VERTICALLY);
+    static public FlippingDriverDecoratorTransformation getFlipVerticalDecorator() {
+        return new FlippingDriverDecoratorTransformation(FlippingDirection.FLIP_VERTICALLY);
     }
 
-    static public FlippingDriverDecorator getFlipBothSidesDecorator(Job2dDriver job2dDriver) {
-        return new FlippingDriverDecorator(job2dDriver, FlippingDirection.FLIP_BOTH_SIDES);
+    static public FlippingDriverDecoratorTransformation getFlipBothSidesDecorator() {
+        return new FlippingDriverDecoratorTransformation(FlippingDirection.FLIP_BOTH_SIDES);
     }
+
 }

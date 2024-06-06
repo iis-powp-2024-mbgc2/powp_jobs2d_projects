@@ -1,18 +1,15 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 
 import java.awt.*;
 
 
-public class Job2dDriverDecorator implements Job2dDriver{
-    private final Job2dDriver job2dDriver;
+public class TransformationJob2dDriverDecorator extends DriverOptionDecorator {
     private Transformation transformation;
 
 
-    public Job2dDriverDecorator(Job2dDriver job2dDriver) {
-        this.job2dDriver = job2dDriver;
-
+    public TransformationJob2dDriverDecorator() {
     }
 
     public void setStrategy(Transformation transformation) {
@@ -22,12 +19,12 @@ public class Job2dDriverDecorator implements Job2dDriver{
     @Override
     public void setPosition(int x, int y) {
         Point point = transformation.transform(x, y);
-        job2dDriver.setPosition(point.x, point.y);
+        super.setPosition(point.x, point.y);
     }
 
     @Override
     public void operateTo(int x, int y) {
         Point point = transformation.transform(x, y);
-        job2dDriver.operateTo(point.x, point.y);
+        super.operateTo(point.x, point.y);
     }
 }

@@ -68,19 +68,19 @@ public class TestJobs2dApp {
     }
 
     /**
-     * Setup driver manager, and set default Job2dDriver for application.
+     * Setup driver manager, and set default IDriver for application.
      *
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
-        Job2dDriver loggerDriver = new LoggerDriver(false);
+        IDriver loggerDriver = new LoggerDriver(false);
         DriverFeature.addDriver("Simple Logger driver", loggerDriver);
 
-        Job2dDriver loggerDriver2 = new LoggerDriver(true);
+        IDriver loggerDriver2 = new LoggerDriver(true);
         DriverFeature.addDriver("Detailed Logger driver", loggerDriver2);
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        IDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         DriverFeature.addDriver("Line Simulator with Recording Support", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
 

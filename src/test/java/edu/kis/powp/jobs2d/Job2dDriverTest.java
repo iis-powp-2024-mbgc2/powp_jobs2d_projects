@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.IDriver;
+import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 import edu.kis.powp.jobs2d.magicpresets.FiguresJoe;
 
 /**
@@ -9,7 +10,7 @@ import edu.kis.powp.jobs2d.magicpresets.FiguresJoe;
  * @author Dominik
  */
 public class Job2dDriverTest {
-    private static Job2dDriver driver = new StubDriver();
+    private static IDriver driver = new StubDriver();
 
     /**
      * Driver test.
@@ -18,7 +19,7 @@ public class Job2dDriverTest {
         FiguresJoe.figureScript1(driver);
     }
 
-    private static class StubDriver implements Job2dDriver {
+    private static class StubDriver implements IDriver {
 
         @Override
         public void operateTo(int x, int y) {
@@ -29,6 +30,9 @@ public class Job2dDriverTest {
         public void setPosition(int x, int y) {
             System.out.println("Driver setPosition action...");
         }
+
+        @Override
+        public void accept(DriverVisitor visitor) { System.out.println("Driver accept action..."); }
     }
 
     ;

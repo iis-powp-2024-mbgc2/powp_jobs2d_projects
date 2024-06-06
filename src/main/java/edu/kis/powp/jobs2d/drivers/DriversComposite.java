@@ -1,29 +1,28 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DriversComposite implements Job2dDriver {
+public class DriversComposite implements IDriver {
 
-    private List<Job2dDriver> list;
+    private List<IDriver> list;
 
     public DriversComposite() {
         this.list = new ArrayList<>();
     }
 
-    public DriversComposite(List<Job2dDriver> list) {
+    public DriversComposite(List<IDriver> list) {
         this.list = list;
     }
 
-    public void addDriver(Job2dDriver driver) {
+    public void addDriver(IDriver driver) {
         this.list.add(driver);
     }
 
-    public boolean removeDriver(Job2dDriver driver) {
+    public boolean removeDriver(IDriver driver) {
         return list.remove(driver);
     }
 
@@ -31,25 +30,26 @@ public class DriversComposite implements Job2dDriver {
 
     @Override
     public void setPosition(int x, int y) {
-        for (Job2dDriver driver : list) {
+        for (IDriver driver : list) {
             driver.setPosition(x, y);
         }
     }
 
     @Override
     public void operateTo(int x, int y) {
-        for (Job2dDriver driver : list) {
+        for (IDriver driver : list) {
             driver.operateTo(x, y);
         }
     }
 
-    public String toString() {
-        return list.stream()
-                .map(Job2dDriver::toString)
-                .collect(Collectors.joining(", ", "Composite of ", ""));
-    }
-
+    @Override
     public void accept(DriverVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public String toString() {
+        return list.stream()
+                .map(IDriver::toString)
+                .collect(Collectors.joining(", ", "Composite of ", ""));
     }
 }

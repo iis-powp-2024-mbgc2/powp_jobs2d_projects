@@ -7,6 +7,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.drivers.IDriver;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -39,7 +40,7 @@ public class CommandManager {
             List<DriverCommand> driverCommands = commandList;
 
             @Override
-            public void execute(Job2dDriver driver) {
+            public void execute(IDriver driver) {
                 driverCommands.forEach((c) -> c.execute(driver));
             }
 

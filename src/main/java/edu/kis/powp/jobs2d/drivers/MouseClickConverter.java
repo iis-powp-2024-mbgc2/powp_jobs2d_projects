@@ -51,7 +51,7 @@ public class MouseClickConverter extends MouseAdapter implements MouseClickListe
     }
 
     private void handleDriver(Point position, int buttonPressed) {
-        Job2dDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
+        IDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
 
         if(buttonPressed == MOUSE_BUTTON_LEFT) {
             driver.operateTo(position.x, position.y);

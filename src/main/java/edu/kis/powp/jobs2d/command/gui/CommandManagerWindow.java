@@ -1,5 +1,18 @@
 package edu.kis.powp.jobs2d.command.gui;
 
+import edu.kis.legacy.drawer.panel.DefaultDrawerFrame;
+import edu.kis.legacy.drawer.panel.DrawPanelController;
+import edu.kis.legacy.drawer.shape.line.BasicLine;
+import edu.kis.powp.appbase.gui.WindowComponent;
+import edu.kis.powp.jobs2d.command.CommandImporter;
+import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ImporterFactory;
+import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.drivers.IDriver;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.observer.Subscriber;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -7,20 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Logger;
-
-import javax.swing.*;
-
-import edu.kis.legacy.drawer.panel.DefaultDrawerFrame;
-import edu.kis.legacy.drawer.panel.DrawPanelController;
-import edu.kis.legacy.drawer.shape.line.BasicLine;
-import edu.kis.powp.appbase.gui.WindowComponent;
-import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.CommandImporter;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ImporterFactory;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
-import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
     private CommandManager commandManager;
@@ -31,7 +30,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private String observerListString;
     private JTextArea observerListField;
-    final private Job2dDriver previewLineDriver;
+    final private IDriver previewLineDriver;
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

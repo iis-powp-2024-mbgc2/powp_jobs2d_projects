@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.command;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.IDriver;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,7 +56,7 @@ public class CompoundCommand implements ICompoundCommand {
     }
 
     @Override
-    public void execute(Job2dDriver driver) {
+    public void execute(IDriver driver) {
         iterator().forEachRemaining((c) -> c.execute(driver));
     }
 

@@ -13,6 +13,7 @@ import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.canvas.CanvasA3;
 import edu.kis.powp.jobs2d.command.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.command.canvas.CanvasCircle;
+import edu.kis.powp.jobs2d.command.canvas.CanvasVisitor;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.*;
@@ -151,11 +152,12 @@ public class TestJobs2dApp {
 
     private static void setupWindows(Application application) {
 
-        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager(), DriverFeature.getDriverManager(), CanvasFeature.getCanvasManager());
+        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager(), DriverFeature.getDriverManager() );
         application.addWindowComponent("Command Manager", commandManager);
+        CanvasVisitor visitor = new CanvasVisitor(CanvasFeature.getCanvasManager().getCurrentCanvas());
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-                commandManager);
+                commandManager, visitor);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
     }
 

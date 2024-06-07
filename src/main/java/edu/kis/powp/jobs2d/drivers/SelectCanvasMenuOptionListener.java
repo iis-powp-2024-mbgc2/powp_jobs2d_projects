@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.command.canvas.Canvas;
+import edu.kis.powp.jobs2d.command.manager.CanvasManager;
 
 import java.awt.event.ActionListener;
 

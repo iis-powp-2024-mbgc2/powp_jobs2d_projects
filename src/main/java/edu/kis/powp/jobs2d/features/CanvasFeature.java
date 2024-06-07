@@ -2,7 +2,7 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.canvas.Canvas;
-import edu.kis.powp.jobs2d.drivers.CanvasManager;
+import edu.kis.powp.jobs2d.command.manager.CanvasManager;
 import edu.kis.powp.jobs2d.drivers.SelectCanvasMenuOptionListener;
 import edu.kis.powp.jobs2d.drivers.gui.UpdateCanvasInfoObserver;
 

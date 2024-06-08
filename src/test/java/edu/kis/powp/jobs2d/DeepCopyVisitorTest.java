@@ -1,11 +1,11 @@
 package edu.kis.powp.jobs2d;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.command.visitor.DeepCopyVisitor;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class DeepCopyVisitorTest implements ActionListener {
     private static final DeepCopyVisitor deepCopy = new DeepCopyVisitor();

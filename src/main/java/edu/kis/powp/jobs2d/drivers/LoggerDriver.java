@@ -1,10 +1,10 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 
 import java.util.logging.Logger;
 
-public class LoggerDriver implements Job2dDriver {
+public class LoggerDriver extends DriverOptionDecorator {
     private final Logger logger = Logger.getLogger("global");
     private int posX = 0, posY = 0;
     private final boolean isDetailedLogger;
@@ -19,6 +19,8 @@ public class LoggerDriver implements Job2dDriver {
         this.logger.info(message);
         this.posX = x;
         this.posY = y;
+
+        super.setPosition(x, y);
     }
 
     @Override
@@ -27,6 +29,8 @@ public class LoggerDriver implements Job2dDriver {
         this.logger.info(message);
         this.posX = x;
         this.posY = y;
+
+        super.operateTo(x, y);
     }
 
     private String getMessage(int x, int y, String messagePrefix) {

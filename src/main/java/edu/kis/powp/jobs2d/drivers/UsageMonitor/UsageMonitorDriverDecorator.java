@@ -1,21 +1,14 @@
 package edu.kis.powp.jobs2d.drivers.UsageMonitor;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionDecorator;
 
 import java.awt.geom.Point2D;
-import java.util.logging.Logger;
 
-public class UsageMonitorDriverDecorator implements Job2dDriver {
-
-    private final Job2dDriver driver;
-
-    private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+public class UsageMonitorDriverDecorator extends DriverOptionDecorator {
     private int lastX = 0, lastY = 0;
 
 
-    public UsageMonitorDriverDecorator(Job2dDriver driver) {
-        this.driver = driver;
+    public UsageMonitorDriverDecorator() {
     }
 
 
@@ -25,7 +18,7 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
 
         updateLastCoords(x, y);
 
-        driver.setPosition(x, y);
+        super.setPosition(x, y);
     }
 
     @Override
@@ -35,7 +28,7 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
 
         updateLastCoords(x, y);
 
-        driver.operateTo(x, y);
+        super.operateTo(x, y);
     }
 
     private void updateLastCoords(int x, int y) {

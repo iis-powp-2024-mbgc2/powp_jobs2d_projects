@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 
 import javax.swing.*;
 import java.util.LinkedList;
@@ -13,8 +14,8 @@ public class RealTimeDecoratorDriver implements Job2dDriver {
 
     private final Job2dDriver driver;
 
-    public RealTimeDecoratorDriver(Job2dDriver driver, JPanel panel) {
-        this.driver = driver;
+    public RealTimeDecoratorDriver(DriverManager driverManager, JPanel panel) {
+        this.driver = driverManager.getCurrentDriverAndFeaturesComposite(this);
         this.panel = panel;
         startTaskExecution();
     }

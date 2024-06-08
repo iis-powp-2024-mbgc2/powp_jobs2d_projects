@@ -13,7 +13,7 @@ public class AppFeature {
     }
 
     public static void addFeature(String name, Job2dDriver driver) {
-        SelectDriverMenuOptionListener listener = new SelectDriverMenuOptionListener(driver, DriverFeature.getDriverManager());
+        SelectFeatureMenuOptionListener listener = new SelectFeatureMenuOptionListener(driver, DriverFeature.getDriverManager());
         app.addComponentMenuElementWithCheckBox(AppFeature.class, name, listener, false);
         DriverFeature.updateDriverInfo();
     }

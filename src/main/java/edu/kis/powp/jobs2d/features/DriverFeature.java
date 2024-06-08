@@ -1,15 +1,14 @@
 package edu.kis.powp.jobs2d.features;
 
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.drivers.DriverFeaturesManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.gui.UpdateDriverInfoObserver;
 
 public class DriverFeature {
 
-    private static DriverManager driverManager = new DriverFeaturesManager();
+    private static DriverManager driverManager = new DriverManager();
     private static Application app;
 
     public static DriverManager getDriverManager() {
@@ -34,7 +33,7 @@ public class DriverFeature {
      * @param name   Button name.
      * @param driver Job2dDriver object.
      */
-    public static void addDriver(String name, Job2dDriver driver) {
+    public static void addDriver(String name, LineDriverAdapter driver) {
         SelectDriverMenuOptionListener listener = new SelectDriverMenuOptionListener(driver, driverManager);
         app.addComponentMenuElement(DriverFeature.class, name, listener);
     }
@@ -43,7 +42,7 @@ public class DriverFeature {
      * Update driver info.
      */
     public static void updateDriverInfo() {
-        app.updateInfo(driverManager.getCurrentDriver().toString());
+        app.updateInfo(driverManager.getCurrentDriverAndFeaturesComposite().toString());
     }
 
 }

@@ -50,4 +50,19 @@ public class LineDriverAdapter implements Job2dDriver {
         return line.getClass() == that.line.getClass() && Objects.equals(name, that.name);
     }
 
+    public int getStartX() {
+        return startX;
+    }
+
+    public int getStartY() {
+        return startY;
+    }
+
+    public void setStartX(int startX) {
+        this.startX = startX;
+    }
+
+    public void setStartY(int startY) {
+        this.startY = startY;
+    }
 }

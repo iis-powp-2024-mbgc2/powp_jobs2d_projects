@@ -8,15 +8,15 @@ import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
-import edu.kis.powp.jobs2d.drivers.DriversComposite;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorFeature;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.RotatingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecoratorTransformation;
+import edu.kis.powp.jobs2d.drivers.transformators.RotatingDriverDecoratorTransformation;
+import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecoratorTransformation;
+import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecoratorTransformation;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 
@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 
     /**
      * Setup test concerning preset figures in context.
@@ -42,6 +43,7 @@ public class TestJobs2dApp {
         application.addTest("Figure Joe 1", selectTestFigureOptionListener);
         application.addTest("Figure Joe 2", selectTestFigure2OptionListener);
     }
+
 
     /**
      * Setup test using driver commands in context.
@@ -67,6 +69,7 @@ public class TestJobs2dApp {
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
     }
 
+
     private static void setupCommandTransformationVisitorTests(Application application) {
         application.addTest("Flip command ↔ horizontally", new CommandHorizontalFlipTest());
         application.addTest("Flip command ↕ vertically", new CommandVerticalFlipTest());
@@ -74,45 +77,37 @@ public class TestJobs2dApp {
         application.addTest("Rotate command (degrees = 15)", new CommandRotateTest(15));
     }
 
+
     /**
      * Setup driver manager, and set default Job2dDriver for application.
-     *
-     * @param application Application context.
      */
-    private static void setupDrivers(Application application) {
-        Job2dDriver loggerDriver = new LoggerDriver(false);
-        DriverFeature.addDriver("Simple Logger driver", loggerDriver);
-
-        Job2dDriver loggerDriver2 = new LoggerDriver(true);
-        DriverFeature.addDriver("Detailed Logger driver", loggerDriver2);
-
+    private static void setupDrivers() {
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        DriverFeature.addDriver("Line Simulator with Recording Support", driver);
-        DriverFeature.getDriverManager().setCurrentDriver(driver);
 
-        driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"));
-        DriverFeature.addDriver("Special Line Simulator with Recording Support", driver);
-        driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-        DriverFeature.addDriver("Special line Simulator", driver);
+        Job2dDriver basicLineDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        Job2dDriver specialLineDriver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 
-        DriversComposite driversComposite = new DriversComposite();
-        driversComposite.addDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
-        driversComposite.addDriver(new LoggerDriver(true));
-        DriverFeature.addDriver("BasicLine with Logger", driversComposite);
-
-        Job2dDriver lineShiftAndFlip = FlippingDriverDecorator.getFlipVerticalDecorator(new ShiftingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 50, -20));
-        DriverFeature.addDriver("Line Shift and Flip", lineShiftAndFlip);
-
-        Job2dDriver lineShiftAndRotate = RotatingDriverDecorator.getRotating90DegClockwiseDecorator(new ScalingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 0.5F));
-        DriverFeature.addDriver("Line Scale and Rotate", lineShiftAndRotate);
-
-        // Decorators in that order will cause the object first to flip horizontally, then rotate 90 deg clockwise, and then scale 1.5
-        Job2dDriver lineShiftAndRotateAndFlip = FlippingDriverDecorator.getFlipHorizontalDecorator(RotatingDriverDecorator.getRotating90DegClockwiseDecorator(new ScalingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 1.5F)));
-        DriverFeature.addDriver("Line Flip, Rotate and Scale", lineShiftAndRotateAndFlip);
+        DriverFeature.addDriver("Basic Line Driver", basicLineDriver);
+        DriverFeature.addDriver("Special Line Driver", specialLineDriver);
 
         DriverFeature.updateDriverInfo();
     }
+
+
+    private static void setupExtendedDrivers() {
+        ExtendedDriverFeature.addOption("Shift", new ShiftingDriverDecoratorTransformation(50, -20));
+        ExtendedDriverFeature.addOption("Flip Horizontal", FlippingDriverDecoratorTransformation.getFlipHorizontalDecorator());
+        ExtendedDriverFeature.addOption("Flip Vertical", FlippingDriverDecoratorTransformation.getFlipVerticalDecorator());
+        ExtendedDriverFeature.addOption("Rotate", RotatingDriverDecoratorTransformation.getRotating90DegClockwiseDecorator());
+        ExtendedDriverFeature.addOption("Scale", new ScalingDriverDecoratorTransformation(1.5F));
+
+        ExtendedDriverFeature.addOption("Usage Monitoring", new UsageMonitorDriverDecorator());
+        ExtendedDriverFeature.addOption("Recording Support", new RecordingDriverDecorator());
+
+        ExtendedDriverFeature.addOption("Detailed Logger", new LoggerDriver(true));
+        ExtendedDriverFeature.addOption("Simple Logger", new LoggerDriver(false));
+    }
+
 
     private static void setupWindows(Application application) {
 
@@ -124,6 +119,7 @@ public class TestJobs2dApp {
                 commandManager,visitor);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
     }
+
 
     /**
      * Setup menu for adjusting logging settings.
@@ -149,6 +145,7 @@ public class TestJobs2dApp {
         ImporterFactory.addImporter("json", new JsonCommandImporter());
     }
 
+
     /**
      * Launch the application.
      */
@@ -159,11 +156,14 @@ public class TestJobs2dApp {
             DrawerFeature.setupDrawerPlugin(app);
             CommandsFeature.setupCommandManager();
             RecordFeature.setupRecorderPlugin(app);
-            DriverFeature.setupDriverPlugin(app);
             UsageMonitorFeature.setupUsageMonitorPlugin(app);
             MouseSettingsFeature.setupMouseSettingsFeature(app);
 
-            setupDrivers(app);
+            DriverFeature.setupDriverPlugin(app);
+            ExtendedDriverFeature.setupExtendedDriverPlugin(app);
+
+            setupDrivers();
+            setupExtendedDrivers();
             setupPresetTests(app);
             setupCommandTests(app);
             setupVisitorTests(app);

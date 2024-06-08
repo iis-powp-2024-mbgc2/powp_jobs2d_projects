@@ -6,8 +6,10 @@ import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.ExceedingCanvasCommandVisitor;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
+import edu.kis.powp.jobs2d.command.gui.A4Canvas;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.gui.JPanelRectCanvas;
 import edu.kis.powp.jobs2d.drivers.DriversComposite;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
@@ -123,6 +125,13 @@ public class TestJobs2dApp {
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager,visitor);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
+        application.addComponentMenu(Canvas.class,"Canvas");
+        application.addComponentMenuElement(Canvas.class, "A4Canvas", (ActionEvent e) -> {
+            commandManager.setDrawPanel(new A4Canvas(300));});
+
+        application.addComponentMenuElement(Canvas.class, "BasicCanvas", (ActionEvent e) -> {
+            commandManager.setDrawPanel(new JPanelRectCanvas());});
+
     }
 
     /**

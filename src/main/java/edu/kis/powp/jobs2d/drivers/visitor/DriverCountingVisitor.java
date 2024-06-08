@@ -8,7 +8,9 @@ public class DriverCountingVisitor implements IDriverVisitor {
 
     private int count = 0;
 
-    public int getCount() {
+    public int countDrivers(IVisitableDriver driver) {
+        count = 0;
+        driver.accept(this);
         return count;
     }
 

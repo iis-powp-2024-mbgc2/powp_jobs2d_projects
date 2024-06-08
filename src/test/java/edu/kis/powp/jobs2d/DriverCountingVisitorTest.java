@@ -21,9 +21,9 @@ public class DriverCountingVisitorTest implements ActionListener {
         IVisitableDriver driver = (IVisitableDriver) driverManager.getCurrentDriver();
 
         DriverCountingVisitor driverCountingVisitor = new DriverCountingVisitor();
-        driver.accept(driverCountingVisitor);
+        int count = driverCountingVisitor.countDrivers(driver);
 
-        logger.info("Currently loaded drivers " + driverCountingVisitor.getCount());
+        logger.info("Count of currently loaded drivers: " + count);
 
     }
 }

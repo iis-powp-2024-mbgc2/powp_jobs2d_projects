@@ -18,7 +18,7 @@ public class DriverCountingVisitorTest implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         DriverManager driverManager = DriverFeature.getDriverManager();
-        IVisitableDriver driver = (IVisitableDriver) driverManager.getCurrentDriver();
+        IVisitableDriver driver = driverManager.getCurrentDriver();
 
         DriverCountingVisitor driverCountingVisitor = new DriverCountingVisitor();
         int count = driverCountingVisitor.countDrivers(driver);

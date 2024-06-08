@@ -3,10 +3,10 @@ package edu.kis.powp.jobs2d.command.manager;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CommandVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -39,7 +39,7 @@ public class CommandManager implements ICommandManager {
             List<DriverCommand> driverCommands = commandList;
 
             @Override
-            public void execute(Job2dDriver driver) {
+            public void execute(IVisitableDriver driver) {
                 driverCommands.forEach((c) -> c.execute(driver));
             }
 
@@ -62,7 +62,7 @@ public class CommandManager implements ICommandManager {
     }
 
     @Override
-    public synchronized void runCommand(Job2dDriver driver) {
+    public synchronized void runCommand(IVisitableDriver driver) {
         this.currentCommand.execute(driver);
     }
 

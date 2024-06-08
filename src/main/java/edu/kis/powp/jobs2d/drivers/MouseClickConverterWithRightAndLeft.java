@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.jobs2d.events.MouseClickListener;
 
 import javax.swing.*;
@@ -26,11 +26,11 @@ public class MouseClickConverterWithRightAndLeft implements MouseListener, Mouse
 
     private final JPanel panel;
     private final Timer followCursorTimer;
-    private Job2dDriver driver;
+    private IVisitableDriver driver;
     private boolean isFollowingCursor = false;
     private boolean leftButtonFirstClick = true;
 
-    public MouseClickConverterWithRightAndLeft(JPanel panel , Job2dDriver driver) {
+    public MouseClickConverterWithRightAndLeft(JPanel panel , IVisitableDriver driver) {
         this.panel = panel;
         this.panel.addMouseListener(this);
         this.followCursorTimer = new Timer(TIMER_DELAY, new FollowCursorActionListener());
@@ -41,7 +41,7 @@ public class MouseClickConverterWithRightAndLeft implements MouseListener, Mouse
         this.panel.removeMouseListener(this);
     }
 
-    public void setDriver(Job2dDriver driver) {
+    public void setDriver(IVisitableDriver driver) {
         this.driver = driver;
     }
 

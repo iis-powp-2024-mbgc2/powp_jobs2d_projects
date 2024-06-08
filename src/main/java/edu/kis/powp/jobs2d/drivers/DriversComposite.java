@@ -1,6 +1,5 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
@@ -30,7 +29,7 @@ public class DriversComposite implements IVisitableDriver {
 
     @Override
     public void setPosition(int x, int y) {
-        for (Job2dDriver driver : list) {
+        for (IVisitableDriver driver : list) {
             driver.setPosition(x, y);
         }
     }

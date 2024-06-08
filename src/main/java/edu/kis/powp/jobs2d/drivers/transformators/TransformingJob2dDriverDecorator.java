@@ -1,6 +1,5 @@
 package edu.kis.powp.jobs2d.drivers.transformators;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.jobs2d.transformations.Transformation;

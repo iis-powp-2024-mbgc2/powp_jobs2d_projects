@@ -1,11 +1,11 @@
 package edu.kis.powp.jobs2d.command.factory;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 
 
 public class CompoundCommandFactory {
-    public static CompoundCommand getRectangleAction(String name) {
+    public static ImmutableCompoundCommand getRectangleAction(String name) {
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
         builder.setName(name)
                 .addSetPosition(0, 0)
@@ -16,7 +16,7 @@ public class CompoundCommandFactory {
         return builder.build();
     }
 
-    public static CompoundCommand getTriangleAction(String name) {
+    public static ImmutableCompoundCommand getTriangleAction(String name) {
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
         builder.setName(name)
                 .addSetPosition(0, 100)
@@ -26,7 +26,7 @@ public class CompoundCommandFactory {
         return builder.build();
     }
 
-    public static CompoundCommand getSecretAction(String name) {
+    public static ImmutableCompoundCommand getSecretAction(String name) {
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
         builder.setName(name)
                 .addSetPosition(-20, -50)
@@ -46,9 +46,9 @@ public class CompoundCommandFactory {
         return builder.build();
     }
 
-    public static CompoundCommand getDeeplyComplexAction(String name) {
-        CompoundCommand rectangleCompoundCommand = CompoundCommandFactory.getRectangleAction("Rectangle command");
-        CompoundCommand triangleCompoundCommand = CompoundCommandFactory.getTriangleAction("Triangle command");
+    public static ImmutableCompoundCommand getDeeplyComplexAction(String name) {
+        ImmutableCompoundCommand rectangleCompoundCommand = CompoundCommandFactory.getRectangleAction("Rectangle command");
+        ImmutableCompoundCommand triangleCompoundCommand = CompoundCommandFactory.getTriangleAction("Triangle command");
 
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
         builder.setName(name)

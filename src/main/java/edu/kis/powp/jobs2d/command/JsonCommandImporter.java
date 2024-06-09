@@ -24,7 +24,7 @@ public class JsonCommandImporter implements CommandImporter {
             commandsList.add(command);
         }
 
-        return new CompoundCommand(commandsList, name);
+        return new ImmutableCompoundCommand(commandsList, name);
 
     }
 

@@ -1,8 +1,7 @@
 package edu.kis.powp.jobs2d.events;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.factory.CompoundCommandFactory;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.enums.Command;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
@@ -25,14 +24,14 @@ public class SelectCommandListener implements ActionListener {
                 manager.setCurrentCommand(CompoundCommandFactory.getRectangleAction("RectangleCommand"));
                 break;
             case DEEPLY_COMPLEX:
-                CompoundCommand deeplyCompoundCommand = CompoundCommandFactory.getDeeplyComplexAction("Deeply compound command");
+                ImmutableCompoundCommand deeplyCompoundCommand = CompoundCommandFactory.getDeeplyComplexAction("Deeply compound command");
                 manager.setCurrentCommand(deeplyCompoundCommand.getCommands(), "Deeply complex command");
                 break;
             case RECORDED:
                 manager.setCurrentCommand(RecordFeature.getRecordedCommand());
                 break;
             case SECRET:
-                CompoundCommand secretCommand = CompoundCommandFactory.getSecretAction("TopSecretCommand");
+                ImmutableCompoundCommand secretCommand = CompoundCommandFactory.getSecretAction("TopSecretCommand");
                 manager.setCurrentCommand(secretCommand.getCommands(), "Top Secret Command");
                 break;
         }

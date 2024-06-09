@@ -10,7 +10,7 @@ public class CommandTransformationVisitor implements CommandVisitor {
     private final CompoundCommandBuilder compoundCommandBuilder;
     private final Transformation transformation;
 
-    public CompoundCommand getTransformedCommand() {
+    public ImmutableCompoundCommand getTransformedCommand() {
         return compoundCommandBuilder.build();
     }
 

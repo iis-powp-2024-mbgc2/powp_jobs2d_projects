@@ -3,11 +3,11 @@ package edu.kis.powp.jobs2d.command;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import java.util.*;
 
-public final class CompoundCommand implements ICompoundCommand {
+public final class ImmutableCompoundCommand implements ICompoundCommand {
     private final List<DriverCommand> commands;
     private final String name;
 
-    public CompoundCommand(List<DriverCommand> commands, String name) {
+    public ImmutableCompoundCommand(List<DriverCommand> commands, String name) {
         this.commands = new ArrayList<>(commands);
         this.name = name;
     }

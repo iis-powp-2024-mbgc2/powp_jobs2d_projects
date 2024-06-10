@@ -1,6 +1,8 @@
 package edu.kis.powp.jobs2d.command.history;
 
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
@@ -26,9 +28,12 @@ public class HistoryFeature {
         });
         application.addComponentMenuElement(HistoryFeature.class, "Load history", e -> {
             ICommandManager commandManager = CommandsFeature.getCommandManager();
-            commandManager.setCurrentCommand(history.getActionsHistory());
             DriverManager driverManager = new DriverManager();
-            commandManager.runCommand(driverManager.getCurrentDriver());
+            for(DriverCommand command: history.getActionsHistory())
+            {
+                commandManager.setCurrentCommand(command);
+                commandManager.runCommand(driverManager.getCurrentDriver());
+            }
         });
 
     }

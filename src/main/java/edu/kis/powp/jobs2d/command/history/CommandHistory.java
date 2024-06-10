@@ -33,11 +33,14 @@ public class CommandHistory {
         return list;
     }
 
-    public DriverCommand getActionsHistory()
+    public List<DriverCommand> getActionsHistory()
     {
-        CompoundCommand commandsUsed = new CompoundCommand("usedCommands");
+        List<DriverCommand> list = new ArrayList<>();
         for(CommandHistoryEntry entry: history)
-            commandsUsed.addCommand(entry.getCommand());
-        return commandsUsed;
+        {
+            CompoundCommand command = new CompoundCommand(entry.getName());
+            list.add(entry.getCommand());
+        }
+        return list;
     }
 }

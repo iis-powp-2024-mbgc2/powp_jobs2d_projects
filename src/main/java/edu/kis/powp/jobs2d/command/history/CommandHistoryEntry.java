@@ -21,4 +21,9 @@ public class CommandHistoryEntry {
     public Date getDate() {
         return date;
     }
+
+    public String getName()
+    {
+        return command.toString();
+    }
 }

@@ -18,10 +18,12 @@ import edu.kis.powp.jobs2d.command.importer.TxtCommandImporter;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.enums.Command;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
 import edu.kis.powp.jobs2d.transformations.*;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
+
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -62,15 +64,11 @@ public class TestJobs2dApp {
      * @param application Application context.
      */
     private static void setupCommandTests(Application application) {
-        application.addTest("Load Compound Rectangle command", new SelectLoadCompoundRectangleCommandOptionListener());
-
-        application.addTest("Load secret command", new SelectLoadSecretCommandOptionListener());
-
-        application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
-        application.addTest("Load deeply complex command", new SelectLoadDeeplyComplexCommandOptionListener());
-
+        application.addTest("Load Compound Rectangle command", new SelectCommandListener(Command.RECTANGLE));
+        application.addTest("Load secret command", new SelectCommandListener(Command.SECRET));
+        application.addTest("Load recorded command", new SelectCommandListener(Command.RECORDED));
+        application.addTest("Load deeply complex command", new SelectCommandListener(Command.DEEPLY_COMPLEX));
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
-
     }
 
     private static void setupVisitorTests(Application application) {
@@ -126,6 +124,7 @@ public class TestJobs2dApp {
         DriversComposite driversComposite = new DriversComposite();
         driversComposite.addDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         driversComposite.addDriver(new LoggerDriver(true));
+
         DriverFeature.addDriver("BasicLine with Logger", driversComposite);
 
         Job2dDriver lineFlippedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new VerticalFlipTransformation());

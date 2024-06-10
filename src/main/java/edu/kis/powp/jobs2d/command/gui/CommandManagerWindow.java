@@ -196,4 +196,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
             this.setVisible(true);
         }
     }
+
+    public DriverCommand getCurrentCommand()
+    {
+        return commandManager.getCurrentCommand();
+    }
 }

@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.HistoryFeature;
+import edu.kis.powp.jobs2d.command.HistoryObserver;
 import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
 import edu.kis.powp.jobs2d.command.importer.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.canvas.CanvasA3;
@@ -76,6 +78,7 @@ public class TestJobs2dApp {
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
     }
+
 
     private static void setupCommandTransformationVisitorTests(Application application) {
         application.addTest("Flip command ↔ horizontally", new CommandHorizontalFlipTest());
@@ -195,6 +198,7 @@ public class TestJobs2dApp {
                 DriverFeature.setupDriverPlugin(app);
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
                 CanvasFeature.setupCanvas(app);
+                HistoryFeature.setupHistory(app);
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);

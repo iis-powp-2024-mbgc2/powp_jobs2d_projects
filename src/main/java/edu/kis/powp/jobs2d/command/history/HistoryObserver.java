@@ -1,7 +1,6 @@
-package edu.kis.powp.jobs2d.command;
+package edu.kis.powp.jobs2d.command.history;
 
-import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.history.CommandHistory;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.observer.Subscriber;
 

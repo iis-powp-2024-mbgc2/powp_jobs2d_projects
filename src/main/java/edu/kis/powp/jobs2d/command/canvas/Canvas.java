@@ -1,9 +1,9 @@
 package edu.kis.powp.jobs2d.command.canvas;
 
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 
 public interface Canvas {
-    CompoundCommand getCanvasCommand();
+    ImmutableCompoundCommand getCanvasCommand();
     boolean isInsideCanvas(int x, int y);
 }

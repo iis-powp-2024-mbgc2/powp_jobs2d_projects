@@ -3,12 +3,11 @@ package edu.kis.powp.jobs2d.command.canvas;
 import edu.kis.powp.jobs2d.command.*;
 
 import java.util.Iterator;
-import java.util.logging.Logger;
 
-public class CanvasVisitor implements CommandVisitor {
+public class ExceedingCanvasCheckVisitor implements CommandVisitor {
     private final Canvas currentCanvas;
     private boolean isOutOfBounds = false;
-    public CanvasVisitor(Canvas canvas) {
+    public ExceedingCanvasCheckVisitor(Canvas canvas) {
         currentCanvas = canvas;
     }
 

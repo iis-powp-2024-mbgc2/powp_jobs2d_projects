@@ -13,6 +13,11 @@ public abstract class CircularCanvas implements Canvas{
         this.radius = radius;
         this.name = name;
     }
+
+    public int getRadius() {
+        return this.radius;
+    }
+
     @Override
     public CompoundCommand getCanvasCommand()
     {

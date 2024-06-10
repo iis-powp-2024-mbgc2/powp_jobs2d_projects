@@ -13,7 +13,7 @@ import edu.kis.powp.jobs2d.command.importer.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.canvas.CanvasA3;
 import edu.kis.powp.jobs2d.command.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.command.canvas.CanvasCircle;
-import edu.kis.powp.jobs2d.command.canvas.CanvasVisitor;
+import edu.kis.powp.jobs2d.command.canvas.ExceedingCanvasCheckVisitor;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.command.importer.TxtCommandImporter;
@@ -43,7 +43,7 @@ public class TestJobs2dApp {
         CanvasFeature.addCanvas("Canvas A3", canvasA3);
 
         CanvasCircle canvasCircle = new CanvasCircle();
-        CanvasFeature.addCanvas("Canvas Circle", canvasCircle);
+        CanvasFeature.addCanvas("Canvas Circle, Radius " + canvasCircle.getRadius(), canvasCircle);
 
         CanvasFeature.updateCanvasInfo();
     }
@@ -155,7 +155,7 @@ public class TestJobs2dApp {
 
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager(), DriverFeature.getDriverManager() );
         application.addWindowComponent("Command Manager", commandManager);
-        CanvasVisitor visitor = new CanvasVisitor(CanvasFeature.getCanvasManager().getCurrentCanvas());
+        ExceedingCanvasCheckVisitor visitor = new ExceedingCanvasCheckVisitor(CanvasFeature.getCanvasManager().getCurrentCanvas());
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager, visitor);

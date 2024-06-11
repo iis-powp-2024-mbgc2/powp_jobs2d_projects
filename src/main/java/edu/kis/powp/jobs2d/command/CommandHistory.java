@@ -5,16 +5,18 @@ import java.util.List;
 
 public class CommandHistory {
 
-    private static final CompoundCommand history = new CompoundCommand("history");
+    private static ImmutableCompoundCommand history = new ImmutableCompoundCommand(new ArrayList<>(), "history");
 
     public void clear()
     {
-        history.clearCommand();
+        history = new ImmutableCompoundCommand(new ArrayList<>(), "history");
     }
 
     public void add(DriverCommand command)
     {
-        history.addCommand(command);
+        List<DriverCommand> newCommands = history.getCommands();
+        newCommands.add(command);
+        history = new ImmutableCompoundCommand(newCommands, "history");
     }
     public boolean isEmpty()
     {

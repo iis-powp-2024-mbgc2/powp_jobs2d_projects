@@ -207,6 +207,7 @@ public class TestJobs2dApp {
                 setupMouseHandler(app);
                 setupPresetCanvas(app);
                 setupImporters();
+                setupPresetTests(app);
 
                 app.setVisibility(true);
             }

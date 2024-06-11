@@ -1,5 +1,9 @@
-package edu.kis.powp.jobs2d.command;
+package edu.kis.powp.jobs2d.command.importer;
 
+import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
+import edu.kis.powp.jobs2d.command.OperateToCommand;
+import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,7 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonCommandImporter implements CommandImporter {
+public class JsonCommandImporter implements ICommandImporter {
 
     @Override
     public DriverCommand importCommands(String commands) throws JSONException, IllegalArgumentException {
@@ -24,7 +28,7 @@ public class JsonCommandImporter implements CommandImporter {
             commandsList.add(command);
         }
 
-        return new CompoundCommand(commandsList, name);
+        return new ImmutableCompoundCommand(commandsList, name);
 
     }
 

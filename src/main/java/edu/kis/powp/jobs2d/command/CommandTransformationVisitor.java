@@ -1,21 +1,23 @@
 package edu.kis.powp.jobs2d.command;
 
+import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 import edu.kis.powp.jobs2d.transformations.Transformation;
 
 import java.awt.Point;
 
 public class CommandTransformationVisitor implements CommandVisitor {
 
-    private final CompoundCommand transformedCommands;
+    private final CompoundCommandBuilder compoundCommandBuilder;
     private final Transformation transformation;
 
-    public CompoundCommand getTransformedCommand() {
-        return transformedCommands;
+    public ImmutableCompoundCommand getTransformedCommand() {
+        return compoundCommandBuilder.build();
     }
 
     public CommandTransformationVisitor(String commandName, Transformation transformation) {
         String newName = commandName + "_" + transformation.getName();
-        this.transformedCommands = new CompoundCommand(newName);
+        this.compoundCommandBuilder = new CompoundCommandBuilder();
+        compoundCommandBuilder.setName(newName);
         this.transformation = transformation;
     }
 
@@ -42,12 +44,12 @@ public class CommandTransformationVisitor implements CommandVisitor {
     }
 
     private void add(DriverCommand command) {
-        transformedCommands.addCommand(command);
+        compoundCommandBuilder.addCommand(command);
     }
 
     @Override
     public String toString() {
-        return transformedCommands.toString();
+        return compoundCommandBuilder.toString();
     }
 
     /**

@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.command.canvas;
+package edu.kis.powp.jobs2d.canvas;
 
 import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;

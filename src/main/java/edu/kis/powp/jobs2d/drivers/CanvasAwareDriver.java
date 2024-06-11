@@ -3,7 +3,7 @@ package edu.kis.powp.jobs2d.drivers;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.powp.jobs2d.Job2dDriver;
-import edu.kis.powp.jobs2d.command.canvas.Canvas;
+import edu.kis.powp.jobs2d.canvas.Canvas;
 import edu.kis.powp.jobs2d.features.CanvasFeature;
 
 import java.util.logging.Logger;

@@ -1,6 +1,7 @@
-package edu.kis.powp.jobs2d.command.canvas;
+package edu.kis.powp.jobs2d.canvas;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 
 public abstract class CircularCanvas implements Canvas{
@@ -19,7 +20,7 @@ public abstract class CircularCanvas implements Canvas{
     }
 
     @Override
-    public CompoundCommand getCanvasCommand()
+    public ImmutableCompoundCommand getCanvasCommand()
     {
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
         builder.addSetPosition(-radius, 0);

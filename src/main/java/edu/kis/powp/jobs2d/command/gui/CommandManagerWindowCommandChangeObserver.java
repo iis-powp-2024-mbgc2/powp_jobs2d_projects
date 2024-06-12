@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.command.gui;
 
-import edu.kis.powp.jobs2d.command.canvas.ExceedingCanvasCheckVisitor;
+import edu.kis.powp.jobs2d.canvas.ExceedingCanvasCheckVisitor;
 import edu.kis.powp.observer.Subscriber;
 
 import java.util.logging.Logger;

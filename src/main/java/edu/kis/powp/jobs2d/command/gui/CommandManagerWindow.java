@@ -18,10 +18,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.importer.ICommandImporter;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
-<<<<<<< dev-io-01
-=======
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
->>>>>>> dev-io-1
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;

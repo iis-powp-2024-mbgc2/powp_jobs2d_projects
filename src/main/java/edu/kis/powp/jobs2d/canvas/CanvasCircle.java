@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.command.canvas;
+package edu.kis.powp.jobs2d.canvas;
 
 public class CanvasCircle extends CircularCanvas{
     public CanvasCircle()

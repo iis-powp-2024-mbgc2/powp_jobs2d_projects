@@ -1,7 +1,7 @@
 package edu.kis.powp.jobs2d.command.manager;
 
-import edu.kis.powp.jobs2d.command.canvas.Canvas;
-import edu.kis.powp.jobs2d.command.canvas.CanvasA4;
+import edu.kis.powp.jobs2d.canvas.Canvas;
+import edu.kis.powp.jobs2d.canvas.CanvasA4;
 import edu.kis.powp.observer.Publisher;
 
 /**

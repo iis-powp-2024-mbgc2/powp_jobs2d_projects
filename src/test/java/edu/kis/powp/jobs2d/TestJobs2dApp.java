@@ -64,26 +64,25 @@ public class TestJobs2dApp {
      *
      * @param application Application context.
      */
-    private static void setupCommandTests(Application application) {
-        application.addTest("Load Compound Rectangle command", new SelectCommandListener(Command.RECTANGLE));
-        application.addTest("Load secret command", new SelectCommandListener(Command.SECRET));
-        application.addTest("Load recorded command", new SelectCommandListener(Command.RECORDED));
-        application.addTest("Load deeply complex command", new SelectCommandListener(Command.DEEPLY_COMPLEX));
-        application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
+    private static void setupCommandListeners(Application application) {
+        CommandsFeature.addCommand("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
+        CommandsFeature.addCommand("Load Compound Rectangle command", new SelectCommandListener(Command.RECTANGLE));
+        CommandsFeature.addCommand("Load secret command", new SelectCommandListener(Command.SECRET));
+        CommandsFeature.addCommand("Load recorded command", new SelectCommandListener(Command.RECORDED));
+        CommandsFeature.addCommand("Load deeply complex command", new SelectCommandListener(Command.DEEPLY_COMPLEX));
     }
 
-    private static void setupVisitorTests(Application application) {
-        application.addTest("Show current command stats", new VisitorTest());
-        application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
-        application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
+    private static void setupCommandVisitorTests(Application application) {
+        CommandsFeature.addCommand("Load deep copy of saved command", new DeepCopyVisitorTest());
+        CommandsFeature.addCommand("Show current command stats", new VisitorTest());
+        CommandsFeature.addCommand("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
     }
 
-
-    private static void setupCommandTransformationVisitorTests(Application application) {
-        application.addTest("Flip command ↔ horizontally", new CommandHorizontalFlipTest());
-        application.addTest("Flip command ↕ vertically", new CommandVerticalFlipTest());
-        application.addTest("Scale command (scale = 2)", new CommandScaleTest(2));
-        application.addTest("Rotate command (degrees = 15)", new CommandRotateTest(15));
+    private static void setupCommandTransformationTests(Application application) {
+        CommandsFeature.addCommand("Flip command ↔ horizontally", new CommandHorizontalFlipTest());
+        CommandsFeature.addCommand("Flip command ↕ vertically", new CommandVerticalFlipTest());
+        CommandsFeature.addCommand("Scale command (scale = 2)", new CommandScaleTest(2));
+        CommandsFeature.addCommand("Rotate command (degrees = 15)", new CommandRotateTest(15));
     }
 
     /**
@@ -193,21 +192,22 @@ public class TestJobs2dApp {
                 Application app = new Application("Jobs 2D");
                 DrawerFeature.setupDrawerPlugin(app);
                 CommandsFeature.setupCommandManager();
+                CommandsFeature.setupPresetCommands(app);
                 RecordFeature.setupRecorderPlugin(app);
                 DriverFeature.setupDriverPlugin(app);
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
                 CanvasFeature.setupCanvas(app);
                 HistoryFeature.setupHistory(app);
                 setupDrivers(app);
-                setupPresetTests(app);
-                setupCommandTests(app);
-                setupVisitorTests(app);
-                setupCommandTransformationVisitorTests(app);
+                setupCommandListeners(app);
+                setupCommandVisitorTests(app);
+                setupCommandTransformationTests(app);
                 setupLogger(app);
                 setupWindows(app);
                 setupMouseHandler(app);
                 setupPresetCanvas(app);
                 setupImporters();
+                setupPresetTests(app);
 
                 app.setVisibility(true);
             }

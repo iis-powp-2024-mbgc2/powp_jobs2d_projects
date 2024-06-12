@@ -1,18 +1,21 @@
 package edu.kis.powp.jobs2d.features;
 
+import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
+import edu.kis.powp.jobs2d.drivers.DriverManager;
+import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.gui.WrapDriverWithRecordingDecoratorObserver;
 import edu.kis.powp.jobs2d.enums.RecordingOption;
 import edu.kis.powp.jobs2d.events.SelectRecordingOptionListener;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 
-import java.util.List;
-
 public class RecordFeature {
     private static Application application;
     private static CompoundCommandBuilder recordCommandBuilder;
-
+    private static DriverManager driverManager = DriverManager.getInstance();
+    private static final RecordingDriverDecorator recordingDriverDecorator = new RecordingDriverDecorator(driverManager.getCurrentDriver());
     private static boolean isRecording = false;
 
     public static void setupRecorderPlugin(Application app) {
@@ -26,7 +29,14 @@ public class RecordFeature {
         application.addComponentMenuElement(edu.kis.powp.jobs2d.features.RecordFeature.class, "Clear", clearOption);
         application.addComponentMenuElementWithCheckBox(edu.kis.powp.jobs2d.features.RecordFeature.class, "Start/Stop", startOption, false);
 
+        driverManager.getChangePublisher().addSubscriber(new WrapDriverWithRecordingDecoratorObserver());
     }
+
+    public static void wrapDriverWithRecordingDecorator() {
+        recordingDriverDecorator.setDriver(driverManager.getCurrentDriver());
+        driverManager.setCurrentDriver(recordingDriverDecorator);
+    }
+
     public static void setCommand(DriverCommand command){
         if(isRecording){
             recordCommandBuilder.addCommand(command);

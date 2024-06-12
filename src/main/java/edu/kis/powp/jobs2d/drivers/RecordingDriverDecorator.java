@@ -7,6 +7,7 @@ import edu.kis.powp.jobs2d.command.OperateToCommand;
 
 public class RecordingDriverDecorator implements Job2dDriver{
     private Job2dDriver job2dDriver;
+
     public RecordingDriverDecorator(Job2dDriver driver) {
         job2dDriver = driver;
     }

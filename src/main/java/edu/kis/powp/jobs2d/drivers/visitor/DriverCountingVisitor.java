@@ -8,51 +8,57 @@ public class DriverCountingVisitor implements IDriverVisitor {
 
     private int count = 0;
 
-    public int countDrivers(IVisitableDriver driver) {
-        count = 0;
-        driver.accept(this);
+    public int getCount() {
         return count;
     }
 
     @Override
     public void visit(DriversComposite driversComposite) {
-        for(IVisitableDriver driver : driversComposite.getDrivers()) {
+        int tmpCount = 0;
+        count = 0;
+        for (IVisitableDriver driver : driversComposite.getDrivers()) {
             driver.accept(this);
+            tmpCount += count;
         }
+        count = tmpCount;
     }
 
     @Override
     public void visit(LoggerDriver loggerDriver) {
-        count++;
+        count = 1;
     }
 
     @Override
     public void visit(LineDriverAdapter lineDriverAdapter) {
-        count++;
+        count = 1;
     }
 
     @Override
     public void visit(RealTimeDecoratorDriver realTimeDecoratorDriver) {
-        count++;
+        count = 0;
         realTimeDecoratorDriver.getDriver().accept(this);
+        count++;
     }
 
     @Override
     public void visit(UsageMonitorDriverDecorator usageMonitorDriverDecorator) {
-        count++;
+        count = 0;
         usageMonitorDriverDecorator.getDriver().accept(this);
+        count++;
     }
 
     @Override
     public void visit(RecordingDriverDecorator recordingDriverDecorator) {
-        count++;
+        count = 0;
         recordingDriverDecorator.getDriver().accept(this);
+        count++;
     }
 
     @Override
     public void visit(TransformingJob2dDriverDecorator transformingJob2dDriverDecorator) {
-        count++;
+        count = 0;
         transformingJob2dDriverDecorator.getDriver().accept(this);
+        count++;
     }
 
 }

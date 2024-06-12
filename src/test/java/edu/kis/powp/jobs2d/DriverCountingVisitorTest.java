@@ -1,8 +1,6 @@
 package edu.kis.powp.jobs2d;
 
 import edu.kis.powp.jobs2d.drivers.DriverManager;
-import edu.kis.powp.jobs2d.drivers.DriversComposite;
-import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.visitor.DriverCountingVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.jobs2d.features.DriverFeature;
@@ -21,9 +19,9 @@ public class DriverCountingVisitorTest implements ActionListener {
         IVisitableDriver driver = driverManager.getCurrentDriver();
 
         DriverCountingVisitor driverCountingVisitor = new DriverCountingVisitor();
-        int count = driverCountingVisitor.countDrivers(driver);
+        driver.accept(driverCountingVisitor);
 
-        logger.info("Count of currently loaded drivers: " + count);
+        logger.info("Count of currently loaded drivers: " + driverCountingVisitor.getCount());
 
     }
 }

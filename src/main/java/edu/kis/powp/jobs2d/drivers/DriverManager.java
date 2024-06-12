@@ -7,8 +7,7 @@ import edu.kis.powp.jobs2d.drivers.adapter.Line2dDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Publisher;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Driver manager provides means to setup the driver. It also enables other
@@ -27,9 +26,9 @@ public class DriverManager {
         changePublisher.notifyObservers();
     }
 
-    public synchronized void toggleFeature(Job2dDriver driver) {
-        if (!currentFeaturesComposite.removeDriver(driver))
-            currentFeaturesComposite.addDriver(driver);
+    public synchronized void toggleFeature(int position, Job2dDriver driver) {
+        if (!currentFeaturesComposite.removeDriver(position))
+            currentFeaturesComposite.addDriver(position, driver);
         changePublisher.notifyObservers();
     }
     /**
@@ -40,19 +39,20 @@ public class DriverManager {
     }
 
     public synchronized DriversComposite getCurrentDriverAndFeaturesComposite(Job2dDriver driver) {
-        List<Job2dDriver> returnList = new ArrayList<>();
-        for (Job2dDriver feature : this.currentFeaturesComposite.getList()) {
+        Map<Integer, Job2dDriver> returnList = new TreeMap<>();
+        for (Integer position : currentFeaturesComposite.getMap().keySet()) {
+            Job2dDriver feature = currentFeaturesComposite.getMap().get(position);
             if (feature.equals(driver))
                 break;
-            returnList.add(feature);
+            returnList.put(position, feature);
         }
 
         return new DriversComposite(returnList, this);
     }
 
     public synchronized DriversComposite getCurrentDriverAndFeaturesComposite() {
-        List<Job2dDriver> returnList = new ArrayList<>(this.currentFeaturesComposite.getList());
-        returnList.add(currentDriver);
+        Map<Integer, Job2dDriver> returnList = new TreeMap<>(this.currentFeaturesComposite.getMap());
+        returnList.put(1000, currentDriver);
 
         return new DriversComposite(returnList, this);
     }

@@ -5,6 +5,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 
 public class AppFeature {
     private static Application app;
+    private static int position = 1;
 
     public static void setupFeaturesMenu(Application application) {
         app = application;
@@ -12,7 +13,7 @@ public class AppFeature {
     }
 
     public static void addFeature(String name, Job2dDriver driver) {
-        SelectFeatureMenuOptionListener listener = new SelectFeatureMenuOptionListener(driver, DriverFeature.getDriverManager());
+        SelectFeatureMenuOptionListener listener = new SelectFeatureMenuOptionListener(position ++, driver, DriverFeature.getDriverManager());
         app.addComponentMenuElementWithCheckBox(AppFeature.class, name, listener, false);
         DriverFeature.updateDriverInfo();
     }

@@ -2,43 +2,45 @@ package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class DriversComposite implements Job2dDriver {
 
-    private List<Job2dDriver> list;
+    private final Map<Integer, Job2dDriver> map;
     private DriverManager driverManager;
 
     public DriversComposite(DriverManager driverManager) {
-        this.list = new ArrayList<>();
+        this.map = new TreeMap<>();
         this.driverManager = driverManager;
     }
 
-    public DriversComposite(List<Job2dDriver> list, DriverManager driverManager) {
-        this.list = list;
+    public DriversComposite(Map<Integer, Job2dDriver> list, DriverManager driverManager) {
+        this.map = list;
         this.driverManager = driverManager;
     }
 
-    public void addDriver(Job2dDriver driver) {
-        this.list.add(driver);
+    public void addDriver(int position, Job2dDriver driver) {
+        this.map.put(position, driver);
     }
 
-    public boolean removeDriver(Job2dDriver driver) {
-        return list.remove(driver);
+    public boolean removeDriver(int position) {
+        return map.remove(position) != null;
     }
 
-    public List<Job2dDriver> getList() {
-        return list;
+    public Map<Integer, Job2dDriver> getMap() {
+        return map;
     }
 
     @Override
     public void setPosition(int x, int y) {
         int startXAtStart = driverManager.getCurrentDriver().getStartX();
         int startYAtStart = driverManager.getCurrentDriver().getStartY();
-        for (int counter = 0; counter < list.size(); counter++) {
-            Job2dDriver driver = list.get(counter);
+        int counter = 0;
+        for (Job2dDriver driver : map.values()) {
             if (counter == 0) {
                 driver.setPosition(x, y);
             }
@@ -49,6 +51,7 @@ public class DriversComposite implements Job2dDriver {
                 driverManager.getCurrentDriver().setStartY(startYAtStart);
                 driver.setPosition(startX, startY);
             }
+            counter++;
         }
     }
 
@@ -56,8 +59,8 @@ public class DriversComposite implements Job2dDriver {
     public void operateTo(int x, int y) {
         int startXAtStart = driverManager.getCurrentDriver().getStartX();
         int startYAtStart = driverManager.getCurrentDriver().getStartY();
-        for (int counter = 0; counter < list.size(); counter++) {
-            Job2dDriver driver = list.get(counter);
+        int counter = 0;
+        for (Job2dDriver driver : map.values()) {
             if (counter == 0) {
                 driver.operateTo(x, y);
             }
@@ -68,11 +71,12 @@ public class DriversComposite implements Job2dDriver {
                 driverManager.getCurrentDriver().setStartY(startYAtStart);
                 driver.operateTo(startX, startY);
             }
+            counter ++;
         }
     }
 
     public String toString() {
-        return list.stream()
+        return map.values().stream()
                 .map(Job2dDriver::toString)
                 .collect(Collectors.joining(", ", "Composite of ", ""));
     }

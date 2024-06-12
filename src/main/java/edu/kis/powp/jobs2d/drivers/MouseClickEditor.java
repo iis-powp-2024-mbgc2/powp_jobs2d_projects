@@ -32,45 +32,25 @@ public class MouseClickEditor extends MouseClickConverter implements MouseClickL
 
     @Override
     public void handleDriver(Point position, int buttonPressed) {
-
+        List<Point> points = new ArrayList<>();
+        compoundCommand.iterator().forEachRemaining(command -> {
+            Point point = new Point((command).getX(), (command).getY());
+            points.add(point);
+        });
         if(buttonPressed == MOUSE_BUTTON_LEFT) {
-
-            List<Point> points = new ArrayList<>();
-            compoundCommand.iterator().forEachRemaining(command -> {
-                Point point = new Point((command).getX(), (command).getY());
-                points.add(point);
-                //System.out.println("operate" + point);
-            });
-
             Optional<Point> selectedPoint = points.stream().min(Comparator.comparingDouble(point -> point.distance(position)));
 
-            //selectedPoint.ifPresent(System.out::println);
-
-            if (selectedPoint.isPresent()) {
-                System.out.println("found point: " + selectedPoint.get());
-                this.selectedCommands = findCommands(selectedPoint.get(), compoundCommand.iterator());
-                System.out.println("all commands with the point: " + selectedCommands);
-
-            }
+            selectedPoint.ifPresent(point -> this.selectedCommands = findCommands(point, compoundCommand.iterator()));
         } else if (buttonPressed == MOUSE_BUTTON_MID){
             CompoundCommandBuilder commandBuilder = new CompoundCommandBuilder();
-            System.out.println("Position: " + position);
-            List<Point> points = new ArrayList<>();
-            compoundCommand.iterator().forEachRemaining(command -> {
-                Point point = new Point((command).getX(), (command).getY());
-                points.add(point);
-            });
-            System.out.println(points);
+
             Optional<Point> nearest = points.stream().min(Comparator.comparingDouble(point -> point.distance(position)));
-            System.out.println(nearest);
-            System.out.println(nearest);
             if (nearest.isPresent()) {
                 SetPositionCommand setPosition = new SetPositionCommand(position.x, position.y);
                 OperateToCommand operateTo = new OperateToCommand(position.x, position.y);
                 this.selectedCommands = findCommands(nearest.get(), compoundCommand.iterator());
                 List<DriverCommand> commands = new ArrayList<>();
                 Iterator<DriverCommand> iterator = compoundCommand.iterator();
-                System.out.println(selectedCommands);
                 int index = 0;
                 boolean found = false;
                 while (iterator.hasNext()) {
@@ -81,14 +61,16 @@ public class MouseClickEditor extends MouseClickConverter implements MouseClickL
                         index = commands.size();
                     }
                 }
-                if (found) {
+                if (nearest.get().distance(position) > 100) {
+                    commands.add(setPosition);
+                    commands.add(operateTo);
+                }
+                else if (found) {
                     commands.add(index, operateTo);
                 } else {
                     commands.add(operateTo);
                 }
-                commands.forEach(command -> {
-                    commandBuilder.addCommand(command);
-                });
+                commands.forEach(commandBuilder::addCommand);
                 drawPanelController.clearPanel();
                 compoundCommand = commandBuilder.build();
                 compoundCommand.execute(driver);

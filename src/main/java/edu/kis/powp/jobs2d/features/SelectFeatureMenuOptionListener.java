@@ -17,6 +17,6 @@ public class SelectFeatureMenuOptionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        driverManager.updateDriversComposite(driver);
+        driverManager.toggleFeature(driver);
     }
 }

@@ -12,6 +12,7 @@ import javax.swing.*;
 
 import edu.kis.legacy.drawer.panel.DefaultDrawerFrame;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
+import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
@@ -23,6 +24,7 @@ import edu.kis.powp.jobs2d.command.visitor.VisitorStatisticsGenerator;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.features.DrawerFeature;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
@@ -31,7 +33,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea currentCommandField;
     private JTextArea statisticCommandField;
     private DefaultDrawerFrame commandPreviewPanel;
-    private DrawPanelController drawPanelController;
+    private DrawPanelController drawPanelController = DrawerFeature.getDrawerController();
 
     private final VisitorStatisticsGenerator visitorStatisticsGenerator = new VisitorStatisticsGenerator();
 
@@ -85,7 +87,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(statisticCommandField, c);
 
         this.driverManager = driverManager1;
-        driverManager.setCurrentDriver(new LineDriverAdapter(drawPanelController,new BasicLine(),"preview"));
+        driverManager.setCurrentDriver(new LineDriverAdapter(drawPanelController, LineFactory.getBasicLine(), "basic"));
         commandPreviewPanel = new DefaultDrawerFrame();
         drawPanelController = new DrawPanelController();
         drawPanelController.initialize(commandPreviewPanel.getDrawArea());

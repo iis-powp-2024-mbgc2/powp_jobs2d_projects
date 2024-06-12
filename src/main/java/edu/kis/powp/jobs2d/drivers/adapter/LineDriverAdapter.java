@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Line adapter - Job2dDriver with DrawPanelController object.
  */
-public class LineDriverAdapter implements Job2dDriver {
+public class LineDriverAdapter implements Line2dDriver {
     private ILine line;
     private int startX = 0, startY = 0;
     private String name;
@@ -50,18 +50,22 @@ public class LineDriverAdapter implements Job2dDriver {
         return line.getClass() == that.line.getClass() && Objects.equals(name, that.name);
     }
 
+    @Override
     public int getStartX() {
         return startX;
     }
 
+    @Override
     public int getStartY() {
         return startY;
     }
 
+    @Override
     public void setStartX(int startX) {
         this.startX = startX;
     }
 
+    @Override
     public void setStartY(int startY) {
         this.startY = startY;
     }

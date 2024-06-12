@@ -3,33 +3,31 @@ package edu.kis.powp.jobs2d.drivers;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.adapter.Line2dDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.observer.Publisher;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Driver manager provides means to setup the driver. It also enables other
  * components and features of the application to react on configuration changes.
  */
 public class DriverManager {
-    private LineDriverAdapter currentDriver = new LineDriverAdapter(new DrawPanelController(), new BasicLine(), "Setup driver");
+    private Line2dDriver currentDriver = new LineDriverAdapter(new DrawPanelController(), new BasicLine(), "Setup driver");
     private DriversComposite currentFeaturesComposite = new DriversComposite(this);
     private final Publisher changePublisher = new Publisher();
 
     /**
      * @param driver Set the driver as current.
      */
-    public synchronized void setCurrentDriver(LineDriverAdapter driver) {
+    public synchronized void setCurrentDriver(Line2dDriver driver) {
         currentDriver = driver;
         changePublisher.notifyObservers();
     }
 
-    public synchronized void updateDriversComposite(Job2dDriver driver) {
+    public synchronized void toggleFeature(Job2dDriver driver) {
         if (!currentFeaturesComposite.removeDriver(driver))
             currentFeaturesComposite.addDriver(driver);
         changePublisher.notifyObservers();
@@ -37,7 +35,7 @@ public class DriverManager {
     /**
      * @return Current driver.
      */
-    public synchronized LineDriverAdapter getCurrentDriver() {
+    public synchronized Line2dDriver getCurrentDriver() {
         return this.currentDriver;
     }
 

@@ -6,10 +6,16 @@ import edu.kis.powp.jobs2d.features.RecordFeature;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 
 public class RecordingDriverDecorator implements Job2dDriver{
-    private final Job2dDriver job2dDriver;
+    private Job2dDriver job2dDriver;
+
     public RecordingDriverDecorator(Job2dDriver driver) {
         job2dDriver = driver;
     }
+
+    public void setDriver(Job2dDriver job2dDriver) {
+        this.job2dDriver = job2dDriver;
+    }
+
     @Override
     public void setPosition(int x, int y) {
         job2dDriver.setPosition(x,y);

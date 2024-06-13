@@ -143,10 +143,15 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 String content = new String(Files.readAllBytes(Paths.get(filePath)));
                 DriverCommand command = importer.importCommands(content);
                 commandManager.setCurrentCommand(command);
+
             }
         } catch (Exception e) {
             logger.warning("Error while importing command from file: " + e.getMessage());
         }
+    }
+
+    public ICommandManager getCommandManager() {
+        return commandManager;
     }
 
     private void clearCommand() {

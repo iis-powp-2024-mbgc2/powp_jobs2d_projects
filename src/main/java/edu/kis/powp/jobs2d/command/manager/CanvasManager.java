@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.drivers;
+package edu.kis.powp.jobs2d.command.manager;
 
 import edu.kis.powp.jobs2d.canvas.Canvas;
 import edu.kis.powp.jobs2d.canvas.CanvasA4;

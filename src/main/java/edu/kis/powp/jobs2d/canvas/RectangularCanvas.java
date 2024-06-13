@@ -1,6 +1,6 @@
-package edu.kis.powp.jobs2d.command.canvas;
+package edu.kis.powp.jobs2d.canvas;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 
 public abstract class RectangularCanvas implements Canvas{
@@ -14,7 +14,7 @@ public abstract class RectangularCanvas implements Canvas{
         this.name = name;
     }
     @Override
-    public CompoundCommand getCanvasCommand() {
+    public ImmutableCompoundCommand getCanvasCommand() {
 
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
         builder.setName(name)

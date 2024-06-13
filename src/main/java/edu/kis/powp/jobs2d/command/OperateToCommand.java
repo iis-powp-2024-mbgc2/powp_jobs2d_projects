@@ -31,4 +31,10 @@ public class OperateToCommand implements DriverCommand {
     public int getY() {
         return posY;
     }
+    @Override
+    public String toString()
+    {
+        return "Operating to (" + posX + "," + posY +")";
+    }
+
 }

@@ -18,6 +18,7 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.importer.ICommandImporter;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
+import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -142,10 +143,15 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 String content = new String(Files.readAllBytes(Paths.get(filePath)));
                 DriverCommand command = importer.importCommands(content);
                 commandManager.setCurrentCommand(command);
+
             }
         } catch (Exception e) {
             logger.warning("Error while importing command from file: " + e.getMessage());
         }
+    }
+
+    public ICommandManager getCommandManager() {
+        return commandManager;
     }
 
     private void clearCommand() {
@@ -194,5 +200,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         } else {
             this.setVisible(true);
         }
+    }
+
+    public DriverCommand getCurrentCommand()
+    {
+        return commandManager.getCurrentCommand();
     }
 }

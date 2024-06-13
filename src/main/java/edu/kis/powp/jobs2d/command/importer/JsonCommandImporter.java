@@ -1,7 +1,7 @@
 package edu.kis.powp.jobs2d.command.importer;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import org.json.JSONArray;
@@ -28,7 +28,7 @@ public class JsonCommandImporter implements ICommandImporter {
             commandsList.add(command);
         }
 
-        return new CompoundCommand(commandsList, name);
+        return new ImmutableCompoundCommand(commandsList, name);
 
     }
 

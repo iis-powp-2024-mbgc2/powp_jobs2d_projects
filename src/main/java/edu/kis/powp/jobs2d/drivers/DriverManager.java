@@ -16,6 +16,22 @@ public class DriverManager {
 
     private final Publisher changePublisher = new Publisher();
 
+    private static DriverManager instance = null;
+
+    private DriverManager() {}
+
+    public static DriverManager getInstance() {
+        if (instance == null) {
+            synchronized (DriverManager.class) {
+                if (instance == null) {
+                    instance = new DriverManager();
+                }
+            }
+        }
+        return instance;
+    }
+
+
     /**
      * @param driver Set the driver as current.
      */

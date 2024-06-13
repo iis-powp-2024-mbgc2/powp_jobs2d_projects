@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.command.importer;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
@@ -25,7 +25,7 @@ public class TxtCommandImporter implements ICommandImporter {
             commandsToReturn.add(getCommandFromLine(line));
         }
 
-        return new CompoundCommand(commandsToReturn, name);
+        return new ImmutableCompoundCommand(commandsToReturn, name);
     }
 
     private static DriverCommand getCommandFromLine(String line) {

@@ -13,8 +13,6 @@ import edu.kis.powp.jobs2d.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.command.HistoryFeature;
 import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
 import edu.kis.powp.jobs2d.command.importer.JsonCommandImporter;
-import edu.kis.powp.jobs2d.canvas.CanvasA3;
-import edu.kis.powp.jobs2d.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.canvas.CanvasCircle;
 import edu.kis.powp.jobs2d.canvas.ExceedingCanvasCheckVisitor;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
@@ -146,8 +144,8 @@ public class TestJobs2dApp {
         Job2dDriver lineScaledAndRotatedDriver = new TransformingJob2dDriverDecorator(lineScaledDriver, new RotateTransformation(90));
         DriverFeature.addDriver("Line Scale 1.5 and Rotate 90deg", lineScaledAndRotatedDriver);
 
-        Job2dDriver canvasAwareDriver = new CanvasAwareDriver(drawerController, LineFactory.getBasicLine());
-        DriverFeature.addDriver("Canvas aware driver", canvasAwareDriver);
+        Job2dDriver canvasAwareDriver = new CanvasAwareDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        DriverFeature.addDriver(canvasAwareDriver.toString(), canvasAwareDriver);
 
         DriverFeature.updateDriverInfo();
     }

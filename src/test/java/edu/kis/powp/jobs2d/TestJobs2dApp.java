@@ -180,8 +180,8 @@ public class TestJobs2dApp {
         driversComposite.addDriver(detailedLoggerDriver);
         DriverFeature.addDriver("Basic Line Scale 1.5 and Rotate 90deg with Detailed Logger", driversComposite);
 
-        Job2dDriver canvasAwareDriver = new CanvasAwareDriver(drawerController, LineFactory.getBasicLine());
-        DriverFeature.addDriver("Canvas Aware Driver", canvasAwareDriver);
+        Job2dDriver canvasAwareDriver = new CanvasAwareDriverDecorator(basicLineDriver);
+        DriverFeature.addDriver(canvasAwareDriver.toString(), canvasAwareDriver);
 
         driversComposite = new DriversComposite();
         driversComposite.addDriver(canvasAwareDriver);

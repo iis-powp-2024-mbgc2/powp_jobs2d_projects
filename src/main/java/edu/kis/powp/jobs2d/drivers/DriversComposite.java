@@ -1,16 +1,14 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class DriversComposite implements Job2dDriver {
-
-    private final Map<Integer, Job2dDriver> map;
+public class DriversComposite implements IVisitableDriver {
+    private final Map<Integer, IVisitableDriver> map;
     private DriverManager driverManager;
 
     public DriversComposite(DriverManager driverManager) {
@@ -18,12 +16,12 @@ public class DriversComposite implements Job2dDriver {
         this.driverManager = driverManager;
     }
 
-    public DriversComposite(Map<Integer, Job2dDriver> list, DriverManager driverManager) {
+    public DriversComposite(Map<Integer, IVisitableDriver> list, DriverManager driverManager) {
         this.map = list;
         this.driverManager = driverManager;
     }
 
-    public void addDriver(int position, Job2dDriver driver) {
+    public void addDriver(int position, IVisitableDriver driver) {
         this.map.put(position, driver);
     }
 
@@ -31,7 +29,7 @@ public class DriversComposite implements Job2dDriver {
         return map.remove(position) != null;
     }
 
-    public Map<Integer, Job2dDriver> getMap() {
+    public Map<Integer, IVisitableDriver> getMap() {
         return map;
     }
 
@@ -79,5 +77,14 @@ public class DriversComposite implements Job2dDriver {
         return map.values().stream()
                 .map(Job2dDriver::toString)
                 .collect(Collectors.joining(", ", "Composite of ", ""));
+    }
+
+    @Override
+    public void accept(IDriverVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public List<IVisitableDriver> getDrivers() {
+        return new ArrayList<>(map.values());
     }
 }

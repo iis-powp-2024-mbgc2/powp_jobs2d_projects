@@ -15,7 +15,8 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriver;
+import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.jobs2d.transformations.*;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
@@ -60,6 +61,7 @@ public class TestJobs2dApp {
         application.addTest("Show current command stats", new VisitorTest());
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
+        application.addTest("Count loaded drivers", new DriverCountingVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {
@@ -70,7 +72,7 @@ public class TestJobs2dApp {
     }
 
     /**
-     * Setup driver manager, and set default Job2dDriver for application.
+     * Setup driver manager, and set default IVisitableDriver for application.
      *
      * @param application Application context.
      */
@@ -117,34 +119,34 @@ public class TestJobs2dApp {
     }
 
     private static void setupFeaturesMenu(Application application) {
-        Job2dDriver loggerDriver = new LoggerDriver(false);
+        IVisitableDriver loggerDriver = new LoggerDriver(false);
         AppFeature.addFeature("Simple logger", loggerDriver);
 
-        Job2dDriver loggerDriver2 = new LoggerDriver(true);
+        IVisitableDriver loggerDriver2 = new LoggerDriver(true);
         AppFeature.addFeature("Detailed logger", loggerDriver2);
 
-        Job2dDriver recordingDriver = new RecordingDriverDecorator(DriverFeature.getDriverManager());
+        IVisitableDriver recordingDriver = new RecordingDriverDecorator(DriverFeature.getDriverManager());
         AppFeature.addFeature("Recording support", recordingDriver);
 
-        Job2dDriver usageMonitorDriver = new UsageMonitorDriverDecorator(DriverFeature.getDriverManager());
+        IVisitableDriver usageMonitorDriver = new UsageMonitorDriverDecorator(DriverFeature.getDriverManager());
         AppFeature.addFeature("Usage monitor", usageMonitorDriver);
 
-        Job2dDriver realTimeDriver = new RealTimeDecoratorDriver(DriverFeature.getDriverManager(), application.getFreePanel());
+        IVisitableDriver realTimeDriver = new RealTimeDecoratorDriver(DriverFeature.getDriverManager(), application.getFreePanel());
         AppFeature.addFeature("Real time drawer", realTimeDriver);
 
-        Job2dDriver lineFlippedDriver = new TransformingJob2dDriver(new VerticalFlipTransformation());
+        IVisitableDriver lineFlippedDriver = new TransformingJob2dDriverDecorator(new VerticalFlipTransformation());
         AppFeature.addFeature("Vertical flip", lineFlippedDriver);
 
-        Job2dDriver shiftTransformation = new TransformingJob2dDriver(new ShiftTransformation(50, 50));
+        IVisitableDriver shiftTransformation = new TransformingJob2dDriverDecorator(new ShiftTransformation(50, 50));
         AppFeature.addFeature("Shift by (50, 50)", shiftTransformation);
 
-        Job2dDriver scaleTransformation = new TransformingJob2dDriver(new ScaleTransformation(1.5));
+        IVisitableDriver scaleTransformation = new TransformingJob2dDriverDecorator(new ScaleTransformation(1.5));
         AppFeature.addFeature("Scale by 1.5", scaleTransformation);
 
-        Job2dDriver rotateTransformation = new TransformingJob2dDriver(new RotateTransformation(90));
+        IVisitableDriver rotateTransformation = new TransformingJob2dDriverDecorator(new RotateTransformation(90));
         AppFeature.addFeature("Rotate by 90deg", rotateTransformation);
 
-        Job2dDriver horizontalFlipTransformation = new TransformingJob2dDriver(new HorizontalFlipTransformation());
+        IVisitableDriver horizontalFlipTransformation = new TransformingJob2dDriverDecorator(new HorizontalFlipTransformation());
         AppFeature.addFeature("Horizontal flip", horizontalFlipTransformation);
     }
 

@@ -2,15 +2,18 @@ package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
 import java.awt.geom.Point2D;
 import java.util.logging.Logger;
 
-public class UsageMonitorDriverDecorator implements Job2dDriver {
-    private final Job2dDriver driver;
+public class UsageMonitorDriverDecorator implements IVisitableDriver {
+    private final IVisitableDriver driver;
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private int lastX = 0, lastY = 0;
     private double headDistance = 0, opDistance = 0;
+
     public UsageMonitorDriverDecorator(DriverManager driverManager) {
         this.driver = driverManager.getCurrentDriverAndFeaturesComposite(this);
     }
@@ -55,5 +58,14 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
 
     private void logDistance() {
         logger.info(String.format("Current distance made:\n- head distance: %f\n- op distance: %f", headDistance, opDistance));
+    }
+
+    public IVisitableDriver getDriver() {
+        return driver;
+    }
+
+    @Override
+    public void accept(IDriverVisitor visitor) {
+        visitor.visit(this);
     }
 }

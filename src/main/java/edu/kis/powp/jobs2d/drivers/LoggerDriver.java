@@ -1,11 +1,12 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.features.DriverFeature;
+import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
 import java.util.logging.Logger;
 
-public class LoggerDriver implements Job2dDriver {
+public class LoggerDriver implements IVisitableDriver {
     private final Logger logger = Logger.getLogger("global");
     private int posX = 0, posY = 0;
     private final boolean isDetailedLogger;
@@ -49,5 +50,10 @@ public class LoggerDriver implements Job2dDriver {
     @Override
     public String toString() {
         return "Logger driver";
+    }
+
+    @Override
+    public void accept(IDriverVisitor visitor) {
+        visitor.visit(this);
     }
 }

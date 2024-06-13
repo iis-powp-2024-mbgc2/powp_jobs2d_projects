@@ -5,6 +5,7 @@ import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.Line2dDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.observer.Publisher;
 
 import java.util.*;
@@ -26,7 +27,7 @@ public class DriverManager {
         changePublisher.notifyObservers();
     }
 
-    public synchronized void toggleFeature(int position, Job2dDriver driver) {
+    public synchronized void toggleFeature(int position, IVisitableDriver driver) {
         if (!currentFeaturesComposite.removeDriver(position))
             currentFeaturesComposite.addDriver(position, driver);
         changePublisher.notifyObservers();
@@ -38,10 +39,10 @@ public class DriverManager {
         return this.currentDriver;
     }
 
-    public synchronized DriversComposite getCurrentDriverAndFeaturesComposite(Job2dDriver driver) {
-        Map<Integer, Job2dDriver> returnList = new TreeMap<>();
+    public synchronized DriversComposite getCurrentDriverAndFeaturesComposite(IVisitableDriver driver) {
+        Map<Integer, IVisitableDriver> returnList = new TreeMap<>();
         for (Integer position : currentFeaturesComposite.getMap().keySet()) {
-            Job2dDriver feature = currentFeaturesComposite.getMap().get(position);
+            IVisitableDriver feature = currentFeaturesComposite.getMap().get(position);
             if (feature.equals(driver))
                 break;
             returnList.put(position, feature);
@@ -51,7 +52,7 @@ public class DriverManager {
     }
 
     public synchronized DriversComposite getCurrentDriverAndFeaturesComposite() {
-        Map<Integer, Job2dDriver> returnList = new TreeMap<>(this.currentFeaturesComposite.getMap());
+        Map<Integer, IVisitableDriver> returnList = new TreeMap<>(this.currentFeaturesComposite.getMap());
         returnList.put(1000, currentDriver);
 
         return new DriversComposite(returnList, this);

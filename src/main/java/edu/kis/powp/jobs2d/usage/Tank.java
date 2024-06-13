@@ -27,7 +27,7 @@ public class Tank {
         if (currentLevel < 0) {
             currentLevel = 0;
         }
-        notifyObservers();
+        notifyObservers(determineWarning());
     }
 
     public void refill() {
@@ -39,12 +39,6 @@ public class Tank {
         return currentLevel;
     }
 
-    private void notifyObservers() {
-        DeviceManagementWarnings warning = determineWarning();
-        for (TankObserver observer : observers) {
-            observer.update(warning);
-        }
-    }
 
     private void notifyObservers(DeviceManagementWarnings warning) {
         for (TankObserver observer : observers) {

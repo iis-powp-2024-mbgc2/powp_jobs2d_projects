@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.drivers;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.events.MouseClickListener;
 
@@ -51,7 +51,7 @@ public class MouseClickConverter extends MouseAdapter implements MouseClickListe
     }
 
     private void handleDriver(Point position, int buttonPressed) {
-        Job2dDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
+        IVisitableDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
 
         if(buttonPressed == MOUSE_BUTTON_LEFT) {
             driver.operateTo(position.x, position.y);

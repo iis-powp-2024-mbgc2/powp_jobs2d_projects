@@ -2,8 +2,8 @@ package edu.kis.powp.jobs2d.command.manager;
 
 import java.util.List;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.observer.Publisher;
 
 public interface ICommandManager {
@@ -12,7 +12,7 @@ public interface ICommandManager {
 
     void setCurrentCommand(List<DriverCommand> commandList, String name);
 
-    void runCommand(Job2dDriver driver);
+    void runCommand(IVisitableDriver driver);
 
     DriverCommand getCurrentCommand();
 

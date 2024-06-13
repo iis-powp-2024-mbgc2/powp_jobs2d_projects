@@ -4,7 +4,10 @@ import java.util.List;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
+import edu.kis.powp.jobs2d.command.visitor.CommandVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -41,7 +44,7 @@ public class CommandManager implements ICommandManager {
     }
 
     @Override
-    public synchronized void runCommand(Job2dDriver driver) {
+    public synchronized void runCommand(IVisitableDriver driver) {
         this.currentCommand.execute(driver);
     }
 

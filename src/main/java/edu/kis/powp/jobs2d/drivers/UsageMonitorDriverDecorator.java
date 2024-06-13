@@ -11,7 +11,7 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private int lastX = 0, lastY = 0;
     private double headDistance = 0, opDistance = 0;
-    private Tank tank;
+    private final Tank tank;
     public UsageMonitorDriverDecorator(Job2dDriver driver, Tank tank) {
         this.driver = driver;
         this.tank = tank;
@@ -28,10 +28,11 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
 
     @Override
     public void operateTo(int x, int y) {
-        headDistance += calcDistance(x, y);
-        opDistance += calcDistance(x, y);
+        double distance = calcDistance(x, y);
+        headDistance += distance;
+        opDistance += distance;
         updateLastCoords(x, y);
-        tank.consumeInk(headDistance);
+        tank.consumeInk(distance); 
         logDistance();
         driver.operateTo(x, y);
     }

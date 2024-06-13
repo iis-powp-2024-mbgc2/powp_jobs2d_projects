@@ -31,7 +31,6 @@ import edu.kis.powp.jobs2d.usage.ConfigOfDeviceUsageLoader;
 import edu.kis.powp.jobs2d.usage.DeviceServiceWindow;
 import edu.kis.powp.jobs2d.usage.LevelWarningListener;
 import edu.kis.powp.jobs2d.usage.Tank;
-import javafx.scene.control.TabPane;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 
@@ -204,8 +203,8 @@ public class TestJobs2dApp {
     
         LevelWarningListener levelWarningListener = new LevelWarningListener();
 
-        levelWarningListener.addObserver(warning -> { System.out.println(warning);
-        
+        levelWarningListener.addObserver(warning -> {
+            //System.out.println(warning);
         });
 
         

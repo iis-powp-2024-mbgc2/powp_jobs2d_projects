@@ -31,4 +31,9 @@ public class SetPositionCommand implements DriverCommand {
     public int getY() {
         return posY;
     }
+    @Override
+    public String toString()
+    {
+        return "Setting position to (" + posX + "," + posY +")";
+    }
 }

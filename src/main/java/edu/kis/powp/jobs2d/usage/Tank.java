@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.usage;
 
 import edu.kis.powp.jobs2d.enums.DeviceManagementWarnings;
 
+
 public class Tank {
     private double capacity;
     private double currentLevel;

@@ -13,8 +13,6 @@ import edu.kis.powp.jobs2d.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.command.HistoryFeature;
 import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
 import edu.kis.powp.jobs2d.command.importer.JsonCommandImporter;
-import edu.kis.powp.jobs2d.canvas.CanvasA3;
-import edu.kis.powp.jobs2d.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.canvas.CanvasCircle;
 import edu.kis.powp.jobs2d.canvas.ExceedingCanvasCheckVisitor;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
@@ -134,9 +132,6 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("BasicLine with Logger", driversComposite);
 
         DriverFeature.updateDriverInfo();
-
-        Job2dDriver lineShiftAndFlip = FlippingDriverDecorator.getFlipVerticalDecorator(new ShiftingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 50, -20));
-        DriverFeature.addDriver("Line Shift and Flip", lineShiftAndFlip);
 
         Job2dDriver lineFlippedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new VerticalFlipTransformation());
         DriverFeature.addDriver("Line vertical Flip", lineFlippedDriver);

@@ -1,8 +1,8 @@
 package edu.kis.powp.jobs2d.command;
 
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.visitor.CommandVisitor;
 import edu.kis.powp.jobs2d.command.visitor.DeepCopyVisitor;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -25,7 +25,7 @@ public final class ImmutableCompoundCommand implements ICompoundCommand {
     }
 
     @Override
-    public void execute(Job2dDriver driver) {
+    public void execute(IVisitableDriver driver) {
         for (DriverCommand command : commands) {
             command.execute(driver);
         }

@@ -1,17 +1,25 @@
 package edu.kis.powp.jobs2d.usage;
 
 import edu.kis.powp.jobs2d.enums.DeviceManagementWarnings;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tank {
     private double capacity;
     private double currentLevel;
-    private LevelWarningListener levelWarningListener;
+    private List<TankObserver> observers = new ArrayList<>();
 
-    public Tank(double capacity, LevelWarningListener levelWarningListener) {
+    public Tank(double capacity) {
         this.capacity = capacity;
         this.currentLevel = capacity;
-        this.levelWarningListener = levelWarningListener;
+    }
+
+    public void addObserver(TankObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(TankObserver observer) {
+        observers.remove(observer);
     }
 
     public void consumeInk(double amount) {
@@ -19,26 +27,29 @@ public class Tank {
         if (currentLevel < 0) {
             currentLevel = 0;
         }
-        checkLevelAndNotify();
+        notifyObservers();
     }
 
     public void refill() {
         currentLevel = capacity;
-        checkLevelAndNotify(DeviceManagementWarnings.MAX_LEVEL);
+        notifyObservers(DeviceManagementWarnings.MAX_LEVEL);
     }
 
     public double getCurrentLevel() {
         return currentLevel;
     }
 
-
-    private void checkLevelAndNotify() {
+    private void notifyObservers() {
         DeviceManagementWarnings warning = determineWarning();
-        levelWarningListener.temp(warning);
+        for (TankObserver observer : observers) {
+            observer.update(warning);
+        }
     }
 
-    private void checkLevelAndNotify(DeviceManagementWarnings warning) {
-        levelWarningListener.temp(warning);
+    private void notifyObservers(DeviceManagementWarnings warning) {
+        for (TankObserver observer : observers) {
+            observer.update(warning);
+        }
     }
 
     public DeviceManagementWarnings determineWarning() {

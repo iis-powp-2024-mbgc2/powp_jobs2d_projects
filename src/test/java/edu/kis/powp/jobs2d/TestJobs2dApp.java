@@ -13,8 +13,6 @@ import edu.kis.powp.jobs2d.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.command.HistoryFeature;
 import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
 import edu.kis.powp.jobs2d.command.importer.JsonCommandImporter;
-import edu.kis.powp.jobs2d.canvas.CanvasA3;
-import edu.kis.powp.jobs2d.canvas.CanvasA4;
 import edu.kis.powp.jobs2d.canvas.CanvasCircle;
 import edu.kis.powp.jobs2d.canvas.ExceedingCanvasCheckVisitor;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
@@ -24,12 +22,10 @@ import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.enums.Command;
-import edu.kis.powp.jobs2d.enums.DeviceManagementWarnings;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
 import edu.kis.powp.jobs2d.transformations.*;
 import edu.kis.powp.jobs2d.usage.ConfigOfDeviceUsageLoader;
 import edu.kis.powp.jobs2d.usage.DeviceServiceWindow;
-import edu.kis.powp.jobs2d.usage.LevelWarningListener;
 import edu.kis.powp.jobs2d.usage.Tank;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
@@ -200,20 +196,14 @@ public class TestJobs2dApp {
     }
 
     private static void setupWarningSystem(Application application) {
-    
-        LevelWarningListener levelWarningListener = new LevelWarningListener();
+        tank = new Tank(ConfigOfDeviceUsageLoader.TANK_CAPACITY);
 
-        levelWarningListener.addObserver(warning -> {
-            //System.out.println(warning);
-        });
-
-        
-        tank = new Tank(ConfigOfDeviceUsageLoader.TANK_CAPACITY, levelWarningListener);
-
-        DeviceServiceWindow deviceServiceWindow = new DeviceServiceWindow(tank, levelWarningListener);
+        DeviceServiceWindow deviceServiceWindow = new DeviceServiceWindow(tank);
         application.addWindowComponent("Device Service", deviceServiceWindow);
 
+        tank.addObserver(deviceServiceWindow);
     }
+
     /**
      * Launch the application.
      */
@@ -222,6 +212,9 @@ public class TestJobs2dApp {
             public void run() {
                 Application app = new Application("Jobs 2D");
                 ConfigOfDeviceUsageLoader.loadConfig("src\\configOfDeviceUsage.xml");
+                
+                
+                
                 DrawerFeature.setupDrawerPlugin(app);
                 CommandsFeature.setupCommandManager();
                 CommandsFeature.setupPresetCommands(app);
@@ -230,6 +223,7 @@ public class TestJobs2dApp {
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
                 CanvasFeature.setupCanvas(app);
                 HistoryFeature.setupHistory(app);
+                
                 setupWarningSystem(app);
                 setupDrivers(app);
                 setupCommandListeners(app);

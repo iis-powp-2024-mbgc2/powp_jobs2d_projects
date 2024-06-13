@@ -1,10 +1,6 @@
 package edu.kis.powp.jobs2d.command;
 
 import edu.kis.powp.appbase.Application;
-import edu.kis.powp.jobs2d.drivers.gui.UpdateCanvasInfoObserver;
-import edu.kis.powp.jobs2d.features.CanvasFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
-
 import java.util.logging.Logger;
 
 public class HistoryFeature {

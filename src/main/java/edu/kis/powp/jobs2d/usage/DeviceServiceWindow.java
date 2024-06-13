@@ -6,19 +6,15 @@ import java.awt.event.ActionEvent;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.enums.DeviceManagementWarnings;
 
-
-public class DeviceServiceWindow extends JFrame implements WindowComponent, LevelWarningListener.WarningObserver {
+public class DeviceServiceWindow extends JFrame implements WindowComponent, TankObserver {
     private Tank tank;
     private JProgressBar tankFillBar;
     private JLabel warningLabel;
     private JLabel statusLabel;
     private JPanel statusPanel;
-    private final LevelWarningListener warningListener;
 
-    public DeviceServiceWindow(Tank tank, LevelWarningListener warningListener) {
+    public DeviceServiceWindow(Tank tank) {
         this.tank = tank;
-        this.warningListener = warningListener;
-        warningListener.addObserver(this); 
 
         this.setTitle("DeviceServiceWindow");
         this.setSize(400, 400);
@@ -41,7 +37,6 @@ public class DeviceServiceWindow extends JFrame implements WindowComponent, Leve
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(10, 10, 10, 10);
         content.add(statusPanel, c);
-
 
         statusLabel = new JLabel("Status: OK");
         c.gridx = 0;
@@ -72,25 +67,7 @@ public class DeviceServiceWindow extends JFrame implements WindowComponent, Leve
     public void updateTankFillBar() {
         int scaledLevel = (int) (tank.getCurrentLevel() * 1.0);
         tankFillBar.setValue(scaledLevel);
-        updateStatusPanelColor(getTankStatusColor());
-    }
-
-    private Color getTankStatusColor() {
-        DeviceManagementWarnings warning = tank.determineWarning();
-        switch (warning) {
-            case MAX_LEVEL:
-                return Color.GREEN;
-            case MEDIUM_LEVEL:
-                return Color.YELLOW;
-            case LOW_LEVEL:
-                return Color.ORANGE;
-            case NEEDS_REFILL:
-                return Color.RED;
-            case EMPTY_OUT_OF_WORK:
-                return Color.BLACK;
-            default:
-                return Color.BLACK;
-        }
+        updateStatusPanelColor(tank.determineWarning().getColor());
     }
 
     private void updateStatusPanelColor(Color color) {
@@ -110,13 +87,13 @@ public class DeviceServiceWindow extends JFrame implements WindowComponent, Leve
     }
 
     @Override
-    public void onWarning(DeviceManagementWarnings warning) {
+    public void update(DeviceManagementWarnings warning) {
         updateStatusLabel(warning);
         updateTankFillBar();
     }
 
-    private void updateStatusLabel(DeviceManagementWarnings warning) {
-        String errorCode = warningListener.getWarningMessage(warning);
+    public void updateStatusLabel(DeviceManagementWarnings warning) {
+        String errorCode = warning.name(); 
         statusLabel.setText("Status: " + errorCode);
     }
 }

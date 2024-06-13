@@ -1,18 +1,15 @@
 package edu.kis.powp.jobs2d.canvas;
 
-import edu.kis.powp.jobs2d.command.ICompoundCommand;
 import edu.kis.powp.jobs2d.command.ImmutableCompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 
 public abstract class CircularCanvas implements Canvas{
 
-    private final String name;
     private final int radius;
 
     public CircularCanvas(int radius, String name)
     {
         this.radius = radius;
-        this.name = name;
     }
 
     public int getRadius() {

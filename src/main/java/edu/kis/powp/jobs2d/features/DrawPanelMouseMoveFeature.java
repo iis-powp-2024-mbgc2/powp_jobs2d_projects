@@ -14,7 +14,10 @@ public class DrawPanelMouseMoveFeature extends MouseAdapter {
 
     public DrawPanelMouseMoveFeature(JPanel panel) {
         this.panel = panel;
-        this.panel.addMouseListener(this);
+    }
+
+    public void addDriver() {
+        panel.addMouseListener(this);
     }
 
     public void removeDriver() {
@@ -31,8 +34,8 @@ public class DrawPanelMouseMoveFeature extends MouseAdapter {
                 int shiftX = currentPosition.x - previousPosition.x;
                 int shiftY = previousPosition.y - currentPosition.y;
                 if (shiftX != 0 || shiftY != 0) {
-                    LinesRecorder.shift.x += shiftX;
-                    LinesRecorder.shift.y += shiftY;
+                    Point currentShift = WorkspaceTransformationRecorder.getInstance().getShift();
+                    WorkspaceTransformationRecorder.getInstance().setShift(new Point(currentShift.x + shiftX, currentShift.y + shiftY));
                     LinesTransformationExecutor linesTransformationExecutor = new LinesTransformationExecutor();
                     linesTransformationExecutor.execute(new ShiftTransformation(shiftX, shiftY));
                     previousPosition.x = currentPosition.x;

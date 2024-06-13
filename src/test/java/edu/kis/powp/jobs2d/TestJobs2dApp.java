@@ -18,6 +18,7 @@ import edu.kis.powp.jobs2d.command.importer.TxtCommandImporter;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapterRecordingFiguresDecorator;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
 import edu.kis.powp.jobs2d.transformations.*;
 import edu.kis.powp.jobs2d.events.*;
@@ -142,6 +143,12 @@ public class TestJobs2dApp {
         Job2dDriver canvasAwareDriver = new CanvasAwareDriver(drawerController, LineFactory.getBasicLine());
         DriverFeature.addDriver("Canvas aware driver", canvasAwareDriver);
 
+        driversComposite = new DriversComposite();
+        LineDriverAdapter lineDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        driversComposite.addDriver(new LineDriverAdapterRecordingFiguresDecorator(lineDriver));
+        driversComposite.addDriver(new LoggerDriver(true));
+        DriverFeature.addDriver("BasicLine with Logger and workspace transformation", driversComposite);
+
         DriverFeature.updateDriverInfo();
     }
 
@@ -176,8 +183,6 @@ public class TestJobs2dApp {
 
     private static void setupMouseHandler(Application application) {
         new MouseClickConverter(application.getFreePanel());
-        new DrawPanelMouseMoveFeature(application.getFreePanel());
-        new DrawPanelMouseZoomFeature(application.getFreePanel());
     }
 
     private static void setupImporters() {
@@ -197,6 +202,7 @@ public class TestJobs2dApp {
                 RecordFeature.setupRecorderPlugin(app);
                 DriverFeature.setupDriverPlugin(app);
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
+                WorkspaceTransformationFeature.setupWorkspaceTransformationFeature(app);
                 CanvasFeature.setupCanvas(app);
                 setupDrivers(app);
                 setupPresetTests(app);

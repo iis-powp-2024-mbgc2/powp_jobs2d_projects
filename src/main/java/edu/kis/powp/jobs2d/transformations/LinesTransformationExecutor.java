@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.transformations;
 import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.powp.jobs2d.features.LinesRecorder;
 import edu.kis.powp.jobs2d.features.DrawerFeature;
+import edu.kis.powp.jobs2d.features.WorkspaceTransformationRecorder;
 
 import java.awt.Point;
 import java.util.List;
@@ -18,21 +19,23 @@ public class LinesTransformationExecutor {
         DrawerFeature.getDrawerController().clearPanel();
 
         List<ILine> lines = linesRecorder.getLines();
-        List<ILine> transformedLines = linesRecorder.getUntransformedLines();
+        List<ILine> untransformedLines = linesRecorder.getUntransformedLines();
 
         for (int i = 0; i < lines.size(); i++) {
             ILine line = lines.get(i);
-            ILine unscaledLine = transformedLines.get(i);
+            ILine untransformedLine = untransformedLines.get(i);
 
             if (transformation instanceof ScaleTransformation) {
-                Point startPoint = new Point(unscaledLine.getStartCoordinateX(), unscaledLine.getStartCoordinateY());
-                Point endPoint = new Point(unscaledLine.getEndCoordinateX(), unscaledLine.getEndCoordinateY());
+                Point startPoint = new Point(untransformedLine.getStartCoordinateX(), untransformedLine.getStartCoordinateY());
+                Point endPoint = new Point(untransformedLine.getEndCoordinateX(), untransformedLine.getEndCoordinateY());
 
                 Point transformedStartPoint = transformation.transform(startPoint);
                 Point transformedEndPoint = transformation.transform(endPoint);
 
-                transformedStartPoint = new ShiftTransformation(LinesRecorder.shift.x, LinesRecorder.shift.y).transform(transformedStartPoint);
-                transformedEndPoint = new ShiftTransformation(LinesRecorder.shift.x, LinesRecorder.shift.y).transform(transformedEndPoint);
+                Point currentShift = WorkspaceTransformationRecorder.getInstance().getShift();
+
+                transformedStartPoint = new ShiftTransformation(currentShift.x, currentShift.y).transform(transformedStartPoint);
+                transformedEndPoint = new ShiftTransformation(currentShift.x, currentShift.y).transform(transformedEndPoint);
 
                 line.setStartCoordinates(transformedStartPoint.x, transformedStartPoint.y);
                 line.setEndCoordinates(transformedEndPoint.x, transformedEndPoint.y);

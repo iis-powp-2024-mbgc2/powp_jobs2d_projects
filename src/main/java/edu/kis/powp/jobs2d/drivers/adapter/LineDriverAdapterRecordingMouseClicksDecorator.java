@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.drivers.adapter;
 import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.features.LinesRecorder;
+import edu.kis.powp.jobs2d.features.WorkspaceTransformationRecorder;
 import edu.kis.powp.jobs2d.transformations.ScaleTransformation;
 import edu.kis.powp.jobs2d.transformations.ShiftTransformation;
 
@@ -31,11 +32,14 @@ public class LineDriverAdapterRecordingMouseClicksDecorator implements Job2dDriv
             Point startPoint = new Point(line.getStartCoordinateX(), line.getStartCoordinateY());
             Point endPoint = new Point(line.getEndCoordinateX(), line.getEndCoordinateY());
 
-            Point transformedStartPoint = new ShiftTransformation(-LinesRecorder.shift.x, -LinesRecorder.shift.y).transform(startPoint);
-            Point transformedEndPoint = new ShiftTransformation(-LinesRecorder.shift.x, -LinesRecorder.shift.y).transform(endPoint);
+            Point currentShift = WorkspaceTransformationRecorder.getInstance().getShift();
+            double currentZoom = WorkspaceTransformationRecorder.getInstance().getZoom();
 
-            transformedStartPoint = new ScaleTransformation(1/LinesRecorder.zoom).transform(transformedStartPoint);
-            transformedEndPoint = new ScaleTransformation(1/LinesRecorder.zoom).transform(transformedEndPoint);
+            Point transformedStartPoint = new ShiftTransformation(-currentShift.x, -currentShift.y).transform(startPoint);
+            Point transformedEndPoint = new ShiftTransformation(-currentShift.x, -currentShift.y).transform(endPoint);
+
+            transformedStartPoint = new ScaleTransformation(1/currentZoom).transform(transformedStartPoint);
+            transformedEndPoint = new ScaleTransformation(1/currentZoom).transform(transformedEndPoint);
 
             untransformedLine.setStartCoordinates(transformedStartPoint.x, transformedStartPoint.y);
             untransformedLine.setEndCoordinates(transformedEndPoint.x, transformedEndPoint.y);

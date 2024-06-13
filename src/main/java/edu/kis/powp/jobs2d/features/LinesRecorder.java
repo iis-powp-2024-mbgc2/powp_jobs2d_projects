@@ -2,7 +2,6 @@ package edu.kis.powp.jobs2d.features;
 
 import edu.kis.legacy.drawer.shape.ILine;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +10,9 @@ public class LinesRecorder {
     private final List<ILine> lines;
     private final List<ILine> untransformedLines;
 
-    public static double zoom;
-    public static Point shift;
-
     private LinesRecorder() {
         lines = new ArrayList<>();
         untransformedLines = new ArrayList<>();
-        zoom = 1;
-        shift = new Point(0, 0);
     }
 
     public static LinesRecorder getLinesRecorder() {

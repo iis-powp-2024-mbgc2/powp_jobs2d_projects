@@ -12,7 +12,10 @@ public class DrawPanelMouseZoomFeature implements MouseWheelListener {
 
     public DrawPanelMouseZoomFeature(JPanel panel) {
         this.panel = panel;
-        this.panel.addMouseWheelListener(this);
+    }
+
+    public void addDriver() {
+        panel.addMouseWheelListener(this);
     }
 
     public void removeDriver() {
@@ -22,8 +25,9 @@ public class DrawPanelMouseZoomFeature implements MouseWheelListener {
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         int rotation = e.getWheelRotation();
-        LinesRecorder.zoom += rotation * ZOOM_FACTOR * LinesRecorder.zoom;
+        double currentZoom = WorkspaceTransformationRecorder.getInstance().getZoom();
+        WorkspaceTransformationRecorder.getInstance().setZoom(currentZoom + (rotation * ZOOM_FACTOR * currentZoom));
         LinesTransformationExecutor linesTransformationExecutor = new LinesTransformationExecutor();
-        linesTransformationExecutor.execute(new ScaleTransformation(LinesRecorder.zoom));
+        linesTransformationExecutor.execute(new ScaleTransformation(WorkspaceTransformationRecorder.getInstance().getZoom()));
     }
 }

@@ -31,14 +31,6 @@ public class DriverManager {
         return currentDriver;
     }
 
-    public synchronized Job2dDriver getCurrentTransformingDriver() {
-        if (currentDriver instanceof LineDriverAdapter) {
-            return new LineDriverAdapterRecordingFiguresDecorator((LineDriverAdapter) currentDriver);
-        } else {
-            throw new UnsupportedOperationException("Current driver LineDriverAdapter does not support transformation.");
-        }
-    }
-
     public Publisher getChangePublisher() {
         return changePublisher;
     }

@@ -2,17 +2,25 @@ package edu.kis.powp.jobs2d.command;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.visitor.CommandVisitor;
+import edu.kis.powp.jobs2d.command.visitor.DeepCopyVisitor;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 
 public final class ImmutableCompoundCommand implements ICompoundCommand {
     private final List<DriverCommand> commands;
     private final String name;
 
     public ImmutableCompoundCommand(List<DriverCommand> commands, String name) {
-        this.commands = Collections.unmodifiableList(commands);
+        List<DriverCommand> deepCopiedCommands = new ArrayList<>();
+        DeepCopyVisitor deepCopyVisitor = new DeepCopyVisitor();
+        for (DriverCommand command : commands) {
+            command.accept(deepCopyVisitor);
+            deepCopiedCommands.add(deepCopyVisitor.getCopiedCommand());
+        }
+        this.commands = Collections.unmodifiableList(deepCopiedCommands);
         this.name = name;
     }
 
@@ -30,7 +38,7 @@ public final class ImmutableCompoundCommand implements ICompoundCommand {
 
     @Override
     public Iterator<DriverCommand> iterator() {
-        return commands.iterator();
+        return Collections.unmodifiableList(commands).iterator();
     }
 
     @Override
@@ -39,6 +47,6 @@ public final class ImmutableCompoundCommand implements ICompoundCommand {
     }
 
     public List<DriverCommand> getCommands() {
-        return commands;
+        return Collections.unmodifiableList(commands);
     }
 }

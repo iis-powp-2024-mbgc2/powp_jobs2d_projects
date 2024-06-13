@@ -24,15 +24,21 @@ import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.enums.Command;
+import edu.kis.powp.jobs2d.enums.DeviceManagementWarnings;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
 import edu.kis.powp.jobs2d.transformations.*;
+import edu.kis.powp.jobs2d.usage.ConfigOfDeviceUsageLoader;
+import edu.kis.powp.jobs2d.usage.DeviceServiceWindow;
+import edu.kis.powp.jobs2d.usage.LevelWarningListener;
+import edu.kis.powp.jobs2d.usage.Tank;
+import javafx.scene.control.TabPane;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    private static Tank tank;
     /**
      * Setup test concerning canvas.
      *
@@ -50,6 +56,9 @@ public class TestJobs2dApp {
 
         CanvasFeature.updateCanvasInfo();
     }
+
+
+
 
     /**
      * Setup test concerning preset figures in context.
@@ -115,11 +124,11 @@ public class TestJobs2dApp {
         DriverFeature.addDriver("Special line Simulator", driver);
 
         driver = new LoggerDriver(false);
-        UsageMonitorDriverDecorator usageMonitorDriver = new UsageMonitorDriverDecorator(driver);
+        UsageMonitorDriverDecorator usageMonitorDriver = new UsageMonitorDriverDecorator(driver , tank);
         DriverFeature.addDriver("Usage monitor with logger", usageMonitorDriver);
 
         driver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
-        UsageMonitorDriverDecorator usageMonitorDriver2 = new UsageMonitorDriverDecorator(driver);
+        UsageMonitorDriverDecorator usageMonitorDriver2 = new UsageMonitorDriverDecorator(driver , tank);
         DriverFeature.addDriver("Special line Simulator with usage monitor", usageMonitorDriver2);
 
         driver = new RealTimeDecoratorDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), application.getFreePanel());
@@ -191,6 +200,21 @@ public class TestJobs2dApp {
         ImporterFactory.addImporter("txt", new TxtCommandImporter());
     }
 
+    private static void setupWarningSystem(Application application) {
+    
+        LevelWarningListener levelWarningListener = new LevelWarningListener();
+
+        levelWarningListener.addObserver(warning -> { System.out.println(warning);
+        
+        });
+
+        
+        tank = new Tank(ConfigOfDeviceUsageLoader.TANK_CAPACITY, levelWarningListener);
+
+        DeviceServiceWindow deviceServiceWindow = new DeviceServiceWindow(tank, levelWarningListener);
+        application.addWindowComponent("Device Service", deviceServiceWindow);
+
+    }
     /**
      * Launch the application.
      */
@@ -198,6 +222,7 @@ public class TestJobs2dApp {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Application app = new Application("Jobs 2D");
+                ConfigOfDeviceUsageLoader.loadConfig("src\\configOfDeviceUsage.xml");
                 DrawerFeature.setupDrawerPlugin(app);
                 CommandsFeature.setupCommandManager();
                 CommandsFeature.setupPresetCommands(app);
@@ -206,6 +231,7 @@ public class TestJobs2dApp {
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
                 CanvasFeature.setupCanvas(app);
                 HistoryFeature.setupHistory(app);
+                setupWarningSystem(app);
                 setupDrivers(app);
                 setupCommandListeners(app);
                 setupCommandVisitorTests(app);

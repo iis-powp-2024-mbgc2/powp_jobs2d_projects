@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tankCapacity>1000.0</tankCapacity>
+	<consumptionPerDistance>1</consumptionPerDistance>
+	<warningIntervals>
+		<maxLevel>1.0</maxLevel>
+		<mediumLevel>0.5</mediumLevel>
+		<lowLevel>0.25</lowLevel>
+		<needsRefill>0.1</needsRefill>
+	</warningIntervals>
+</config>

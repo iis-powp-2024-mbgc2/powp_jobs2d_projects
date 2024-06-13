@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.usage.Tank;
 
 import java.awt.geom.Point2D;
 import java.util.logging.Logger;
@@ -10,8 +11,10 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private int lastX = 0, lastY = 0;
     private double headDistance = 0, opDistance = 0;
-    public UsageMonitorDriverDecorator(Job2dDriver driver) {
+    private Tank tank;
+    public UsageMonitorDriverDecorator(Job2dDriver driver, Tank tank) {
         this.driver = driver;
+        this.tank = tank;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class UsageMonitorDriverDecorator implements Job2dDriver {
         headDistance += calcDistance(x, y);
         opDistance += calcDistance(x, y);
         updateLastCoords(x, y);
-
+        tank.consumeInk(headDistance);
         logDistance();
         driver.operateTo(x, y);
     }

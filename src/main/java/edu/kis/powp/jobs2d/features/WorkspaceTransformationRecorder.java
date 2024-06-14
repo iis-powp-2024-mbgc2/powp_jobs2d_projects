@@ -1,7 +1,6 @@
 package edu.kis.powp.jobs2d.features;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class WorkspaceTransformationRecorder {
     private static final WorkspaceTransformationRecorder instance = new WorkspaceTransformationRecorder();

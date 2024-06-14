@@ -17,6 +17,10 @@ public class WorkspaceTransformationFeature {
         drawPanelMouseZoomFeature = new DrawPanelMouseZoomFeature(app.getFreePanel());
     }
 
+    public static boolean isTransforming() {
+        return isTransforming;
+    }
+
     public static void enableTransformation() {
         drawPanelMouseMoveFeature.addDriver();
         drawPanelMouseZoomFeature.addDriver();

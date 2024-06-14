@@ -21,7 +21,7 @@ import edu.kis.powp.jobs2d.command.importer.TxtCommandImporter;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapterRecordingFiguresDecorator;
+import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapterRecordingDecorator;
 import edu.kis.powp.jobs2d.enums.Command;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
 import edu.kis.powp.jobs2d.transformations.*;
@@ -107,7 +107,7 @@ public class TestJobs2dApp {
 
         Job2dDriver simpleLoggerDriver = new LoggerDriver(false);
         Job2dDriver detailedLoggerDriver = new LoggerDriver(true);
-        Job2dDriver basicLineDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        LineDriverAdapter basicLineDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
         Job2dDriver specialLineDriver = new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special");
 
         DriverFeature.addDriver("Simple Logger Driver", simpleLoggerDriver);
@@ -189,11 +189,8 @@ public class TestJobs2dApp {
         driversComposite.addDriver(detailedLoggerDriver);
         DriverFeature.addDriver("Canvas Aware Driver with Detailed Logger", driversComposite);
 
-        driversComposite = new DriversComposite();
-        LineDriverAdapter lineDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
-        driversComposite.addDriver(new LineDriverAdapterRecordingFiguresDecorator(lineDriver));
-        driversComposite.addDriver(new LoggerDriver(true));
-        DriverFeature.addDriver("BasicLine with Logger and workspace transformation", driversComposite);
+        basicLineDriver = new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic");
+        DriverFeature.addDriver("BasicLine with workspace transformation", new LineDriverAdapterRecordingDecorator(basicLineDriver));
 
         DriverFeature.updateDriverInfo();
     }

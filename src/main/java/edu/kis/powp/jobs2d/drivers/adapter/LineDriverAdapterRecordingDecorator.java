@@ -10,16 +10,20 @@ import edu.kis.powp.jobs2d.transformations.ShiftTransformation;
 
 import java.awt.Point;
 
-public class LineDriverAdapterRecordingFiguresDecorator implements Job2dDriver {
+public class LineDriverAdapterRecordingDecorator implements Job2dDriver {
     private final LineDriverAdapter lineDriverAdapter;
 
-    public LineDriverAdapterRecordingFiguresDecorator(LineDriverAdapter lineDriverAdapter) {
+    public LineDriverAdapterRecordingDecorator(LineDriverAdapter lineDriverAdapter) {
         this.lineDriverAdapter = lineDriverAdapter;
     }
 
     @Override
     public void setPosition(int i, int i1) {
         lineDriverAdapter.setPosition(i, i1);
+    }
+
+    public LineDriverAdapter getLineDriverAdapter() {
+        return lineDriverAdapter;
     }
 
     @Override
@@ -34,8 +38,6 @@ public class LineDriverAdapterRecordingFiguresDecorator implements Job2dDriver {
             Point endPoint = new Point(line.getEndCoordinateX(), line.getEndCoordinateY());
 
             Point currentShift = WorkspaceTransformationRecorder.getInstance().getShift();
-            double currentZoom = WorkspaceTransformationRecorder.getInstance().getZoom();
-
             Point transformedStartPoint = new ShiftTransformation(currentShift.x, currentShift.y).transform(startPoint);
             Point transformedEndPoint = new ShiftTransformation(currentShift.x, currentShift.y).transform(endPoint);
 
@@ -45,6 +47,7 @@ public class LineDriverAdapterRecordingFiguresDecorator implements Job2dDriver {
             LinesRecorder.getLinesRecorder().addLine(line, unscaledLine);
 
             LinesTransformationExecutor linesTransformationExecutor = new LinesTransformationExecutor();
+            double currentZoom = WorkspaceTransformationRecorder.getInstance().getZoom();
             linesTransformationExecutor.execute(new ScaleTransformation(currentZoom));
         } catch (CloneNotSupportedException ignored) {}
     }

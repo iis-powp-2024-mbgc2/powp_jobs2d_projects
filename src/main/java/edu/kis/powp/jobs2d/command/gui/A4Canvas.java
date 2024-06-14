@@ -5,7 +5,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 
-public class A4Canvas extends JPanel implements Canvas {
+public abstract class A4Canvas implements Canvas {
     private static final int WIDTH_MM = 210; // A4 width in mm
     private static final int HEIGHT_MM = 297; // A4 height in mm
 
@@ -14,8 +14,8 @@ public class A4Canvas extends JPanel implements Canvas {
     public A4Canvas(int dpi) {
         this.dpi = dpi;
      }
-    @Override
-    public Dimension getSize() {
+
+    public final Dimension getSize() {
         int width = (int) (WIDTH_MM * dpi / 25.4); // Convert mm to pixels
         int height = (int) (HEIGHT_MM * dpi / 25.4); // Convert mm to pixels
         return new Dimension(width, height);

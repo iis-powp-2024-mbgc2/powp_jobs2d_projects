@@ -121,8 +121,6 @@ public class TestJobs2dApp {
                 commandManager,visitor);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
         application.addComponentMenu(Canvas.class,"Canvas");
-        application.addComponentMenuElement(Canvas.class, "A4Canvas", (ActionEvent e) -> {
-            commandManager.setDrawPanel(new A4Canvas(300));});
 
         application.addComponentMenuElement(Canvas.class, "BasicCanvas", (ActionEvent e) -> {
             commandManager.setDrawPanel(new JPanelRectCanvas());});

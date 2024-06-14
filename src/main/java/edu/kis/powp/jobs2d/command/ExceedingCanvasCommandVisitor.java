@@ -10,7 +10,7 @@ public class ExceedingCanvasCommandVisitor implements CommandVisitor {
 
     private Canvas canvas;
     private boolean isExceedingCanvas = false;
-    private List<Point> commands = new ArrayList<>();
+    private List<Point> exceedingPoints = new ArrayList<>();
 
     public ExceedingCanvasCommandVisitor(Canvas canvas) {
         this.canvas = canvas;
@@ -19,13 +19,18 @@ public class ExceedingCanvasCommandVisitor implements CommandVisitor {
 
     @Override
     public void visit(OperateToCommand operateToCommand) {
-        canvas.isPointWithinBounds(operateToCommand.getX(), operateToCommand.getY());
-        isExceedingCanvas |= !canvas.isPointWithinBounds(operateToCommand.getX(), operateToCommand.getY());
+        if (!canvas.isPointWithinBounds(operateToCommand.getX(), operateToCommand.getY())) {
+            isExceedingCanvas = true;
+            exceedingPoints.add(new Point(operateToCommand.getX(), operateToCommand.getY()));
+        }
     }
 
     @Override
     public void visit(SetPositionCommand setPositionCommand) {
-        isExceedingCanvas |= !canvas.isPointWithinBounds(setPositionCommand.getX(), setPositionCommand.getY());
+        if (!canvas.isPointWithinBounds(setPositionCommand.getX(), setPositionCommand.getY())) {
+            isExceedingCanvas = true;
+            exceedingPoints.add(new Point(setPositionCommand.getX(), setPositionCommand.getY()));
+        }
     }
 
     @Override
@@ -41,6 +46,6 @@ public class ExceedingCanvasCommandVisitor implements CommandVisitor {
     }
 
     public List<Point> getPointsExceeding() {
-        return commands;
+        return exceedingPoints;
     }
 }

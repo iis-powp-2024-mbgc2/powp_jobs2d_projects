@@ -17,7 +17,7 @@ public class MouseSettingsFeature {
         SelectMouseOptionListener leftOnlyOption = new SelectMouseOptionListener(MouseOption.LEFT_ONLY);
         SelectMouseOptionListener leftAndRightOption = new SelectMouseOptionListener(MouseOption.LEFT_AND_RIGHT);
 
-        application.addComponentMenu(MouseSettingsFeature.class, "Mouse Settings");
+        application.addComponentMenu(MouseSettingsFeature.class, "Settings");
         application.addComponentMenuElement(MouseSettingsFeature.class, "Lines Only", leftOnlyOption);
         application.addComponentMenuElement(MouseSettingsFeature.class, "Continuous and Lines", leftAndRightOption);
 

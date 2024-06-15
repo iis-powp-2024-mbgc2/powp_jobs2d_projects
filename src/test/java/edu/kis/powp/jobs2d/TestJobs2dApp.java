@@ -21,6 +21,7 @@ import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecorator;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
+import edu.kis.powp.jobs2d.features.canvas.CanvasFeature;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -164,6 +165,7 @@ public class TestJobs2dApp {
                 RecordFeature.setupRecorderPlugin(app);
                 DriverFeature.setupDriverPlugin(app);
                 MouseSettingsFeature.setupMouseSettingsFeature(app);
+                CanvasFeature.setupCanvasFeature(app);
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);

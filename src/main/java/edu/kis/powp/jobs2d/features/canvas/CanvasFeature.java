@@ -50,7 +50,7 @@ public class CanvasFeature {
     }
 
     public static void loadCanvas(Canvas canvas) {
-        CommandManager commandManager = (CommandManager) CommandsFeature.getCommandManager();
+        CommandManager commandManager = CommandsFeature.getCommandManager();
         commandManager.setCurrentCommand(canvas.getCommands(), "Draw Canvas");
     }
 

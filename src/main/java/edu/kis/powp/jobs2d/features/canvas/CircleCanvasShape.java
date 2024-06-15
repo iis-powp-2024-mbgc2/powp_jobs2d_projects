@@ -19,7 +19,7 @@ public class CircleCanvasShape implements CanvasShape {
     @Override
     public List<DriverCommand> getCommands() {
         List<DriverCommand> commands = new ArrayList<>();
-        double increment = Math.PI / 180; // Increment angle in radians for drawing the circle
+        double increment = Math.PI / 180;
         double angle = 0.0;
 
         int startX = x + radius;
@@ -34,7 +34,7 @@ public class CircleCanvasShape implements CanvasShape {
             commands.add(new OperateToCommand(newX, newY));
         }
 
-        commands.add(new OperateToCommand(startX, startY)); // Close the circle
+        commands.add(new OperateToCommand(startX, startY));
 
         return commands;
     }

@@ -5,10 +5,11 @@ import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.SelectDriverMenuOptionListener;
 import edu.kis.powp.jobs2d.drivers.gui.UpdateDriverInfoObserver;
+import edu.kis.powp.jobs2d.extended_driver_options.DriverOptionsComposite;
 
 public class DriverFeature {
 
-    private static DriverManager driverManager = new DriverManager();
+    private static final DriverManager driverManager = new DriverManager();
     private static Application app;
 
     public static DriverManager getDriverManager() {
@@ -36,6 +37,8 @@ public class DriverFeature {
     public static void addDriver(String name, Job2dDriver driver) {
         SelectDriverMenuOptionListener listener = new SelectDriverMenuOptionListener(driver, driverManager);
         app.addComponentMenuElement(DriverFeature.class, name, listener);
+
+        setUsingDriverIfNotExist(driver);
     }
 
     /**
@@ -43,6 +46,20 @@ public class DriverFeature {
      */
     public static void updateDriverInfo() {
         app.updateInfo(driverManager.getCurrentDriver().toString());
+    }
+
+
+    /**
+     * Sets using driver to given in param if currently using driver is null.
+     *
+     * @param driver Job2dDriver object.
+     */
+    private static void setUsingDriverIfNotExist(Job2dDriver driver) {
+        if (driverManager.getCurrentDriver() != null)
+            return;
+
+        driverManager.setCurrentDriver(driver);
+        DriverOptionsComposite.getInstance().setUsingDriver(driver);
     }
 
 }

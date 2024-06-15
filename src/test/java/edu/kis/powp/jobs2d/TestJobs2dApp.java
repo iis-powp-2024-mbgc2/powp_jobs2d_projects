@@ -157,25 +157,31 @@ public class TestJobs2dApp {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Application app = new Application("Jobs 2D");
-                DrawerFeature.setupDrawerPlugin(app);
-                CommandsFeature.setupCommandManager();
-                RecordFeature.setupRecorderPlugin(app);
-                DriverFeature.setupDriverPlugin(app);
-                MouseSettingsFeature.setupMouseSettingsFeature(app);
-                CanvasFeature.setupCanvasFeature(app);
-                setupDrivers(app);
-                setupPresetTests(app);
-                setupCommandTests(app);
-                setupVisitorTests(app);
-                setupCommandTransformationVisitorTests(app);
-                setupLogger(app);
-                setupWindows(app);
-                setupImporters();
-                app.setVisibility(true);
-            }
+        EventQueue.invokeLater(() -> {
+            Application app = new Application("Jobs 2D");
+
+            DrawerFeature.setupDrawerPlugin(app);
+            CommandsFeature.setupCommandManager();
+            RecordFeature.setupRecorderPlugin(app);
+            UsageMonitorFeature.setupUsageMonitorPlugin(app);
+            MouseSettingsFeature.setupMouseSettingsFeature(app);
+
+            DriverFeature.setupDriverPlugin(app);
+            ExtendedDriverFeature.setupExtendedDriverPlugin(app);
+
+            CanvasFeature.setupCanvasFeature(app);
+
+            setupDrivers();
+            setupExtendedDrivers();
+            setupPresetTests(app);
+            setupCommandTests(app);
+            setupVisitorTests(app);
+            setupCommandTransformationVisitorTests(app);
+            setupLogger(app);
+            setupWindows(app);
+            setupImporters();
+
+            app.setVisibility(true);
         });
     }
 

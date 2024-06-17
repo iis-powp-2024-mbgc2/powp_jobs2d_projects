@@ -14,9 +14,9 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-public class MouseClickEditor extends MouseClickConverter implements MouseClickListener {
+public class CommandEditor extends MouseClickConverter implements MouseClickListener {
     private Job2dDriver driver;
-    private final CompoundCommand compoundCommand;
+    private CompoundCommand compoundCommand;
     private DriverCommand selectedPoint = null;
     private final DrawPanelController drawPanelController;
     private final DefaultDrawerFrame commandPreviewPanel;
@@ -25,7 +25,7 @@ public class MouseClickEditor extends MouseClickConverter implements MouseClickL
         this.driver = driver;
     }
 
-    public MouseClickEditor(JPanel drawArea, CompoundCommand compoundCommand, Job2dDriver driver, DrawPanelController drawPanelController, DefaultDrawerFrame commandPreviewPanel) {
+    public CommandEditor(JPanel drawArea, CompoundCommand compoundCommand, Job2dDriver driver, DrawPanelController drawPanelController, DefaultDrawerFrame commandPreviewPanel) {
         super(drawArea);
         this.compoundCommand = compoundCommand;
         this.driver = driver;
@@ -35,6 +35,8 @@ public class MouseClickEditor extends MouseClickConverter implements MouseClickL
 
     @Override
     public void mouseReleased(MouseEvent event) {
+        if (compoundCommand == null)
+            return;
         int buttonPressed = event.getButton();
         Point position = getClickPosition(event);
 
@@ -44,6 +46,8 @@ public class MouseClickEditor extends MouseClickConverter implements MouseClickL
     }
     @Override
     public void mousePressed(MouseEvent event) {
+        if (compoundCommand == null)
+            return;
         int buttonPressed = event.getButton();
         Point position = getClickPosition(event);
         switch (buttonPressed) {
@@ -213,6 +217,16 @@ public class MouseClickEditor extends MouseClickConverter implements MouseClickL
                 return command;
         }
         return null;
+    }
+
+    public void clear() {
+        selectedPoint = null;
+    }
+
+    public void setCompoundCommand(CompoundCommand currentCommand) {
+        clear();
+        this.compoundCommand = currentCommand;
+        refreshScreen();
     }
 
     private static class SelectedPointLine extends AbstractLine {

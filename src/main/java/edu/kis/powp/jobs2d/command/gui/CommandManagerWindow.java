@@ -6,7 +6,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,9 +18,7 @@ import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
-import edu.kis.powp.jobs2d.drivers.MouseClickConverter;
-import edu.kis.powp.jobs2d.drivers.EditorDriver;
-import edu.kis.powp.jobs2d.drivers.MouseClickEditor;
+import edu.kis.powp.jobs2d.drivers.CommandEditor;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
@@ -35,7 +32,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private String observerListString;
     private JTextArea observerListField;
     private ArrayList<Point> points;
-    private MouseClickEditor mouseClickEditor;
+    private CommandEditor commandEditor;
     private JTextArea explanationField;
 
     private final JPanel drawArea;
@@ -131,8 +128,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnClearObservers, c);
 
-
-        this.points = new ArrayList<>();
+        this.commandEditor = new CommandEditor(drawArea, (CompoundCommand) (commandManager.getCurrentCommand()), previewLineDriver, drawPanelController, commandPreviewPanel);
 
     }
 
@@ -169,8 +165,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
         drawPanelController.clearPanel();
-        this.mouseClickEditor = new MouseClickEditor(drawArea, (CompoundCommand) (commandManager.getCurrentCommand()), previewLineDriver, drawPanelController, commandPreviewPanel);
-        commandManager.getCurrentCommand().execute(previewLineDriver);
+        commandEditor.setCompoundCommand((CompoundCommand) commandManager.getCurrentCommand());
+        if (commandManager.getCurrentCommand() != null)
+            commandManager.getCurrentCommand().execute(previewLineDriver);
+        System.out.println("updateCurrentCommandField");
     }
 
     public void updateExplanationField() {

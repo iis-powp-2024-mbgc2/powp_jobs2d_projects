@@ -2,6 +2,8 @@ package edu.kis.powp.jobs2d.command;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 
+import java.awt.Point;
+
 /**
  * Implementation of Job2dDriverCommand for operateTo command functionality.
  */
@@ -38,5 +40,10 @@ public class OperateToCommand implements DriverCommand {
 
     public void setY(int posY) {
         this.posY = posY;
+    }
+
+    @Override
+    public Point getPoint() {
+        return new Point(posX, posY);
     }
 }

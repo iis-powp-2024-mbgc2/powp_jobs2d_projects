@@ -138,21 +138,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private void toggleEdit() {
         System.out.println("toggle edit");
-        //((ICompoundCommand) commandManager.getCurrentCommand()).iterator().forEachRemaining((DriverCommand command) ->{
-        //    //System.out.println(command);
-        //    if (command instanceof OperateToCommand) {
-        //        int x = ((OperateToCommand) command).getX();
-        //        int y = ((OperateToCommand) command).getY();
-        //        //System.out.println("operate " + x + ", " + y);
-        //        points.add(new Point(x,y));
-        //    }
-        //    if (command instanceof SetPositionCommand) {
-        //        int x = ((SetPositionCommand) command).getX();
-        //        int y = ((SetPositionCommand) command).getY();
-        //        //System.out.println("set " + x + ", " + y);
-        //        points.add(new Point(x,y));
-        //    }
-        //});
     }
 
     private void importCommandFromFile() {
@@ -183,10 +168,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     public void updateCurrentCommandField() {
         currentCommandField.setText(commandManager.getCurrentCommandString());
-        this.mouseClickEditor = new MouseClickEditor(drawArea, (ICompoundCommand) commandManager.getCurrentCommand(), previewLineDriver, drawPanelController);
-        //Iterator<DriverCommand> iterator = ((ICompoundCommand) commandManager.getCurrentCommand()).iterator();
-
         drawPanelController.clearPanel();
+        this.mouseClickEditor = new MouseClickEditor(drawArea, (CompoundCommand) (commandManager.getCurrentCommand()), previewLineDriver, drawPanelController, commandPreviewPanel);
         commandManager.getCurrentCommand().execute(previewLineDriver);
     }
 

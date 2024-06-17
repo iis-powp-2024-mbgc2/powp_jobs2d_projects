@@ -2,6 +2,8 @@ package edu.kis.powp.jobs2d.command;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
 
+import java.awt.*;
+
 /**
  * DriverCommand interface.
  */
@@ -18,4 +20,5 @@ public interface DriverCommand {
     public int getY();
     public void setX(int x);
     public void setY(int y);
+    public Point getPoint();
 }

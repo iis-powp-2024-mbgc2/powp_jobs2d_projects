@@ -4,6 +4,7 @@ import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 import edu.kis.powp.jobs2d.command.factory.CompoundCommandRectangleFactory;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
 import java.awt.event.ActionEvent;
@@ -24,7 +25,7 @@ public class SelectLoadDeeplyComplexCommandOptionListener implements ActionListe
         deeplyCompoundCommand.addCommand(compoundCommand1);
         deeplyCompoundCommand.addCommand(compoundCommand2);
 
-        CommandManager manager = CommandsFeature.getCommandManager();
+        ICommandManager manager = CommandsFeature.getCommandManager();
         manager.setCurrentCommand(deeplyCompoundCommand.getCommands(), "Deeply complex command");
     }
 }

@@ -6,7 +6,6 @@ import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.legacy.drawer.shape.line.AbstractLine;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.*;
-import edu.kis.powp.jobs2d.events.MouseClickListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +13,10 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
-public class CommandEditor extends MouseClickConverter implements MouseClickListener {
+public class CommandEditor extends MouseClickConverter {
     private Job2dDriver driver;
     private CompoundCommand compoundCommand;
-    private DriverCommand selectedPoint = null;
+    private DriverCommand selectedCommand = null;
     private final DrawPanelController drawPanelController;
     private final DefaultDrawerFrame commandPreviewPanel;
 
@@ -65,7 +64,7 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
     }
 
     private void unselectPoint() {
-        selectedPoint = null;
+        selectedCommand = null;
         refreshScreen();
     }
 
@@ -89,16 +88,16 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
         JMenuItem changeToSetPositionItem = new JMenuItem("Detach Point");
 
 
-        deleteItem.addActionListener(e -> deletePoint());
-        addItem.addActionListener(e -> addPoint(position));
+        deleteItem.addActionListener(e -> deleteSelectedCommand());
+        addItem.addActionListener(e -> addCommand(position));
         changeToSetPositionItem.addActionListener(e -> changeToSetPosition());
 
-        if (selectedPoint == null) {
+        if (selectedCommand == null) {
             deleteItem.setEnabled(false);
             changeToSetPositionItem.setEnabled(false);
 
         }else{
-            if (!(selectedPoint instanceof OperateToCommand))
+            if (!(selectedCommand instanceof OperateToCommand))
                 changeToSetPositionItem.setEnabled(false);
         }
 
@@ -113,11 +112,11 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
         System.out.println("Right button clicked");
     }
 
-    private void deletePoint() {
-        if (selectedPoint == null)
+    private void deleteSelectedCommand() {
+        if (selectedCommand == null)
             return;
-        compoundCommand.removeCommand(selectedPoint);
-        selectedPoint = null;
+        compoundCommand.removeCommand(selectedCommand);
+        selectedCommand = null;
         refreshScreen();
     }
 
@@ -129,9 +128,9 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
     }
 
     private void showSelectedPoint() {
-        if (selectedPoint == null)
+        if (selectedCommand == null)
             return;
-        Point position = selectedPoint.getPoint();
+        Point position = selectedCommand.getPoint();
         ILine line = new SelectedPointLine();
         line.setStartCoordinates(position.x, position.y);
         line.setEndCoordinates(position.x, position.y);
@@ -156,7 +155,7 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
         List<Point> points = commandToPoints();
         Optional<Point> closestPoint = points.stream().min(Comparator.comparingDouble(point -> point.distance(position)));
         if (closestPoint.isPresent() && closestPoint.get().distance(position) < 20) {
-            this.selectedPoint = findCommand(closestPoint.get(), compoundCommand.iterator());
+            this.selectedCommand = findCommand(closestPoint.get(), compoundCommand.iterator());
         } else {
             unselectPoint();
         }
@@ -164,32 +163,32 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
     }
 
     private void changeToSetPosition() {
-        if (selectedPoint instanceof SetPositionCommand)
+        if (selectedCommand instanceof SetPositionCommand)
             return;
-        int index = compoundCommand.getCommands().indexOf(selectedPoint);
-        SetPositionCommand setPositionCommand = new SetPositionCommand(selectedPoint.getX(), selectedPoint.getY());
+        int index = compoundCommand.getCommands().indexOf(selectedCommand);
+        SetPositionCommand setPositionCommand = new SetPositionCommand(selectedCommand.getX(), selectedCommand.getY());
         compoundCommand.addCommand(setPositionCommand, index);
-        compoundCommand.removeCommand(selectedPoint);
-        selectedPoint = setPositionCommand;
+        compoundCommand.removeCommand(selectedCommand);
+        selectedCommand = setPositionCommand;
         refreshScreen();
     }
 
     private void selectPoint(DriverCommand command) {
-        this.selectedPoint = command;
+        this.selectedCommand = command;
         refreshScreen();
     }
 
 
-    private void addPoint(Point position) {
+    private void addCommand(Point position) {
         int index;
-        if (selectedPoint == null) {
+        if (selectedCommand == null) {
             index = compoundCommand.getCommands().toArray().length;
             SetPositionCommand setPositionCommand = new SetPositionCommand(position.x, position.y);
             compoundCommand.addCommand(setPositionCommand, index);
             index++;
         }
         else {
-            index = compoundCommand.getCommands().indexOf(selectedPoint) + 1;
+            index = compoundCommand.getCommands().indexOf(selectedCommand) + 1;
         }
         System.out.println("Index: " + index);
 
@@ -203,10 +202,10 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
 
 
     private void movePoint(Point position) {
-        if (selectedPoint == null)
+        if (selectedCommand == null)
             return;
-        selectedPoint.setX(position.x);
-        selectedPoint.setY(position.y);
+        selectedCommand.setX(position.x);
+        selectedCommand.setY(position.y);
         refreshScreen();
     }
 
@@ -220,7 +219,7 @@ public class CommandEditor extends MouseClickConverter implements MouseClickList
     }
 
     public void clear() {
-        selectedPoint = null;
+        selectedCommand = null;
     }
 
     public void setCompoundCommand(CompoundCommand currentCommand) {

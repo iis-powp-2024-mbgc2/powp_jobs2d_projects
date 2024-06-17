@@ -31,7 +31,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private String observerListString;
     private JTextArea observerListField;
-    private ArrayList<Point> points;
     private CommandEditor commandEditor;
     private JTextArea explanationField;
 
@@ -83,13 +82,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(explanationField, c);
         this.updateExplanationField();
 
-        JButton btnToggleEdit = new JButton("Toggle edit");
-        btnToggleEdit.addActionListener((ActionEvent e)->toggleEdit());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
-        content.add(btnToggleEdit, c);
+
 
         commandPreviewPanel = new DefaultDrawerFrame();
         drawPanelController = new DrawPanelController();
@@ -131,11 +124,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         this.commandEditor = new CommandEditor(drawArea, (CompoundCommand) (commandManager.getCurrentCommand()), previewLineDriver, drawPanelController, commandPreviewPanel);
 
     }
-
-    private void toggleEdit() {
-        System.out.println("toggle edit");
-    }
-
     private void importCommandFromFile() {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -172,7 +160,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     public void updateExplanationField() {
-        explanationField.setText("LMB-select point\nMMB-add new point\nRMB-move selected point");
+        explanationField.setText(
+                "LMB - Drag to move points\n" +
+                "RMB - Open context menu");
     }
 
     public void deleteObservers() {

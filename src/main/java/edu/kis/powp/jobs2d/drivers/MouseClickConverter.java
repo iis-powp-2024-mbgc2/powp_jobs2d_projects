@@ -33,7 +33,7 @@ public class MouseClickConverter extends MouseAdapter implements MouseClickListe
         handleDriver(position, buttonPressed);
     }
 
-    Point getClickPosition(MouseEvent event) {
+    protected Point getClickPosition(MouseEvent event) {
         int x = event.getX();
         int y = event.getY();
 

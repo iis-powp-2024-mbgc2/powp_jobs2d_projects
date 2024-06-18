@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.command;
 import edu.kis.powp.jobs2d.Job2dDriver;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
 
 public class CompoundCommand implements ICompoundCommand {
     private List<DriverCommand> commands = new ArrayList<>();
-    private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    transient private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String name;
 
     public CompoundCommand(String name) {
@@ -96,5 +97,9 @@ public class CompoundCommand implements ICompoundCommand {
     @Override
     public Point getPoint() {
         return new Point(getX(), getY());
+    }
+
+    public void replace(CompoundCommand compoundCommand) {
+        this.commands = compoundCommand.getCommands();
     }
 }

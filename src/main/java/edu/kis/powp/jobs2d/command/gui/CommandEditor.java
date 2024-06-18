@@ -1,4 +1,4 @@
-package edu.kis.powp.jobs2d.drivers;
+package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.legacy.drawer.panel.DefaultDrawerFrame;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
@@ -6,10 +6,15 @@ import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.legacy.drawer.shape.line.AbstractLine;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.*;
+import edu.kis.powp.jobs2d.command.memento.EditCommand;
+import edu.kis.powp.jobs2d.command.memento.EditHistory;
+import edu.kis.powp.jobs2d.command.memento.Memento;
+import edu.kis.powp.jobs2d.drivers.MouseClickConverter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -19,6 +24,7 @@ public class CommandEditor extends MouseClickConverter {
     private DriverCommand selectedCommand = null;
     private final DrawPanelController drawPanelController;
     private final DefaultDrawerFrame commandPreviewPanel;
+    private final EditHistory history = new EditHistory();
 
     public void setDriver(Job2dDriver driver) {
         this.driver = driver;
@@ -115,7 +121,7 @@ public class CommandEditor extends MouseClickConverter {
     private void deleteSelectedCommand() {
         if (selectedCommand == null)
             return;
-        compoundCommand.removeCommand(selectedCommand);
+        execute(new DeleteCommand(compoundCommand, selectedCommand));
         selectedCommand = null;
         refreshScreen();
     }
@@ -142,9 +148,12 @@ public class CommandEditor extends MouseClickConverter {
 
             Point point = new Point((command).getX(), (command).getY());
             ILine line;
-            if (command instanceof SetPositionCommand) line = new SetPositionLine();
-            else if (command instanceof OperateToCommand) line = new OperateToLine();
-            else return;
+            if (command instanceof SetPositionCommand)
+                line = new SetPositionLine();
+            else if (command instanceof OperateToCommand)
+                line = new OperateToLine();
+            else
+                return;
             line.setStartCoordinates(point.x, point.y);
             line.setEndCoordinates(point.x, point.y);
             drawPanelController.drawLine(line);
@@ -154,48 +163,23 @@ public class CommandEditor extends MouseClickConverter {
     private void selectPoint(Point position) {
         List<Point> points = commandToPoints();
         Optional<Point> closestPoint = points.stream().min(Comparator.comparingDouble(point -> point.distance(position)));
-        if (closestPoint.isPresent() && closestPoint.get().distance(position) < 20) {
+        if (closestPoint.isPresent() && closestPoint.get().distance(position) < 20)
             this.selectedCommand = findCommand(closestPoint.get(), compoundCommand.iterator());
-        } else {
+        else
             unselectPoint();
-        }
         refreshScreen();
     }
 
     private void changeToSetPosition() {
         if (selectedCommand instanceof SetPositionCommand)
             return;
-        int index = compoundCommand.getCommands().indexOf(selectedCommand);
-        SetPositionCommand setPositionCommand = new SetPositionCommand(selectedCommand.getX(), selectedCommand.getY());
-        compoundCommand.addCommand(setPositionCommand, index);
-        compoundCommand.removeCommand(selectedCommand);
-        selectedCommand = setPositionCommand;
-        refreshScreen();
-    }
-
-    private void selectPoint(DriverCommand command) {
-        this.selectedCommand = command;
+        execute(new ChangeToSetPositionCommand(compoundCommand, selectedCommand));
         refreshScreen();
     }
 
 
     private void addCommand(Point position) {
-        int index;
-        if (selectedCommand == null) {
-            index = compoundCommand.getCommands().toArray().length;
-            SetPositionCommand setPositionCommand = new SetPositionCommand(position.x, position.y);
-            compoundCommand.addCommand(setPositionCommand, index);
-            index++;
-        }
-        else {
-            index = compoundCommand.getCommands().indexOf(selectedCommand) + 1;
-        }
-        System.out.println("Index: " + index);
-
-        OperateToCommand operateToCommand = new OperateToCommand(position.x, position.y);
-
-        selectPoint(operateToCommand);
-        compoundCommand.addCommand(operateToCommand, index);
+        execute(new AddCommand(compoundCommand, selectedCommand, position));
         refreshScreen();
     }
 
@@ -204,8 +188,7 @@ public class CommandEditor extends MouseClickConverter {
     private void movePoint(Point position) {
         if (selectedCommand == null)
             return;
-        selectedCommand.setX(position.x);
-        selectedCommand.setY(position.y);
+        execute(new MoveCommand(selectedCommand, position));
         refreshScreen();
     }
 
@@ -218,14 +201,13 @@ public class CommandEditor extends MouseClickConverter {
         return null;
     }
 
-    public void clear() {
-        selectedCommand = null;
-    }
-
     public void setCompoundCommand(CompoundCommand currentCommand) {
-        clear();
         this.compoundCommand = currentCommand;
         refreshScreen();
+    }
+
+    public void restartMemento() {
+        history.clear();
     }
 
     private static class SelectedPointLine extends AbstractLine {
@@ -248,5 +230,134 @@ public class CommandEditor extends MouseClickConverter {
             this.color = Color.BLUE;
             this.thickness = 6.0F;
         }
+    }
+
+    public void execute(EditCommand c) {
+        history.push(c, new Memento(this));
+        c.execute();
+    }
+
+    static class AddCommand implements EditCommand {
+        private final CompoundCommand compoundCommand;
+        private DriverCommand selectedCommand;
+        private final Point position;
+
+        public AddCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand, Point position) {
+            this.compoundCommand = compoundCommand;
+            this.selectedCommand = selectedCommand;
+            this.position = position;
+        }
+
+        @Override
+        public void execute() {
+            int index;
+            if (selectedCommand == null) {
+                index = compoundCommand.getCommands().toArray().length;
+                SetPositionCommand setPositionCommand = new SetPositionCommand(position.x, position.y);
+                compoundCommand.addCommand(setPositionCommand, index);
+                index++;
+            } else {
+                index = compoundCommand.getCommands().indexOf(selectedCommand) + 1;
+            }
+            System.out.println("Index: " + index);
+
+            OperateToCommand operateToCommand = new OperateToCommand(position.x, position.y);
+
+            selectedCommand = operateToCommand;
+            compoundCommand.addCommand(operateToCommand, index);
+        }
+    }
+
+    static class DeleteCommand implements EditCommand {
+        private final CompoundCommand compoundCommand;
+        private final DriverCommand selectedCommand;
+
+        public DeleteCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand) {
+            this.compoundCommand = compoundCommand;
+            this.selectedCommand = selectedCommand;
+        }
+
+        @Override
+        public void execute() {
+            compoundCommand.removeCommand(selectedCommand);
+        }
+    }
+
+    static class ChangeToSetPositionCommand implements EditCommand {
+        private final CompoundCommand compoundCommand;
+        private final DriverCommand selectedCommand;
+
+        public ChangeToSetPositionCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand) {
+            this.compoundCommand = compoundCommand;
+            this.selectedCommand = selectedCommand;
+        }
+
+        @Override
+        public void execute() {
+            int index = compoundCommand.getCommands().indexOf(selectedCommand);
+            SetPositionCommand setPositionCommand = new SetPositionCommand(selectedCommand.getX(), selectedCommand.getY());
+            compoundCommand.addCommand(setPositionCommand, index);
+            compoundCommand.removeCommand(selectedCommand);
+        }
+    }
+
+    static class MoveCommand implements EditCommand {
+        private final DriverCommand command;
+        private final Point position;
+
+        public MoveCommand(DriverCommand command, Point position) {
+            this.command = command;
+            this.position = position;
+        }
+
+        @Override
+        public void execute() {
+            System.out.println("Moving point to: " + position);
+            command.setX(position.x);
+            command.setY(position.y);
+        }
+    }
+
+    public void undo() {
+        history.undo();
+        unselectPoint();
+        refreshScreen();
+    }
+
+    public void redo() {
+        history.redo();
+        unselectPoint();
+        refreshScreen();
+    }
+
+    public String backup() {
+        try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+             ObjectOutputStream objectStream = new ObjectOutputStream(byteStream)) {
+
+            objectStream.writeObject(compoundCommand);
+            objectStream.flush();
+
+            byte[] bytes = byteStream.toByteArray();
+            return Base64.getEncoder().encodeToString(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public void restore(String state) {
+        byte[] bytes = Base64.getDecoder().decode(state);
+        try (ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+             ObjectInputStream objectStream = new ObjectInputStream(byteStream)) {
+
+            compoundCommand.replace((CompoundCommand) objectStream.readObject());
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException occurred.");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("IOException occurred.");
+            e.printStackTrace();
+        }
+        refreshScreen();
     }
 }

@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -18,7 +17,6 @@ import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.*;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
-import edu.kis.powp.jobs2d.drivers.CommandEditor;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
@@ -81,6 +79,35 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(explanationField, c);
         this.updateExplanationField();
+
+
+
+        Box hbox = Box.createHorizontalBox();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        content.add(hbox, c);
+
+        JButton btnUndo = new JButton("Undo");
+        btnUndo.addActionListener((ActionEvent e) -> this.commandEditor.undo());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+
+        hbox.add(btnUndo, c);
+        JButton btnRedo = new JButton("Redo");
+        btnRedo.addActionListener((ActionEvent e) -> this.commandEditor.redo());
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.weighty = 1;
+        hbox.add(btnRedo, c);
+
+
+
+
 
 
 
@@ -154,6 +181,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         currentCommandField.setText(commandManager.getCurrentCommandString());
         drawPanelController.clearPanel();
         commandEditor.setCompoundCommand((CompoundCommand) commandManager.getCurrentCommand());
+        commandEditor.restartMemento();
         if (commandManager.getCurrentCommand() != null)
             commandManager.getCurrentCommand().execute(previewLineDriver);
         System.out.println("updateCurrentCommandField");

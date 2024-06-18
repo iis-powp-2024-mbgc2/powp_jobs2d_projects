@@ -6,9 +6,8 @@ import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.legacy.drawer.shape.line.AbstractLine;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.*;
-import edu.kis.powp.jobs2d.command.memento.EditCommand;
-import edu.kis.powp.jobs2d.command.memento.EditHistory;
-import edu.kis.powp.jobs2d.command.memento.Memento;
+import edu.kis.powp.jobs2d.command.builder.CommandEditorBuilder;
+import edu.kis.powp.jobs2d.command.memento.*;
 import edu.kis.powp.jobs2d.drivers.MouseClickConverter;
 
 import javax.swing.*;
@@ -24,18 +23,19 @@ public class CommandEditor extends MouseClickConverter {
     private DriverCommand selectedCommand = null;
     private final DrawPanelController drawPanelController;
     private final DefaultDrawerFrame commandPreviewPanel;
-    private final EditHistory history = new EditHistory();
+    private EditHistory history;
 
     public void setDriver(Job2dDriver driver) {
         this.driver = driver;
     }
 
-    public CommandEditor(JPanel drawArea, CompoundCommand compoundCommand, Job2dDriver driver, DrawPanelController drawPanelController, DefaultDrawerFrame commandPreviewPanel) {
-        super(drawArea);
-        this.compoundCommand = compoundCommand;
-        this.driver = driver;
-        this.drawPanelController = drawPanelController;
-        this.commandPreviewPanel = commandPreviewPanel;
+    public CommandEditor(CommandEditorBuilder builder) {
+        super(builder.drawArea);
+        this.compoundCommand = builder.compoundCommand;
+        this.driver = builder.driver;
+        this.drawPanelController = builder.drawPanelController;
+        this.commandPreviewPanel = builder.commandPreviewPanel;
+        this.history = new EditHistory(builder.commandManagerWindow);
     }
 
     @Override
@@ -57,13 +57,14 @@ public class CommandEditor extends MouseClickConverter {
         Point position = getClickPosition(event);
         switch (buttonPressed) {
             case MOUSE_BUTTON_LEFT:
-                selectPoint(position);
+                boolean succeed = selectPointNearby(position);
+                if (!succeed) unselectPoint();
                 break;
             case MOUSE_BUTTON_MID:
                 unselectPoint();
                 break;
             case MOUSE_BUTTON_RIGHT:
-                selectPoint(position);
+                selectPointNearby(position);
                 showContextMenu(event.getPoint(), position);
                 break;
         }
@@ -114,8 +115,6 @@ public class CommandEditor extends MouseClickConverter {
 
         popupMenu.show(commandPreviewPanel.getDrawArea(), contextMenuPosition.x, contextMenuPosition.y);
         popupMenu.setVisible(true);
-
-        System.out.println("Right button clicked");
     }
 
     private void deleteSelectedCommand() {
@@ -128,6 +127,8 @@ public class CommandEditor extends MouseClickConverter {
 
     private void refreshScreen() {
         drawPanelController.clearPanel();
+        if (compoundCommand == null)
+            return;
         compoundCommand.execute(driver);
         showSelectedPoint();
         showCommands();
@@ -160,20 +161,21 @@ public class CommandEditor extends MouseClickConverter {
         });
     }
 
-    private void selectPoint(Point position) {
+    private boolean selectPointNearby(Point position) {
         List<Point> points = commandToPoints();
         Optional<Point> closestPoint = points.stream().min(Comparator.comparingDouble(point -> point.distance(position)));
-        if (closestPoint.isPresent() && closestPoint.get().distance(position) < 20)
+        if (closestPoint.isPresent() && closestPoint.get().distance(position) < 20) {
             this.selectedCommand = findCommand(closestPoint.get(), compoundCommand.iterator());
-        else
-            unselectPoint();
-        refreshScreen();
+            refreshScreen();
+            return true;
+        }
+        return false;
     }
 
     private void changeToSetPosition() {
         if (selectedCommand instanceof SetPositionCommand)
             return;
-        execute(new ChangeToSetPositionCommand(compoundCommand, selectedCommand));
+        execute(new DetachCommand(compoundCommand, selectedCommand));
         refreshScreen();
     }
 
@@ -210,6 +212,10 @@ public class CommandEditor extends MouseClickConverter {
         history.clear();
     }
 
+    public EditHistory getHistory() {
+        return this.history;
+    }
+
     private static class SelectedPointLine extends AbstractLine {
         public SelectedPointLine() {
             super();
@@ -239,87 +245,6 @@ public class CommandEditor extends MouseClickConverter {
         m.setAfterState();
     }
 
-    static class AddCommand implements EditCommand {
-        private final CompoundCommand compoundCommand;
-        private DriverCommand selectedCommand;
-        private final Point position;
-
-        public AddCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand, Point position) {
-            this.compoundCommand = compoundCommand;
-            this.selectedCommand = selectedCommand;
-            this.position = position;
-        }
-
-        @Override
-        public void execute() {
-            int index;
-            if (selectedCommand == null) {
-                index = compoundCommand.getCommands().toArray().length;
-                SetPositionCommand setPositionCommand = new SetPositionCommand(position.x, position.y);
-                compoundCommand.addCommand(setPositionCommand, index);
-                index++;
-            } else {
-                index = compoundCommand.getCommands().indexOf(selectedCommand) + 1;
-            }
-            System.out.println("Index: " + index);
-
-            OperateToCommand operateToCommand = new OperateToCommand(position.x, position.y);
-
-            selectedCommand = operateToCommand;
-            compoundCommand.addCommand(operateToCommand, index);
-        }
-    }
-
-    static class DeleteCommand implements EditCommand {
-        private final CompoundCommand compoundCommand;
-        private final DriverCommand selectedCommand;
-
-        public DeleteCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand) {
-            this.compoundCommand = compoundCommand;
-            this.selectedCommand = selectedCommand;
-        }
-
-        @Override
-        public void execute() {
-            compoundCommand.removeCommand(selectedCommand);
-        }
-    }
-
-    static class ChangeToSetPositionCommand implements EditCommand {
-        private final CompoundCommand compoundCommand;
-        private final DriverCommand selectedCommand;
-
-        public ChangeToSetPositionCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand) {
-            this.compoundCommand = compoundCommand;
-            this.selectedCommand = selectedCommand;
-        }
-
-        @Override
-        public void execute() {
-            int index = compoundCommand.getCommands().indexOf(selectedCommand);
-            SetPositionCommand setPositionCommand = new SetPositionCommand(selectedCommand.getX(), selectedCommand.getY());
-            compoundCommand.addCommand(setPositionCommand, index);
-            compoundCommand.removeCommand(selectedCommand);
-        }
-    }
-
-    static class MoveCommand implements EditCommand {
-        private final DriverCommand command;
-        private final Point position;
-
-        public MoveCommand(DriverCommand command, Point position) {
-            this.command = command;
-            this.position = position;
-        }
-
-        @Override
-        public void execute() {
-            System.out.println("Moving point to: " + position);
-            command.setX(position.x);
-            command.setY(position.y);
-        }
-    }
-
     public void undo() {
         history.undo();
         unselectPoint();
@@ -333,14 +258,13 @@ public class CommandEditor extends MouseClickConverter {
     }
 
     public String backup() {
-        try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-             ObjectOutputStream objectStream = new ObjectOutputStream(byteStream)) {
+        try (ByteArrayOutputStream byteStream = new ByteArrayOutputStream(); ObjectOutputStream objectStream = new ObjectOutputStream(byteStream)) {
 
             objectStream.writeObject(compoundCommand);
             objectStream.flush();
-
             byte[] bytes = byteStream.toByteArray();
             return Base64.getEncoder().encodeToString(bytes);
+
         } catch (IOException e) {
             e.printStackTrace();
             return "";
@@ -349,15 +273,11 @@ public class CommandEditor extends MouseClickConverter {
 
     public void restore(String state) {
         byte[] bytes = Base64.getDecoder().decode(state);
-        try (ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
-             ObjectInputStream objectStream = new ObjectInputStream(byteStream)) {
+        try (ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes); ObjectInputStream objectStream = new ObjectInputStream(byteStream)) {
 
             compoundCommand.replace((CompoundCommand) objectStream.readObject());
-        } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException occurred.");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("IOException occurred.");
+
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
         refreshScreen();

@@ -16,6 +16,7 @@ import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.*;
+import edu.kis.powp.jobs2d.command.builder.CommandEditorBuilder;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
@@ -31,6 +32,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea observerListField;
     private CommandEditor commandEditor;
     private JTextArea explanationField;
+    private JTextArea historyField;
+    private JButton btnUndo, btnRedo;
 
     private final JPanel drawArea;
     final private Job2dDriver previewLineDriver;
@@ -80,35 +83,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(explanationField, c);
         this.updateExplanationField();
 
-
-
-        Box hbox = Box.createHorizontalBox();
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
-        content.add(hbox, c);
-
-        JButton btnUndo = new JButton("Undo");
-        btnUndo.addActionListener((ActionEvent e) -> this.commandEditor.undo());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
-
-        hbox.add(btnUndo, c);
-        JButton btnRedo = new JButton("Redo");
-        btnRedo.addActionListener((ActionEvent e) -> this.commandEditor.redo());
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.gridx = 0;
-        c.weighty = 1;
-        hbox.add(btnRedo, c);
-
-
-
-
-
+        Box historyPanel = createHistoryPanel();
+        content.add(historyPanel, c);
 
 
         commandPreviewPanel = new DefaultDrawerFrame();
@@ -148,9 +124,46 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnClearObservers, c);
 
-        this.commandEditor = new CommandEditor(drawArea, (CompoundCommand) (commandManager.getCurrentCommand()), previewLineDriver, drawPanelController, commandPreviewPanel);
+        this.commandEditor = new CommandEditorBuilder()
+                .setDrawArea(drawArea)
+                .setCompoundCommand((CompoundCommand) (commandManager.getCurrentCommand()))
+                .setDriver(previewLineDriver)
+                .setDrawPanelController(drawPanelController)
+                .setCommandPreviewPanel(commandPreviewPanel)
+                .setCommandManagerWindow(this)
+                .build();
 
     }
+
+    private Box createHistoryPanel() {
+        Box historyHBox = Box.createHorizontalBox();
+
+        btnUndo = new JButton("Undo");
+        btnUndo.addActionListener((ActionEvent e) -> this.commandEditor.undo());
+        historyHBox.add(btnUndo);
+
+        btnRedo = new JButton("Redo");
+        btnRedo.addActionListener((ActionEvent e) -> this.commandEditor.redo());
+        historyHBox.add(btnRedo);
+
+        Box historyVBox = Box.createVerticalBox();
+
+        JTextArea historyLabel = new JTextArea("History:");
+        historyLabel.setEditable(false);
+        historyVBox.add(historyLabel);
+
+        historyField = new JTextArea("");
+        historyField.setEditable(false);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.add(historyField);
+        historyVBox.add(scrollPane);
+        historyVBox.setMaximumSize(new Dimension(200,100));
+
+        historyHBox.add(historyVBox);
+        return historyHBox;
+    }
+
     private void importCommandFromFile() {
         try {
             JFileChooser chooser = new JFileChooser();
@@ -175,6 +188,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
+        updateHistory();
     }
 
     public void updateCurrentCommandField() {
@@ -218,5 +232,19 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         } else {
             this.setVisible(true);
         }
+    }
+
+    public void updateHistory() {
+
+        this.historyField.setText("");
+        this.btnUndo.setEnabled(commandEditor.getHistory().getVirtualSize() > 0);
+        this.btnRedo.setEnabled(commandEditor.getHistory().getVirtualSize() < commandEditor.getHistory().getHistoryList().size());
+        List<String> history = commandEditor.getHistory().getHistoryList();
+        int virtualSize = commandEditor.getHistory().getVirtualSize()-1;
+        if (virtualSize >= 0)
+            history.set(virtualSize, history.get(virtualSize) + " <-");
+
+        String historyString = String.join("\n", history);
+        this.historyField.setText(historyString);
     }
 }

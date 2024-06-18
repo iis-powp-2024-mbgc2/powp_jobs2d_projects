@@ -1,12 +1,23 @@
 package edu.kis.powp.jobs2d.command.memento;
 
+import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class EditHistory {
     private List<Pair> history = new ArrayList<>();
+    private final EditHistoryObserver editObserver;
     private int virtualSize = 0;
+
+
+    public EditHistory(CommandManagerWindow commandManagerWindow) {
+        editObserver = new EditHistoryObserver(commandManagerWindow);
+    }
+
+    public int getVirtualSize() {
+        return virtualSize;
+    }
 
     private class Pair {
         EditCommand command;
@@ -25,59 +36,56 @@ public class EditHistory {
         }
     }
 
-    public void printHistory() {
-        System.out.println("History:");
-        System.out.println(Arrays.toString(history.stream().map(pair1 -> pair1.getCommand().toString().split("\\$")[1]).toArray()));
+
+    public List<String> getHistoryList() {
+        List<String> historyList = new ArrayList<>();
+        for (Pair pair : history) {
+            historyList.add(pair.getCommand().toString());
+        }
+        return historyList;
     }
+
     public void push(EditCommand c, Memento m) {
-        System.out.printf("Pushing: %s\n", c);
         if (virtualSize != history.size() && virtualSize > 0) {
             history = history.subList(0, virtualSize - 1);
+        }else if (virtualSize == 0){
+            history.clear();
         }
         history.add(new Pair(c, m));
         virtualSize = history.size();
-        System.out.printf("Pushed: %s\n", c);
-        printHistory();
+        editObserver.update();
     }
 
     public boolean undo() {
         Pair pair = getUndo();
-        if (pair == null) {
-            System.out.println("No more undos");
+        if (pair == null)
             return false;
-        }
-        System.out.println("Undoing: " + pair.getCommand());
-        printHistory();
         pair.getMemento().restore();
+        editObserver.update();
         return true;
     }
 
     public boolean redo() {
         Pair pair = getRedo();
-        if (pair == null) {
-            System.out.println("No more redos");
+        if (pair == null)
             return false;
-        }
-        System.out.println("Redoing: " + pair.getCommand());
-        printHistory();
-        pair.getMemento().restoreAfter();
+        //pair.getMemento().restore();
         //pair.getCommand().execute();
+        pair.getMemento().restoreAfter();
+        editObserver.update();
         return true;
     }
 
     private Pair getUndo() {
-        if (virtualSize == 0) {
+        if (virtualSize == 0)
             return null;
-        }
         virtualSize = Math.max(0, virtualSize - 1);
         return history.get(virtualSize);
     }
 
     private Pair getRedo() {
-        if (virtualSize == history.size()) {
-            System.out.print("No more redos");
+        if (virtualSize == history.size())
             return null;
-        }
         virtualSize = Math.min(history.size(), virtualSize + 1);
         return history.get(virtualSize - 1);
     }
@@ -85,5 +93,6 @@ public class EditHistory {
     public void clear() {
         history.clear();
         virtualSize = 0;
+        editObserver.update();
     }
 }

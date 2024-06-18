@@ -2,7 +2,6 @@ package edu.kis.powp.jobs2d.drivers;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.line.BasicLine;
-import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.Line2dDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
@@ -53,7 +52,7 @@ public class DriverManager {
 
     public synchronized DriversComposite getCurrentDriverAndFeaturesComposite() {
         Map<Integer, IVisitableDriver> returnList = new TreeMap<>(this.currentFeaturesComposite.getMap());
-        returnList.put(1000, currentDriver);
+        returnList.put(Integer.MAX_VALUE, currentDriver);
 
         return new DriversComposite(returnList, this);
     }

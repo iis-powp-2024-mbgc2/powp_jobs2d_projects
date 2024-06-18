@@ -35,42 +35,32 @@ public class DriversComposite implements IVisitableDriver {
 
     @Override
     public void setPosition(int x, int y) {
-        int startXAtStart = driverManager.getCurrentDriver().getStartX();
-        int startYAtStart = driverManager.getCurrentDriver().getStartY();
-        int counter = 0;
-        for (Job2dDriver driver : map.values()) {
-            if (counter == 0) {
-                driver.setPosition(x, y);
-            }
-            else {
-                int startX = driverManager.getCurrentDriver().getStartX();
-                int startY = driverManager.getCurrentDriver().getStartY();
-                driverManager.getCurrentDriver().setStartX(startXAtStart);
-                driverManager.getCurrentDriver().setStartY(startYAtStart);
-                driver.setPosition(startX, startY);
-            }
-            counter++;
-        }
+        executeOperation(Job2dDriver::setPosition, x, y);
     }
 
     @Override
     public void operateTo(int x, int y) {
-        int startXAtStart = driverManager.getCurrentDriver().getStartX();
-        int startYAtStart = driverManager.getCurrentDriver().getStartY();
+        executeOperation(Job2dDriver::operateTo, x, y);
+    }
+
+    private void executeOperation(DriversCompositeOperation driversCompositeOperation, int x, int y) {
+        int startX = driverManager.getCurrentDriver().getStartX();
+        int startY = driverManager.getCurrentDriver().getStartY();
         int counter = 0;
         for (Job2dDriver driver : map.values()) {
-            if (counter == 0) {
-                driver.operateTo(x, y);
+            if (counter != 0) {
+                x = driverManager.getCurrentDriver().getStartX();
+                y = driverManager.getCurrentDriver().getStartY();
+                driverManager.getCurrentDriver().setStartX(startX);
+                driverManager.getCurrentDriver().setStartY(startY);
             }
-            else {
-                int startX = driverManager.getCurrentDriver().getStartX();
-                int startY = driverManager.getCurrentDriver().getStartY();
-                driverManager.getCurrentDriver().setStartX(startXAtStart);
-                driverManager.getCurrentDriver().setStartY(startYAtStart);
-                driver.operateTo(startX, startY);
-            }
-            counter ++;
+            driversCompositeOperation.executeOperation(driver, x, y);
+            counter++;
         }
+    }
+
+    private interface DriversCompositeOperation {
+        void executeOperation(Job2dDriver driver, int startX, int startY);
     }
 
     public String toString() {

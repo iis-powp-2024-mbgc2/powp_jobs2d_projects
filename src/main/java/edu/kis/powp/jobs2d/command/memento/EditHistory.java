@@ -69,8 +69,6 @@ public class EditHistory {
         Pair pair = getRedo();
         if (pair == null)
             return false;
-        //pair.getMemento().restore();
-        //pair.getCommand().execute();
         pair.getMemento().restoreAfter();
         editObserver.update();
         return true;

@@ -2,6 +2,7 @@ package edu.kis.powp.jobs2d.command.memento;
 
 import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.PointCommand;
 
 import java.awt.*;
 
@@ -20,7 +21,7 @@ public class DeleteCommand implements EditCommand {
     }
 
     public String toString() {
-        Point position = selectedCommand.getPoint();
+        Point position = ((PointCommand)selectedCommand).getPoint();
         return "Delete (" + position.x + ", " + position.y + ")";
     }
 }

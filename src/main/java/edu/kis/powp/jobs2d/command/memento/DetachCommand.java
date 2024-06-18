@@ -2,15 +2,16 @@ package edu.kis.powp.jobs2d.command.memento;
 
 import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.PointCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
 
 import java.awt.*;
 
 public class DetachCommand implements EditCommand {
     private final CompoundCommand compoundCommand;
-    private final DriverCommand selectedCommand;
+    private final PointCommand selectedCommand;
 
-    public DetachCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand) {
+    public DetachCommand(CompoundCommand compoundCommand, PointCommand selectedCommand) {
         this.compoundCommand = compoundCommand;
         this.selectedCommand = selectedCommand;
     }

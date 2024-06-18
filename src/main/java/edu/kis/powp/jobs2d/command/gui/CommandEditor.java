@@ -20,7 +20,7 @@ import java.util.List;
 public class CommandEditor extends MouseClickConverter {
     private Job2dDriver driver;
     private CompoundCommand compoundCommand;
-    private DriverCommand selectedCommand = null;
+    private PointCommand selectedCommand = null;
     private final DrawPanelController drawPanelController;
     private final DefaultDrawerFrame commandPreviewPanel;
     private EditHistory history;
@@ -78,7 +78,9 @@ public class CommandEditor extends MouseClickConverter {
     private List<Point> commandToPoints() {
         List<Point> points = new ArrayList<>();
         compoundCommand.iterator().forEachRemaining(command -> {
-            Point point = new Point((command).getX(), (command).getY());
+            if (command instanceof CompoundCommand)
+                return; //deeply nested commands are not supported
+            Point point = ((PointCommand)command).getPoint();
             points.add(point);
         });
         return points;
@@ -145,21 +147,21 @@ public class CommandEditor extends MouseClickConverter {
     }
 
     private void showCommands() {
-        compoundCommand.iterator().forEachRemaining(command -> {
-
-            Point point = new Point((command).getX(), (command).getY());
+        for (DriverCommand command : compoundCommand.getCommands()) {
             ILine line;
             if (command instanceof SetPositionCommand)
                 line = new SetPositionLine();
             else if (command instanceof OperateToCommand)
                 line = new OperateToLine();
             else
-                return;
+                continue;
+            Point point = ((PointCommand) command).getPoint();
             line.setStartCoordinates(point.x, point.y);
             line.setEndCoordinates(point.x, point.y);
             drawPanelController.drawLine(line);
-        });
+        }
     }
+
 
     private boolean selectPointNearby(Point position) {
         List<Point> points = commandToPoints();
@@ -194,9 +196,9 @@ public class CommandEditor extends MouseClickConverter {
         refreshScreen();
     }
 
-    private DriverCommand findCommand(Point point, Iterator<DriverCommand> iterator) {
+    private PointCommand findCommand(Point point, Iterator<DriverCommand> iterator) {
         while (iterator.hasNext()) {
-            DriverCommand command = iterator.next();
+            PointCommand command = (PointCommand) iterator.next();
             if (command.getX() == point.x && command.getY() == point.y)
                 return command;
         }

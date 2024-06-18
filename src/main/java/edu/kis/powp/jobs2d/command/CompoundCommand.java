@@ -74,29 +74,6 @@ public class CompoundCommand implements ICompoundCommand {
         return name;
     }
 
-    @Override
-    public int getX() {
-        return commands.get(0).getX();
-    }
-    @Override
-    public int getY() {
-        return commands.get(0).getY();
-    }
-
-    @Override
-    public void setX(int x) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setY(int y) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Point getPoint() {
-        return new Point(getX(), getY());
-    }
 
     public void replace(CompoundCommand compoundCommand) {
         this.commands = compoundCommand.getCommands();

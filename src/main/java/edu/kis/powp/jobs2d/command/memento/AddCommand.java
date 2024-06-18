@@ -1,18 +1,15 @@
 package edu.kis.powp.jobs2d.command.memento;
 
-import edu.kis.powp.jobs2d.command.CompoundCommand;
-import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.OperateToCommand;
-import edu.kis.powp.jobs2d.command.SetPositionCommand;
+import edu.kis.powp.jobs2d.command.*;
 
 import java.awt.*;
 
 public class AddCommand implements EditCommand {
     private final CompoundCommand compoundCommand;
-    private DriverCommand selectedCommand;
+    private PointCommand selectedCommand;
     private final Point position;
 
-    public AddCommand(CompoundCommand compoundCommand, DriverCommand selectedCommand, Point position) {
+    public AddCommand(CompoundCommand compoundCommand, PointCommand selectedCommand, Point position) {
         this.compoundCommand = compoundCommand;
         this.selectedCommand = selectedCommand;
         this.position = position;
@@ -29,8 +26,6 @@ public class AddCommand implements EditCommand {
         } else {
             index = compoundCommand.getCommands().indexOf(selectedCommand) + 1;
         }
-        System.out.println("Index: " + index);
-
         OperateToCommand operateToCommand = new OperateToCommand(position.x, position.y);
 
         selectedCommand = operateToCommand;

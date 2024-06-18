@@ -14,13 +14,7 @@ public final class ImmutableCompoundCommand implements ICompoundCommand {
     private final String name;
 
     public ImmutableCompoundCommand(List<DriverCommand> commands, String name) {
-        List<DriverCommand> deepCopiedCommands = new ArrayList<>();
-        DeepCopyVisitor deepCopyVisitor = new DeepCopyVisitor();
-        for (DriverCommand command : commands) {
-            command.accept(deepCopyVisitor);
-            deepCopiedCommands.add(deepCopyVisitor.getCopiedCommand());
-        }
-        this.commands = Collections.unmodifiableList(deepCopiedCommands);
+        this.commands = deepCopyCommands(commands);
         this.name = name;
     }
 
@@ -47,6 +41,16 @@ public final class ImmutableCompoundCommand implements ICompoundCommand {
     }
 
     public List<DriverCommand> getCommands() {
-        return Collections.unmodifiableList(commands);
+        return deepCopyCommands(this.commands);
+    }
+
+    private List<DriverCommand> deepCopyCommands(List<DriverCommand> commands) {
+        List<DriverCommand> deepCopiedCommands = new ArrayList<>();
+        DeepCopyVisitor deepCopyVisitor = new DeepCopyVisitor();
+        for (DriverCommand command : commands) {
+            command.accept(deepCopyVisitor);
+            deepCopiedCommands.add(deepCopyVisitor.getCopiedCommand());
+        }
+        return Collections.unmodifiableList(deepCopiedCommands);
     }
 }

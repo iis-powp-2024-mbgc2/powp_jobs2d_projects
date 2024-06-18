@@ -140,7 +140,7 @@ public class CommandEditor extends MouseClickConverter {
         ILine line = new SelectedPointLine();
         line.setStartCoordinates(position.x, position.y);
         line.setEndCoordinates(position.x, position.y);
-        commandToPoints().forEach(point -> drawPanelController.drawLine(line));
+        drawPanelController.drawLine(line);
     }
 
     private void showCommands() {

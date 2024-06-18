@@ -60,8 +60,8 @@ public class EditHistory {
         }
         System.out.println("Redoing: " + pair.getCommand());
         printHistory();
-        pair.getMemento().restore();
-        pair.getCommand().execute();
+        pair.getMemento().restoreAfter();
+        //pair.getCommand().execute();
         return true;
     }
 

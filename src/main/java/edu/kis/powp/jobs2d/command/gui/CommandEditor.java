@@ -233,8 +233,10 @@ public class CommandEditor extends MouseClickConverter {
     }
 
     public void execute(EditCommand c) {
-        history.push(c, new Memento(this));
+        Memento m = new Memento(this);
+        history.push(c, m);
         c.execute();
+        m.setAfterState();
     }
 
     static class AddCommand implements EditCommand {

@@ -32,7 +32,7 @@ public final class ImmutableCompoundCommand implements ICompoundCommand {
 
     @Override
     public Iterator<DriverCommand> iterator() {
-        return Collections.unmodifiableList(commands).iterator();
+        return deepCopyCommands(this.commands).iterator();
     }
 
     @Override

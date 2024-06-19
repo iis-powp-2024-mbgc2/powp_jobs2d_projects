@@ -12,6 +12,8 @@ import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.gui.ComplexCommandEditorWindow;
+import edu.kis.powp.jobs2d.command.gui.ComplexCommandEditorWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -130,10 +132,20 @@ public class TestJobs2dApp {
 
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager(), DriverFeature.getDriverManager());
         application.addWindowComponent("Command Manager", commandManager);
-
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
+
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
+
+        ComplexCommandEditorWindow complexCommandEditorWindow =
+                new ComplexCommandEditorWindow(CommandsFeature.getCommandManager());
+
+        application.addWindowComponent("Complex command editor", complexCommandEditorWindow);
+
+        ComplexCommandEditorWindowCommandChangeObserver editorWindowCommandChangeObserver =
+                new ComplexCommandEditorWindowCommandChangeObserver(complexCommandEditorWindow);
+        CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(editorWindowCommandChangeObserver);
+
     }
 
     /**

@@ -15,6 +15,10 @@ public class CommandCounterVisitor implements CommandVisitor {
         return setPositionCount;
     }
 
+    public int getAllCommandsCount() {
+        return operateToCount + setPositionCount;
+    }
+
     @Override
     public void visit(OperateToCommand operateToCommand) {
         if (operateToCount == 0) {

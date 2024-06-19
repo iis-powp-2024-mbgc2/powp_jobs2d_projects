@@ -1,6 +1,7 @@
 package edu.kis.powp.jobs2d.command;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.editor.CommandCoordinatesModifierVisitor;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,6 +49,39 @@ public class CompoundCommand implements ICompoundCommand {
 
     public void clearCommand() {
         commands.clear();
+    }
+
+    public void interchangeCommands(int commandIndex1, int commandIndex2) {
+        if (commands.isEmpty()) {
+            throw new IndexOutOfBoundsException("Compound command is empty");
+        }
+
+        if (commandIndex1 >= commands.size() || commandIndex1 < 0 || commandIndex2 >= commands.size() || commandIndex2 < 0) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
+        DriverCommand temp = commands.get(commandIndex1);
+
+        commands.set(commandIndex1, commands.get(commandIndex2));
+        commands.set(commandIndex2, temp);
+    }
+
+    public void modifyCoordinates(int commandIndex, int x, int y) {
+        if (commands.isEmpty()) {
+            throw new IndexOutOfBoundsException("Compound command is empty");
+        }
+
+        if (commandIndex >= commands.size() || commandIndex < 0) {
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        }
+
+        DriverCommand command = commands.get(commandIndex);
+
+        CommandCoordinatesModifierVisitor commandCoordinatesModifierVisitor = new CommandCoordinatesModifierVisitor(x, y);
+
+        command.accept(commandCoordinatesModifierVisitor);
+
+        commands.set(commandIndex, commandCoordinatesModifierVisitor.getCommand());
     }
 
     public List<DriverCommand> getCommands() {

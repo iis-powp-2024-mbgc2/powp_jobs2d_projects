@@ -97,12 +97,12 @@ public class ComplexCommandEditorWindow extends JFrame implements WindowComponen
         commandList.addListSelectionListener(this::handleListElementSelection);
 
         mainLeftPanel.setViewportView(commandList);
-        
+
         updateViewToCurrentCommand();
     }
 
     private void handleUpAndDownButtonsEvent(int index, int offset) {
-        complexCommandEditor.moveCommand(index);
+        complexCommandEditor.moveCommand(index, index + offset);
         updateJList(complexCommandEditor.getEditedCompoundCommand());
         commandList.setSelectedIndex(index + offset);
     }

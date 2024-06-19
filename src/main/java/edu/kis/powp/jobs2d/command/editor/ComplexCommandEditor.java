@@ -17,9 +17,9 @@ public class ComplexCommandEditor {
         return this.compoundCommand;
     }
 
-    public void moveCommand(int commandIndex) {
+    public void moveCommand(int x, int y) {
         try {
-            compoundCommand.interchangeCommands(commandIndex, commandIndex - 1);
+            compoundCommand.interchangeCommands(x, y);
         } catch (IndexOutOfBoundsException e) {
             logger.info(e.toString());
         }

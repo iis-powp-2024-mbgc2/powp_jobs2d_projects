@@ -1,9 +1,6 @@
 package edu.kis.powp.jobs2d.drivers.visitor;
 
-import edu.kis.powp.jobs2d.drivers.DriversComposite;
-import edu.kis.powp.jobs2d.drivers.LoggerDriver;
-import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.UsageMonitorDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.*;
 
 public interface DriverVisitor {
     void visit(LoggerDriver loggerDriver);

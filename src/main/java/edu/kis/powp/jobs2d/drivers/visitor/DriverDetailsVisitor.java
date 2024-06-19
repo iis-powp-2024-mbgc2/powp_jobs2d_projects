@@ -5,39 +5,45 @@ import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 
 public class DriverDetailsVisitor implements DriverVisitor {
-    private String details = "";
-
-    public String getDetails() { return this.details; }
-
+    private StringBuilder stringBuilder = new StringBuilder();
+    public void clear() { stringBuilder = new StringBuilder(); }
     public String getDetails(IDriver driver) {
+        clear();
         driver.accept(this);
-        return details;
+        return stringBuilder.toString();
     }
 
     @Override
     public void visit(LoggerDriver loggerDriver) {
         Pair<Integer, Integer> position = loggerDriver.getPosition();
-        details = "LoggerDriver details:\n" +
-                "Position: (" + position.getFirst() + "," + position.getSecond() + ")";
+        String details = "\nLoggerDriver details:" +
+                "\n Position: (" + position.getFirst() + "," + position.getSecond() + ")";
+        stringBuilder.append(details);
     }
 
     @Override
     public void visit(DriversComposite driverComposite) {
         int registeredDrivers = driverComposite.driversCount();
-        details = "DriversComposite details:\n" +
-                "Registered drivers count: " + registeredDrivers;
+        String details = "\nDriversComposite details:" +
+                "\n Registered drivers count: " + registeredDrivers;
+        stringBuilder.append(details);
     }
 
     @Override
     public void visit(RecordingDriverDecorator recordingDriverDecorator) {
-        String prefix = "RecordingDriver details:\n" + "Recording: ";
-        details = RecordFeature.isRecording() ? prefix + "true" : prefix + "false";
+        String isRecordingLabel = RecordFeature.isRecording() ? "true" : "false";
+        String details = "\nRecordingDriver details:" +
+                "\n Recording: " + isRecordingLabel +
+                "\n Serviced drivers:";
+        stringBuilder.append(details);
     }
 
     @Override
     public void visit(UsageMonitorDriverDecorator usageMonitorDriverDecorator) {
-        details = "UsageMonitorDriver details:" +
-                "\nCurrent headDistance: " + usageMonitorDriverDecorator.getHeadDistance() +
-                "\nCurrent opDistance: " + usageMonitorDriverDecorator.getOpDistance();
+        String details = "\nUsageMonitorDriver details:" +
+                "\n Current headDistance: " + usageMonitorDriverDecorator.getHeadDistance() +
+                "\n Current opDistance: " + usageMonitorDriverDecorator.getOpDistance() +
+                "\n Serviced driver:";
+        stringBuilder.append(details);
     }
 }

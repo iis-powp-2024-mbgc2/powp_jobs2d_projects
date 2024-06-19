@@ -45,6 +45,7 @@ public class DriversComposite implements IDriver {
     @Override
     public void accept(DriverVisitor visitor) {
         visitor.visit(this);
+        list.forEach(it -> it.accept(visitor));
     }
 
     public String toString() {

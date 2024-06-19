@@ -56,5 +56,6 @@ public class UsageMonitorDriverDecorator implements IDriver {
 
     public void accept(DriverVisitor visitor) {
         visitor.visit(this);
+        if(driver != null) driver.accept(visitor);
     }
 }

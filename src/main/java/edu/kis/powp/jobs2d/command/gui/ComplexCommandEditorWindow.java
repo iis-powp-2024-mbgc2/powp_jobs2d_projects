@@ -129,6 +129,7 @@ public class ComplexCommandEditorWindow extends JFrame implements WindowComponen
                 Integer.parseInt(paramXInput.getText()),
                 Integer.parseInt(paramYInput.getText())
         );
+        updateJList(complexCommandEditor.getEditedCompoundCommand());
     }
 
     private JPanel addNewPanelAndAddItToParentPanel(JPanel mainPanel) {
@@ -173,7 +174,6 @@ public class ComplexCommandEditorWindow extends JFrame implements WindowComponen
     }
 
     public void updateViewToCurrentCommand() {
-//        currentCommand = (CompoundCommand) CommandsFeature.getCommandManager().getCurrentCommand();
         currentCommand = (ICompoundCommand) commandManager.getCurrentCommand();
         if (currentCommand != null) {
             updateCommandStatistics(currentCommand);

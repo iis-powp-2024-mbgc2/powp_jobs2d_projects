@@ -20,45 +20,58 @@ enum PanelCreationOptions {
 
 public class ComplexCommandEditorWindow extends JFrame implements WindowComponent, CommandVisitor {
     public static final int NUMBER_OF_COLUMNS = 5;
+    public static final int WINDOW_HEIGHT = 600;
+    public static final int WINDOW_WIDTH = 850;
+    public static final int DIMENSION_WIDTH = 80;
+    public static final int DIMENSION_HEIGHT = 120;
     private JLabel commandNameValue;
     private JTextField paramXInput;
     private JTextField paramYInput;
     private JList<DriverCommand> commandList;
     private JLabel numberOfCommandsValue;
-    private final DefaultListModel<DriverCommand> listModel;
+    private DefaultListModel<DriverCommand> listModel;
 
 
     private ComplexCommandEditor complexCommandEditor;
-    private ICompoundCommand currentCommand;
-    private ICommandManager commandManager;
+    private final ICommandManager commandManager;
 
     public ComplexCommandEditorWindow(ICommandManager commandManager) {
         Container content = this.getContentPane();
-        content.setLayout(new BorderLayout());
-        this.setTitle("Complex command editor");
-        this.setSize(640, 480);
+        initializeWindow();
+        initializeTopPanel(content);
+        initializeMainPanel(content);
+        this.commandManager = commandManager;
+        updateViewToCurrentCommand();
+    }
 
+    private void initializeWindow() {
+        setTitle("Complex command editor");
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        setLayout(new BorderLayout());
+    }
 
+    private void initializeTopPanel(Container content) {
         JPanel topPanel = new JPanel();
-        topPanel.setPreferredSize(new Dimension(80, 120));
+        topPanel.setPreferredSize(new Dimension(DIMENSION_WIDTH, DIMENSION_HEIGHT));
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         content.add(topPanel, BorderLayout.PAGE_START);
 
-        // Top name panel
         JPanel topNamePanel = addNewPanelAndAddItToParentPanel(topPanel);
-
         commandNameValue = new JLabel();
         topNamePanel.add(commandNameValue);
-        // Top statistics panel
+
+        initializeTopStatisticsPanel(topPanel);
+    }
+
+    private void initializeTopStatisticsPanel(JPanel topPanel) {
         JPanel topStatisticsPanel = addNewPanelAndAddItToParentPanel(topPanel);
         preparePanel(PanelCreationOptions.LABEL_LABEL, "Number of commands: ", "N/A", topStatisticsPanel);
-
-        // Top statistics number panel
         JPanel topStatisticsNumberPanel = addNewPanelAndAddItToParentPanel(topStatisticsPanel);
         addLabels("Number of commands: ", topStatisticsNumberPanel);
         numberOfCommandsValue = addLabels("", topStatisticsNumberPanel);
+    }
 
-        // Main panel
+    private void initializeMainPanel(Container content) {
         JPanel mainPanel = new JPanel(new GridLayout(1, 2));
         content.add(mainPanel, BorderLayout.CENTER);
 
@@ -69,7 +82,11 @@ public class ComplexCommandEditorWindow extends JFrame implements WindowComponen
         mainRightPanel.setLayout(new BoxLayout(mainRightPanel, BoxLayout.Y_AXIS));
         mainPanel.add(mainRightPanel);
 
-        // Main right parameters panel
+        initializeMainStatisticsPanel(mainRightPanel);
+        initializeMainRightOrderPanel(mainRightPanel, mainLeftPanel);
+    }
+
+    private void initializeMainStatisticsPanel(JPanel mainRightPanel) {
         JPanel mainRightParametersPanel = addNewPanelAndAddItToParentPanel(mainRightPanel);
         addLabels("X: ", mainRightParametersPanel);
         paramXInput = addTextField("", mainRightParametersPanel);
@@ -79,17 +96,16 @@ public class ComplexCommandEditorWindow extends JFrame implements WindowComponen
 
 
         addButton("Change coordinates", this::handleChangeCoordinates, mainRightParametersPanel);
+    }
 
-        // Main right order panel
+    private void initializeMainRightOrderPanel(JPanel mainRightPanel, JScrollPane mainLeftPanel) {
         JPanel mainRightOrderPanel = addNewPanelAndAddItToParentPanel(mainRightPanel);
         addButton("Up", this::handleButtonUpClickedEvent, mainRightOrderPanel);
         addButton("Down", this::handleButtonDownClickedEvent, mainRightOrderPanel);
 
-        // Main right bottom panel
         JPanel mainRightBottomPanel = addNewPanelAndAddItToParentPanel(mainRightPanel);
         addButton("Apply changes", this::handleConfirmButton, mainRightBottomPanel);
 
-        this.commandManager = commandManager;
         listModel = new DefaultListModel<>();
         commandList = new JList<>(listModel);
 
@@ -97,9 +113,8 @@ public class ComplexCommandEditorWindow extends JFrame implements WindowComponen
         commandList.addListSelectionListener(this::handleListElementSelection);
 
         mainLeftPanel.setViewportView(commandList);
-
-        updateViewToCurrentCommand();
     }
+
 
     private void handleUpAndDownButtonsEvent(int index, int offset) {
         complexCommandEditor.moveCommand(index, index + offset);
@@ -174,7 +189,7 @@ public class ComplexCommandEditorWindow extends JFrame implements WindowComponen
     }
 
     public void updateViewToCurrentCommand() {
-        currentCommand = (ICompoundCommand) commandManager.getCurrentCommand();
+        ICompoundCommand currentCommand = (ICompoundCommand) commandManager.getCurrentCommand();
         if (currentCommand != null) {
             updateCommandStatistics(currentCommand);
             complexCommandEditor = new ComplexCommandEditor(currentCommand);

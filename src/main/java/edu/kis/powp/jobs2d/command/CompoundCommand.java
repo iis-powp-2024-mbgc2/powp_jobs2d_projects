@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class CompoundCommand implements ICompoundCommand {
+public class CompoundCommand implements ICompoundCommand, Cloneable {
     private List<DriverCommand> commands = new ArrayList<>();
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final String name;
@@ -72,5 +72,34 @@ public class CompoundCommand implements ICompoundCommand {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompoundCommand that = (CompoundCommand) o;
+        boolean equal = true;
+        for(int i = 0; i < commands.size(); i++){
+            if(!commands.get(i).equals(that.getCommands().get(i))){
+                equal = false;
+            }
+        }
+        return equal;
+    }
+
+    @Override
+    public CompoundCommand clone() {
+        List<DriverCommand> clonedCommands = new ArrayList<>();
+        for (DriverCommand command : commands) {
+            if (command != null) {
+                try {
+                    clonedCommands.add(command.clone());
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return new CompoundCommand(clonedCommands, name);
     }
 }

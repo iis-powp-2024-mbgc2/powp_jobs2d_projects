@@ -34,6 +34,11 @@ public class CompoundCommandBuilder implements Builder<ImmutableCompoundCommand>
         return this;
     }
 
+    public CompoundCommandBuilder addCommands(List<DriverCommand> commands) {
+        this.commands.addAll(commands);
+        return this;
+    }
+
     @Override
     public ImmutableCompoundCommand build() {
         return new ImmutableCompoundCommand(commands, name);

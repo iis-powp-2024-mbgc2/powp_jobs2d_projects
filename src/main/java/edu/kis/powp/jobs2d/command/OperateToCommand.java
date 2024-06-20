@@ -22,6 +22,18 @@ public class OperateToCommand implements DriverCommand {
     }
 
     @Override
+    public OperateToCommand clone() throws CloneNotSupportedException {
+        return (OperateToCommand) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OperateToCommand that = (OperateToCommand) o;
+        return getX() == that.getX() && getY() == that.getY();
+    }
+
     public void accept(CommandVisitor commandVisitor) {
         commandVisitor.visit(this);
     }
@@ -32,4 +44,5 @@ public class OperateToCommand implements DriverCommand {
     public int getY() {
         return posY;
     }
+
 }

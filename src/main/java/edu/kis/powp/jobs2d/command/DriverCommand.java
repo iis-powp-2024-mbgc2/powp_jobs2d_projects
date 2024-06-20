@@ -16,4 +16,7 @@ public interface DriverCommand {
 
     public void accept(CommandVisitor commandVisitor);
 
+    @Override
+    boolean equals(Object obj);
+
 }

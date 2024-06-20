@@ -77,7 +77,7 @@ public class CompoundCommand implements ICompoundCommand, Cloneable {
     public CompoundCommand clone() {
         List<DriverCommand> clonedCommands = new ArrayList<>();
         for (DriverCommand command : commands) {
-            if (command instanceof Cloneable) {
+            if (command != null) {
                 try {
                     clonedCommands.add(((Cloneable) command).clone());
                 } catch (CloneNotSupportedException e) {

@@ -25,6 +25,14 @@ public class SetPositionCommand implements DriverCommand {
         return (SetPositionCommand) super.clone();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SetPositionCommand that = (SetPositionCommand) o;
+        return getX() == that.getX() && getY() == that.getY();
+    }
+
     public void accept(CommandVisitor commandVisitor) {
         commandVisitor.visit(this);
     }

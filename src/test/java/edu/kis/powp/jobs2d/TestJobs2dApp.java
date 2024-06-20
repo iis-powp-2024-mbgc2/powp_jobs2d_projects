@@ -21,6 +21,12 @@ import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecoratorTransfor
 import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecoratorTransformation;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
+import edu.kis.powp.jobs2d.features.canvas.CanvasFeature;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -172,6 +178,11 @@ public class TestJobs2dApp {
 
             DriverFeature.setupDriverPlugin(app);
             ExtendedDriverFeature.setupExtendedDriverPlugin(app);
+
+
+            CanvasFeature.setupCanvasFeature(app);
+
+
 
             setupDrivers();
             setupExtendedDrivers();

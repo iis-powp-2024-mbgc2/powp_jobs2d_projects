@@ -17,20 +17,20 @@ public class ExceedingCanvasCommandVisitor implements CommandVisitor {
     }
 
 
+    private void visitLogic(int x, int y) {
+        if (!canvas.isPointWithinBounds(x, y)) {
+            isExceedingCanvas = true;
+            exceedingPoints.add(new Point(x, y));
+        }
+    }
     @Override
     public void visit(OperateToCommand operateToCommand) {
-        if (!canvas.isPointWithinBounds(operateToCommand.getX(), operateToCommand.getY())) {
-            isExceedingCanvas = true;
-            exceedingPoints.add(new Point(operateToCommand.getX(), operateToCommand.getY()));
-        }
+        visitLogic(operateToCommand.getX(), operateToCommand.getY());
     }
 
     @Override
     public void visit(SetPositionCommand setPositionCommand) {
-        if (!canvas.isPointWithinBounds(setPositionCommand.getX(), setPositionCommand.getY())) {
-            isExceedingCanvas = true;
-            exceedingPoints.add(new Point(setPositionCommand.getX(), setPositionCommand.getY()));
-        }
+        visitLogic(setPositionCommand.getX(), setPositionCommand.getY());
     }
 
     @Override

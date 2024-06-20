@@ -5,9 +5,9 @@ import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 
-public class RecordingDriverDecorator implements IDriver{
-    private final IDriver driver;
-    public RecordingDriverDecorator(IDriver driver) {
+public class RecordingDriverDecorator implements VisitableJob2dDriver {
+    private final VisitableJob2dDriver driver;
+    public RecordingDriverDecorator(VisitableJob2dDriver driver) {
         this.driver = driver;
     }
     @Override
@@ -27,7 +27,7 @@ public class RecordingDriverDecorator implements IDriver{
         return super.toString();
     }
 
-    public IDriver getDriver() { return this.driver; }
+    public VisitableJob2dDriver getDriver() { return this.driver; }
 
     @Override
     public void accept(DriverVisitor visitor) {

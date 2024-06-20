@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class DriverDetailsVisitor implements DriverVisitor {
     private StringBuilder stringBuilder = new StringBuilder();
     public void clear() { stringBuilder = new StringBuilder(); }
-    public String getDetails(IDriver driver) {
+    public String getDetails(VisitableJob2dDriver driver) {
         clear();
         driver.accept(this);
         return stringBuilder.toString();
@@ -30,9 +30,9 @@ public class DriverDetailsVisitor implements DriverVisitor {
                 "\n Registered drivers count: " + registeredDrivers;
         stringBuilder.append(details);
 
-        Iterator<IDriver> driverIterator = driverComposite.getIterator();
+        Iterator<VisitableJob2dDriver> driverIterator = driverComposite.getIterator();
         while(driverIterator.hasNext()) {
-            IDriver nextDriver = driverIterator.next();
+            VisitableJob2dDriver nextDriver = driverIterator.next();
             nextDriver.accept(this);
         }
     }
@@ -45,7 +45,7 @@ public class DriverDetailsVisitor implements DriverVisitor {
                 "\n Serviced drivers:";
         stringBuilder.append(details);
 
-        IDriver decoratedDriver = recordingDriverDecorator.getDriver();
+        VisitableJob2dDriver decoratedDriver = recordingDriverDecorator.getDriver();
         decoratedDriver.accept(this);
     }
 
@@ -57,7 +57,7 @@ public class DriverDetailsVisitor implements DriverVisitor {
                 "\n Serviced driver:";
         stringBuilder.append(details);
 
-        IDriver decoratedDriver = usageMonitorDriverDecorator.getDriver();
+        VisitableJob2dDriver decoratedDriver = usageMonitorDriverDecorator.getDriver();
         decoratedDriver.accept(this);
     }
 }

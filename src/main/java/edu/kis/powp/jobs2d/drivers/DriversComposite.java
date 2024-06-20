@@ -7,23 +7,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DriversComposite implements IDriver {
+public class DriversComposite implements VisitableJob2dDriver {
 
-    private List<IDriver> list;
+    private List<VisitableJob2dDriver> list;
 
     public DriversComposite() {
         this.list = new ArrayList<>();
     }
 
-    public DriversComposite(List<IDriver> list) {
+    public DriversComposite(List<VisitableJob2dDriver> list) {
         this.list = list;
     }
 
-    public void addDriver(IDriver driver) {
+    public void addDriver(VisitableJob2dDriver driver) {
         this.list.add(driver);
     }
 
-    public boolean removeDriver(IDriver driver) {
+    public boolean removeDriver(VisitableJob2dDriver driver) {
         return list.remove(driver);
     }
 
@@ -31,19 +31,19 @@ public class DriversComposite implements IDriver {
 
     @Override
     public void setPosition(int x, int y) {
-        for (IDriver driver : list) {
+        for (VisitableJob2dDriver driver : list) {
             driver.setPosition(x, y);
         }
     }
 
     @Override
     public void operateTo(int x, int y) {
-        for (IDriver driver : list) {
+        for (VisitableJob2dDriver driver : list) {
             driver.operateTo(x, y);
         }
     }
 
-    public Iterator<IDriver> getIterator() { return this.list.iterator(); }
+    public Iterator<VisitableJob2dDriver> getIterator() { return this.list.iterator(); }
 
     @Override
     public void accept(DriverVisitor visitor) {
@@ -52,7 +52,7 @@ public class DriversComposite implements IDriver {
 
     public String toString() {
         return list.stream()
-                .map(IDriver::toString)
+                .map(VisitableJob2dDriver::toString)
                 .collect(Collectors.joining(", ", "Composite of ", ""));
     }
 }

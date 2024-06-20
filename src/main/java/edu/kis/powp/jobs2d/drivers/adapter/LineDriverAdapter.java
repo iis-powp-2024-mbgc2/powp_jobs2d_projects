@@ -2,13 +2,13 @@ package edu.kis.powp.jobs2d.drivers.adapter;
 
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.ILine;
-import edu.kis.powp.jobs2d.drivers.IDriver;
+import edu.kis.powp.jobs2d.drivers.VisitableJob2dDriver;
 import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 
 /**
  * Line adapter - IDriver with DrawPanelController object.
  */
-public class LineDriverAdapter implements IDriver {
+public class LineDriverAdapter implements VisitableJob2dDriver {
     private ILine line;
     private int startX = 0, startY = 0;
     private String name;

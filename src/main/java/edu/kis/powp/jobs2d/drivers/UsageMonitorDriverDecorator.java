@@ -5,12 +5,12 @@ import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 import java.awt.geom.Point2D;
 import java.util.logging.Logger;
 
-public class UsageMonitorDriverDecorator implements IDriver {
-    private final IDriver driver;
+public class UsageMonitorDriverDecorator implements VisitableJob2dDriver {
+    private final VisitableJob2dDriver driver;
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private int lastX = 0, lastY = 0;
     private double headDistance = 0, opDistance = 0;
-    public UsageMonitorDriverDecorator(IDriver driver) {
+    public UsageMonitorDriverDecorator(VisitableJob2dDriver driver) {
         this.driver = driver;
     }
 
@@ -54,7 +54,7 @@ public class UsageMonitorDriverDecorator implements IDriver {
         logger.info(String.format("Current distance made:\n- head distance: %f\n- op distance: %f", headDistance, opDistance));
     }
 
-    public IDriver getDriver() { return this.driver; }
+    public VisitableJob2dDriver getDriver() { return this.driver; }
 
     public void accept(DriverVisitor visitor) {
         visitor.visit(this);

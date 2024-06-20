@@ -5,7 +5,7 @@ import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 
 import java.util.logging.Logger;
 
-public class LoggerDriver implements IDriver {
+public class LoggerDriver implements VisitableJob2dDriver {
     private final Logger logger = Logger.getLogger("global");
     private int posX = 0, posY = 0;
     private final boolean isDetailedLogger;

@@ -8,7 +8,7 @@ import edu.kis.powp.jobs2d.command.CommandImporter;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
-import edu.kis.powp.jobs2d.drivers.IDriver;
+import edu.kis.powp.jobs2d.drivers.VisitableJob2dDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
@@ -30,7 +30,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private String observerListString;
     private JTextArea observerListField;
-    final private IDriver previewLineDriver;
+    final private VisitableJob2dDriver previewLineDriver;
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

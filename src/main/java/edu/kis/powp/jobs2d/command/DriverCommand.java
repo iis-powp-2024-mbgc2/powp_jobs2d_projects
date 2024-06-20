@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.command;
 
-import edu.kis.powp.jobs2d.drivers.IDriver;
+import edu.kis.powp.jobs2d.drivers.VisitableJob2dDriver;
 
 /**
  * DriverCommand interface.
@@ -12,6 +12,6 @@ public interface DriverCommand {
      *
      * @param driver driver.
      */
-    public void execute(IDriver driver);
+    public void execute(VisitableJob2dDriver driver);
     public void accept(CommandVisitor commandVisitor);
 }

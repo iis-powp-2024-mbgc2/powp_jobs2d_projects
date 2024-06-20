@@ -25,11 +25,11 @@ public class MouseClickConverterWithRightAndLeft implements MouseListener, Mouse
 
     private final JPanel panel;
     private final Timer followCursorTimer;
-    private IDriver driver;
+    private VisitableJob2dDriver driver;
     private boolean isFollowingCursor = false;
     private boolean leftButtonFirstClick = true;
 
-    public MouseClickConverterWithRightAndLeft(JPanel panel , IDriver driver) {
+    public MouseClickConverterWithRightAndLeft(JPanel panel , VisitableJob2dDriver driver) {
         this.panel = panel;
         this.panel.addMouseListener(this);
         this.followCursorTimer = new Timer(TIMER_DELAY, new FollowCursorActionListener());
@@ -40,7 +40,7 @@ public class MouseClickConverterWithRightAndLeft implements MouseListener, Mouse
         this.panel.removeMouseListener(this);
     }
 
-    public void setDriver(IDriver driver) {
+    public void setDriver(VisitableJob2dDriver driver) {
         this.driver = driver;
     }
 

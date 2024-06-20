@@ -8,14 +8,14 @@ import edu.kis.powp.observer.Publisher;
  */
 public class DriverManager {
 
-    private IDriver currentDriver = new LoggerDriver(false);
+    private VisitableJob2dDriver currentDriver = new LoggerDriver(false);
 
     private final Publisher changePublisher = new Publisher();
 
     /**
      * @param driver Set the driver as current.
      */
-    public synchronized void setCurrentDriver(IDriver driver) {
+    public synchronized void setCurrentDriver(VisitableJob2dDriver driver) {
         currentDriver = driver;
         changePublisher.notifyObservers();
     }
@@ -23,7 +23,7 @@ public class DriverManager {
     /**
      * @return Current driver.
      */
-    public synchronized IDriver getCurrentDriver() {
+    public synchronized VisitableJob2dDriver getCurrentDriver() {
         return currentDriver;
     }
 

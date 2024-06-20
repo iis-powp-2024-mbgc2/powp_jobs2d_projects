@@ -4,6 +4,7 @@ import edu.kis.legacy.drawer.panel.DefaultDrawerFrame;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.command.CompoundCommand;
+import edu.kis.powp.jobs2d.command.gui.Canvas;
 import edu.kis.powp.jobs2d.command.gui.CommandEditor;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 
@@ -14,7 +15,7 @@ public class CommandEditorBuilder {
     public CompoundCommand compoundCommand;
     public Job2dDriver driver;
     public DrawPanelController drawPanelController;
-    public DefaultDrawerFrame commandPreviewPanel;
+    public Canvas commandPreviewPanel;
     public CommandManagerWindow commandManagerWindow;
 
     public CommandEditorBuilder setDrawArea(JPanel drawArea) {
@@ -37,7 +38,7 @@ public class CommandEditorBuilder {
         return this;
     }
 
-    public CommandEditorBuilder setCommandPreviewPanel(DefaultDrawerFrame commandPreviewPanel) {
+    public CommandEditorBuilder setCommandPreviewPanel(Canvas commandPreviewPanel) {
         this.commandPreviewPanel = commandPreviewPanel;
         return this;
     }

@@ -22,8 +22,10 @@ public class CommandEditor extends MouseClickConverter {
     private CompoundCommand compoundCommand;
     private PointCommand selectedCommand = null;
     private final DrawPanelController drawPanelController;
-    private final DefaultDrawerFrame commandPreviewPanel;
+    private final Canvas commandPreviewPanel;
     private EditHistory history;
+
+    private JPanel drawArea;
 
     public void setDriver(Job2dDriver driver) {
         this.driver = driver;
@@ -36,6 +38,7 @@ public class CommandEditor extends MouseClickConverter {
         this.drawPanelController = builder.drawPanelController;
         this.commandPreviewPanel = builder.commandPreviewPanel;
         this.history = new EditHistory(builder.commandManagerWindow);
+        this.drawArea = builder.drawArea;
     }
 
     @Override
@@ -115,7 +118,7 @@ public class CommandEditor extends MouseClickConverter {
         popupMenu.add(addItem);
         popupMenu.add(changeToSetPositionItem);
 
-        popupMenu.show(commandPreviewPanel.getDrawArea(), contextMenuPosition.x, contextMenuPosition.y);
+        popupMenu.show(drawArea, contextMenuPosition.x, contextMenuPosition.y);
         popupMenu.setVisible(true);
     }
 

@@ -25,18 +25,22 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private CommandManager commandManager;
 
     private JTextArea currentCommandField;
-    private DefaultDrawerFrame commandPreviewPanel;
+    private Canvas commandPreviewPanel;
     private DrawPanelController drawPanelController;
 
     private String observerListString;
     private JTextArea observerListField;
+    private GridBagConstraints canvasPositionContraintsPrototype;
+    private int canvasContentIndex;
+
     private CommandEditor commandEditor;
     private JTextArea explanationField;
     private JTextArea historyField;
     private JButton btnUndo, btnRedo;
 
     private final JPanel drawArea;
-    final private Job2dDriver previewLineDriver;
+    private Job2dDriver previewLineDriver;
+
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -72,7 +76,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.gridx = 0;
         c.weighty = 1;
+        canvasContentIndex = content.getComponentCount();
         content.add(currentCommandField, c);
+
 
         explanationField = new JTextArea("");
         explanationField.setEditable(false);
@@ -87,17 +93,19 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(historyPanel, c);
 
 
-        commandPreviewPanel = new DefaultDrawerFrame();
+        commandPreviewPanel = new JPanelRectCanvas();
         drawPanelController = new DrawPanelController();
-        drawPanelController.initialize(commandPreviewPanel.getDrawArea());
+        drawPanelController.initialize((JPanel) commandPreviewPanel);
         previewLineDriver = new LineDriverAdapter(drawPanelController, new BasicLine(), "preview");
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.gridx = 0;
         c.weighty = 5;
-        this.drawArea = commandPreviewPanel.getDrawArea();
+        JPanel drawArea = (JPanel) commandPreviewPanel;
+        this.drawArea = drawArea;
         drawArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         content.add(drawArea, c);
+        canvasPositionContraintsPrototype = (GridBagConstraints) c.clone();
 
         JButton btnImportCommand = new JButton("Import command");
         btnImportCommand.addActionListener((ActionEvent e) -> this.importCommandFromFile());
@@ -133,6 +141,35 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
                 .setCommandManagerWindow(this)
                 .build();
 
+
+        this.pack();
+    }
+
+    public Canvas getDrawPanel()
+    {
+        return commandPreviewPanel;
+    }
+    public void setDrawPanel(Canvas canvas)
+    {
+        this.commandPreviewPanel = canvas;
+        drawPanelController = new DrawPanelController();
+        drawPanelController.initialize((JPanel) commandPreviewPanel);
+        previewLineDriver = new LineDriverAdapter(drawPanelController, new BasicLine(), "preview");
+        canvasPositionContraintsPrototype.gridy = 0;
+
+
+        Container content = this.getContentPane();
+        JPanel drawArea = (JPanel) commandPreviewPanel;
+        drawArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        content.remove(canvasContentIndex);
+        canvasContentIndex = content.getComponentCount();
+        content.add(drawArea, canvasPositionContraintsPrototype);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 
     private Box createHistoryPanel() {

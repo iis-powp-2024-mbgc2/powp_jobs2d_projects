@@ -3,10 +3,13 @@ package edu.kis.powp.jobs2d;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.ExceedingCanvasCommandVisitor;
 import edu.kis.powp.jobs2d.command.ImporterFactory;
 import edu.kis.powp.jobs2d.command.JsonCommandImporter;
+import edu.kis.powp.jobs2d.command.gui.A4Canvas;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
+import edu.kis.powp.jobs2d.command.gui.JPanelRectCanvas;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.RecordingDriverDecorator;
 import edu.kis.powp.jobs2d.drivers.UsageMonitor.UsageMonitorDriverDecorator;
@@ -118,10 +121,19 @@ public class TestJobs2dApp {
 
         CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager());
         application.addWindowComponent("Command Manager", commandManager);
+        ExceedingCanvasCommandVisitor visitor = new ExceedingCanvasCommandVisitor(commandManager.getDrawPanel());
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
-                commandManager);
+                commandManager,visitor);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
+        application.addComponentMenu(Canvas.class,"Canvas");
+
+        application.addComponentMenuElement(Canvas.class, "BasicCanvas", (ActionEvent e) -> {
+            commandManager.setDrawPanel(new JPanelRectCanvas());});
+
+        application.addComponentMenuElement(Canvas.class, "A4Canvas", (ActionEvent e) -> {
+            commandManager.setDrawPanel(new A4Canvas(300));});
+
     }
 
 
@@ -160,6 +172,7 @@ public class TestJobs2dApp {
             DrawerFeature.setupDrawerPlugin(app);
             CommandsFeature.setupCommandManager();
             RecordFeature.setupRecorderPlugin(app);
+            DriverFeature.setupDriverPlugin(app);
             UsageMonitorFeature.setupUsageMonitorPlugin(app);
             MouseSettingsFeature.setupMouseSettingsFeature(app);
 

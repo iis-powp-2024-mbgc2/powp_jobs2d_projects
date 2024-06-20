@@ -30,7 +30,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private String observerListString;
     private JTextArea observerListField;
-    private Job2dDriver previewLineDriver;
     private GridBagConstraints canvasPositionContraintsPrototype;
     private int canvasContentIndex;
 
@@ -40,7 +39,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JButton btnUndo, btnRedo;
 
     private final JPanel drawArea;
-    final private Job2dDriver previewLineDriver;
+    private Job2dDriver previewLineDriver;
 
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -80,7 +79,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         canvasContentIndex = content.getComponentCount();
         content.add(currentCommandField, c);
 
-        commandPreviewPanel = new JPanelRectCanvas();
 
         explanationField = new JTextArea("");
         explanationField.setEditable(false);
@@ -95,7 +93,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.add(historyPanel, c);
 
 
-        commandPreviewPanel = new DefaultDrawerFrame();
+        commandPreviewPanel = new JPanelRectCanvas();
         drawPanelController = new DrawPanelController();
         drawPanelController.initialize((JPanel) commandPreviewPanel);
         previewLineDriver = new LineDriverAdapter(drawPanelController, new BasicLine(), "preview");
@@ -103,10 +101,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weightx = 1;
         c.gridx = 0;
         c.weighty = 5;
-
         JPanel drawArea = (JPanel) commandPreviewPanel;
-
-        this.drawArea = commandPreviewPanel.getDrawArea();
+        this.drawArea = drawArea;
         drawArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         content.add(drawArea, c);
         canvasPositionContraintsPrototype = (GridBagConstraints) c.clone();
@@ -135,6 +131,17 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 1;
         content.add(btnClearObservers, c);
+
+        this.commandEditor = new CommandEditorBuilder()
+                .setDrawArea(drawArea)
+                .setCompoundCommand((CompoundCommand) (commandManager.getCurrentCommand()))
+                .setDriver(previewLineDriver)
+                .setDrawPanelController(drawPanelController)
+                .setCommandPreviewPanel(commandPreviewPanel)
+                .setCommandManagerWindow(this)
+                .build();
+
+
         this.pack();
     }
 
@@ -163,17 +170,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     public CommandManager getCommandManager() {
         return commandManager;
-=======
-
-        this.commandEditor = new CommandEditorBuilder()
-                .setDrawArea(drawArea)
-                .setCompoundCommand((CompoundCommand) (commandManager.getCurrentCommand()))
-                .setDriver(previewLineDriver)
-                .setDrawPanelController(drawPanelController)
-                .setCommandPreviewPanel(commandPreviewPanel)
-                .setCommandManagerWindow(this)
-                .build();
-
     }
 
     private Box createHistoryPanel() {

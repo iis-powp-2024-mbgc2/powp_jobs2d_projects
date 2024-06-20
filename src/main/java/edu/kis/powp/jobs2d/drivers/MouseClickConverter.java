@@ -5,29 +5,22 @@ import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.events.MouseClickListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MouseClickConverter extends MouseAdapter implements MouseClickListener {
-    private final int MOUSE_BUTTON_LEFT = 1;
-    private final int MOUSE_BUTTON_RIGHT = 3;
+    protected final int MOUSE_BUTTON_LEFT = 1;
+    protected final int MOUSE_BUTTON_MID = 2;
+    protected final int MOUSE_BUTTON_RIGHT = 3;
+
 
     private final JPanel panel;
-    private static class Point {
-        public int x;
-        public int y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 
     public MouseClickConverter(JPanel panel) {
         this.panel = panel;
         panel.addMouseListener(this);
     }
-
     public void removeMouseListener() {
         panel.removeMouseListener(this);
     }
@@ -40,7 +33,7 @@ public class MouseClickConverter extends MouseAdapter implements MouseClickListe
         handleDriver(position, buttonPressed);
     }
 
-    private Point getClickPosition(MouseEvent event) {
+    protected Point getClickPosition(MouseEvent event) {
         int x = event.getX();
         int y = event.getY();
 
@@ -50,7 +43,7 @@ public class MouseClickConverter extends MouseAdapter implements MouseClickListe
         return new Point(x - offsetX, y - offsetY);
     }
 
-    private void handleDriver(Point position, int buttonPressed) {
+    public void handleDriver(Point position, int buttonPressed) {
         Job2dDriver driver = DriverFeature.getDriverManager().getCurrentDriver();
 
         if(buttonPressed == MOUSE_BUTTON_LEFT) {

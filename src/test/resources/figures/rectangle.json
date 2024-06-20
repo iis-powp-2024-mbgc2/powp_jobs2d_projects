@@ -1,0 +1,30 @@
+{
+    "name": "Rectangle",
+    "commands": [
+        {
+            "command": "setPosition",
+            "x": "0",
+            "y": "0"
+        },
+        {
+            "command": "operateTo",
+            "x": "0",
+            "y": "100"
+        },
+        {
+            "command": "operateTo",
+            "x": "200",
+            "y": "100"
+        },
+        {
+            "command": "operateTo",
+            "x": "200",
+            "y": "0"
+        },
+        {
+            "command": "operateTo",
+            "x": "0",
+            "y": "0"
+        }
+    ]
+}

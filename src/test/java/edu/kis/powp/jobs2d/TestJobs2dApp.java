@@ -8,16 +8,18 @@ import java.util.logging.Logger;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.LineFactory;
 import edu.kis.powp.appbase.Application;
+import edu.kis.powp.jobs2d.command.ImporterFactory;
+import edu.kis.powp.jobs2d.command.JsonCommandImporter;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
+import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
+import edu.kis.powp.jobs2d.transformations.*;
 import edu.kis.powp.jobs2d.events.*;
-import edu.kis.powp.jobs2d.features.CommandsFeature;
-import edu.kis.powp.jobs2d.features.DrawerFeature;
-import edu.kis.powp.jobs2d.features.DriverFeature;
-import edu.kis.powp.jobs2d.features.RecordFeature;
+import edu.kis.powp.jobs2d.features.*;
 
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -49,12 +51,17 @@ public class TestJobs2dApp {
 
         application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
 
+        application.addTest("Load deeply complex command", new SelectLoadDeeplyComplexCommandOptionListener());
+
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));
 
     }
-  
-    private static void setupVisitorTest(Application application) {
+
+    private static void setupVisitorTests(Application application) {
         application.addTest("Show current command stats", new VisitorTest());
+        application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
+        application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
+        application.addTest("Count loaded drivers", new DriverCountingVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {
@@ -65,19 +72,19 @@ public class TestJobs2dApp {
     }
 
     /**
-     * Setup driver manager, and set default Job2dDriver for application.
+     * Setup driver manager, and set default IVisitableDriver for application.
      *
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
-        Job2dDriver loggerDriver = new LoggerDriver(false);
+        IVisitableDriver loggerDriver = new LoggerDriver(false);
         DriverFeature.addDriver("Simple Logger driver", loggerDriver);
 
-        Job2dDriver loggerDriver2 = new LoggerDriver(true);
+        IVisitableDriver loggerDriver2 = new LoggerDriver(true);
         DriverFeature.addDriver("Detailed Logger driver", loggerDriver2);
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        IVisitableDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         DriverFeature.addDriver("Line Simulator with Recording Support", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
 
@@ -94,17 +101,35 @@ public class TestJobs2dApp {
         UsageMonitorDriverDecorator usageMonitorDriver2 = new UsageMonitorDriverDecorator(driver);
         DriverFeature.addDriver("Special line Simulator with usage monitor", usageMonitorDriver2);
 
+        driver = new RealTimeDecoratorDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), application.getFreePanel());
+        DriverFeature.addDriver("Basic line Simulator with real time drawing", driver);
+        driver = new RealTimeDecoratorDriver(new LineDriverAdapter(drawerController, LineFactory.getSpecialLine(), "special"), application.getFreePanel());
+        DriverFeature.addDriver("Special line Simulator with real time drawing", driver);
+
         DriverFeature.updateDriverInfo();
 
         DriversComposite driversComposite = new DriversComposite();
         driversComposite.addDriver(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         driversComposite.addDriver(new LoggerDriver(true));
         DriverFeature.addDriver("BasicLine with Logger", driversComposite);
+
+        IVisitableDriver lineFlippedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new VerticalFlipTransformation());
+        DriverFeature.addDriver("Line vertical Flip", lineFlippedDriver);
+
+        IVisitableDriver lineShiftedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ShiftTransformation(50, -20));
+        IVisitableDriver lineShiftedAndFlippedDriver = new TransformingJob2dDriverDecorator(lineShiftedDriver, new HorizontalFlipTransformation());
+        DriverFeature.addDriver("Line Shift (50,-20) and horizontal Flip", lineShiftedAndFlippedDriver);
+
+        IVisitableDriver lineScaledDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ScaleTransformation(1.5));
+        IVisitableDriver lineScaledAndRotatedDriver = new TransformingJob2dDriverDecorator(lineScaledDriver, new RotateTransformation(90));
+        DriverFeature.addDriver("Line Scale 1.5 and Rotate 90deg", lineScaledAndRotatedDriver);
+
+        DriverFeature.updateDriverInfo();
     }
 
     private static void setupWindows(Application application) {
 
-        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager());
+        CommandManagerWindow commandManager = new CommandManagerWindow(CommandsFeature.getCommandManager(), DriverFeature.getDriverManager());
         application.addWindowComponent("Command Manager", commandManager);
 
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
@@ -131,8 +156,9 @@ public class TestJobs2dApp {
         application.addComponentMenuElement(Logger.class, "OFF logging", (ActionEvent e) -> logger.setLevel(Level.OFF));
     }
 
-    private static void setupMouseHandler(Application application) {
-        new MouseClickConverter(application.getFreePanel());
+
+    private static void setupImporters() {
+        ImporterFactory.addImporter("json", new JsonCommandImporter());
     }
 
     /**
@@ -146,15 +172,15 @@ public class TestJobs2dApp {
                 CommandsFeature.setupCommandManager();
                 RecordFeature.setupRecorderPlugin(app);
                 DriverFeature.setupDriverPlugin(app);
+                MouseSettingsFeature.setupMouseSettingsFeature(app);
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);
-                setupVisitorTest(app);
+                setupVisitorTests(app);
                 setupCommandTransformationVisitorTests(app);
                 setupLogger(app);
                 setupWindows(app);
-                setupMouseHandler(app);
-
+                setupImporters();
                 app.setVisibility(true);
             }
         });

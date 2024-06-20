@@ -2,14 +2,14 @@ package edu.kis.powp.jobs2d.drivers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import edu.kis.powp.jobs2d.drivers.adapter.Line2dDriver;
 
-import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
 public class SelectDriverMenuOptionListener implements ActionListener {
     private DriverManager driverManager;
-    private IVisitableDriver driver = null;
+    private Line2dDriver driver;
 
-    public SelectDriverMenuOptionListener(IVisitableDriver driver, DriverManager driverManager) {
+    public SelectDriverMenuOptionListener(Line2dDriver driver, DriverManager driverManager) {
         this.driverManager = driverManager;
         this.driver = driver;
     }

@@ -5,10 +5,12 @@ import edu.kis.legacy.drawer.shape.ILine;
 import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
+import java.util.Objects;
+
 /**
- * Line adapter - IVisitableDriver with DrawPanelController object.
+ * Line adapter - Line2dDriver with DrawPanelController object.
  */
-public class LineDriverAdapter implements IVisitableDriver {
+public class LineDriverAdapter implements Line2dDriver {
     private ILine line;
     private int startX = 0, startY = 0;
     private String name;
@@ -39,6 +41,34 @@ public class LineDriverAdapter implements IVisitableDriver {
     @Override
     public String toString() {
         return "2d device simulator - " + name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LineDriverAdapter that = (LineDriverAdapter) o;
+        return line.getClass() == that.line.getClass() && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int getStartX() {
+        return startX;
+    }
+
+    @Override
+    public int getStartY() {
+        return startY;
+    }
+
+    @Override
+    public void setStartX(int startX) {
+        this.startX = startX;
+    }
+
+    @Override
+    public void setStartY(int startY) {
+        this.startY = startY;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package edu.kis.powp.jobs2d.drivers;
 
+import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
@@ -20,6 +21,7 @@ public class LoggerDriver implements IVisitableDriver {
         this.logger.info(message);
         this.posX = x;
         this.posY = y;
+        DriverFeature.getDriverManager().getCurrentDriver().setPosition(x, y);
     }
 
     @Override
@@ -28,6 +30,7 @@ public class LoggerDriver implements IVisitableDriver {
         this.logger.info(message);
         this.posX = x;
         this.posY = y;
+        DriverFeature.getDriverManager().getCurrentDriver().setPosition(x, y);
     }
 
     private String getMessage(int x, int y, String messagePrefix) {

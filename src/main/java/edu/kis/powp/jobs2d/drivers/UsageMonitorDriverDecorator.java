@@ -1,5 +1,7 @@
 package edu.kis.powp.jobs2d.drivers;
 
+import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.features.DriverFeature;
 import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
@@ -11,8 +13,9 @@ public class UsageMonitorDriverDecorator implements IVisitableDriver {
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private int lastX = 0, lastY = 0;
     private double headDistance = 0, opDistance = 0;
-    public UsageMonitorDriverDecorator(IVisitableDriver driver) {
-        this.driver = driver;
+
+    public UsageMonitorDriverDecorator(DriverManager driverManager) {
+        this.driver = driverManager.getCurrentDriverAndFeaturesComposite(this);
     }
 
     @Override
@@ -22,6 +25,7 @@ public class UsageMonitorDriverDecorator implements IVisitableDriver {
 
         logDistance();
         driver.setPosition(x, y);
+        DriverFeature.getDriverManager().getCurrentDriver().setPosition(x, y);
     }
 
     @Override
@@ -32,6 +36,7 @@ public class UsageMonitorDriverDecorator implements IVisitableDriver {
 
         logDistance();
         driver.operateTo(x, y);
+        DriverFeature.getDriverManager().getCurrentDriver().setPosition(x, y);
     }
 
     public double getHeadDistance() {

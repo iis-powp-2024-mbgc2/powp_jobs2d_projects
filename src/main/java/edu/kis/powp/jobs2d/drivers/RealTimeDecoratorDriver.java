@@ -14,8 +14,8 @@ public class RealTimeDecoratorDriver implements IVisitableDriver {
 
     private final IVisitableDriver driver;
 
-    public RealTimeDecoratorDriver(IVisitableDriver driver, JPanel panel) {
-        this.driver = driver;
+    public RealTimeDecoratorDriver(DriverManager driverManager, JPanel panel) {
+        this.driver = driverManager.getCurrentDriverAndFeaturesComposite(this);
         this.panel = panel;
         startTaskExecution();
     }

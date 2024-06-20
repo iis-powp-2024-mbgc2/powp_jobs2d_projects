@@ -1,58 +1,80 @@
 package edu.kis.powp.jobs2d.drivers;
 
+import edu.kis.powp.jobs2d.Job2dDriver;
 import edu.kis.powp.jobs2d.drivers.visitor.IDriverVisitor;
 import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DriversComposite implements IVisitableDriver {
+    private final Map<Integer, IVisitableDriver> map;
+    private DriverManager driverManager;
 
-    private List<IVisitableDriver> list;
-
-    public DriversComposite() {
-        this.list = new ArrayList<>();
+    public DriversComposite(DriverManager driverManager) {
+        this.map = new TreeMap<>();
+        this.driverManager = driverManager;
     }
 
-    public DriversComposite(List<IVisitableDriver> list) {
-        this.list = list;
+    public DriversComposite(Map<Integer, IVisitableDriver> list, DriverManager driverManager) {
+        this.map = list;
+        this.driverManager = driverManager;
     }
 
-    public void addDriver(IVisitableDriver driver) {
-        this.list.add(driver);
+    public void addDriver(int position, IVisitableDriver driver) {
+        this.map.put(position, driver);
     }
 
-    public boolean removeDriver(IVisitableDriver driver) {
-        return list.remove(driver);
+    public boolean removeDriver(int position) {
+        return map.remove(position) != null;
+    }
+
+    public Map<Integer, IVisitableDriver> getMap() {
+        return map;
     }
 
     @Override
     public void setPosition(int x, int y) {
-        for (IVisitableDriver driver : list) {
-            driver.setPosition(x, y);
-        }
+        executeOperation(Job2dDriver::setPosition, x, y);
     }
 
     @Override
     public void operateTo(int x, int y) {
-        for (IVisitableDriver driver : list) {
-            driver.operateTo(x, y);
+        executeOperation(Job2dDriver::operateTo, x, y);
+    }
+
+    private void executeOperation(DriversCompositeOperation driversCompositeOperation, int x, int y) {
+        int startX = driverManager.getCurrentDriver().getStartX();
+        int startY = driverManager.getCurrentDriver().getStartY();
+        int counter = 0;
+        for (Job2dDriver driver : map.values()) {
+            if (counter != 0) {
+                x = driverManager.getCurrentDriver().getStartX();
+                y = driverManager.getCurrentDriver().getStartY();
+                driverManager.getCurrentDriver().setStartX(startX);
+                driverManager.getCurrentDriver().setStartY(startY);
+            }
+            driversCompositeOperation.executeOperation(driver, x, y);
+            counter++;
         }
     }
 
-    public String toString() {
-        return list.stream()
-                .map(IVisitableDriver::toString)
-                .collect(Collectors.joining(", ", "Composite of ", ""));
+    private interface DriversCompositeOperation {
+        void executeOperation(Job2dDriver driver, int startX, int startY);
     }
 
-    public List<IVisitableDriver> getDrivers() {
-        return list;
+    public String toString() {
+        return map.values().stream()
+                .map(Job2dDriver::toString)
+                .collect(Collectors.joining(", ", "Composite of ", ""));
     }
 
     @Override
     public void accept(IDriverVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public List<IVisitableDriver> getDrivers() {
+        return new ArrayList<>(map.values());
     }
 }

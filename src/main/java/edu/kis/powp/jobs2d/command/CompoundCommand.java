@@ -74,12 +74,26 @@ public class CompoundCommand implements ICompoundCommand, Cloneable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompoundCommand that = (CompoundCommand) o;
+        boolean equal = true;
+        for(int i = 0; i < commands.size(); i++){
+            if(!commands.get(i).equals(that.getCommands().get(i))){
+                equal = false;
+            }
+        }
+        return equal;
+    }
+
+    @Override
     public CompoundCommand clone() {
         List<DriverCommand> clonedCommands = new ArrayList<>();
         for (DriverCommand command : commands) {
             if (command != null) {
                 try {
-                    clonedCommands.add(((Cloneable) command).clone());
+                    clonedCommands.add(command.clone());
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }

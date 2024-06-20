@@ -5,6 +5,8 @@ import edu.kis.powp.jobs2d.command.OperateToCommand;
 import edu.kis.powp.jobs2d.command.SetPositionCommand;
 import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 
+import java.util.ArrayList;
+
 public class CompoundCommandFactory {
     public static CompoundCommand getRectangleAction(String name) {
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
@@ -29,14 +31,11 @@ public class CompoundCommandFactory {
     }
 
     public static CompoundCommand getGlasses(String name) {
+
         CompoundCommandBuilder builder = new CompoundCommandBuilder();
-        builder.setName(name);
-
-        builder.addCommands(getRect("Left Glass", 0, 0, 50, 30).getCommands());
-
-        builder.addCommands(getRect("Bridge", 50, 0, 20, 1).getCommands());
-
-        builder.addCommands(getRect("Right Glass", 70, 0, 50, 30).getCommands());
+        builder.setName(name).addCommand(CompoundCommandFactory.getRect("Left",0,0,50, 50))
+                .addCommand(CompoundCommandFactory.getRect("middle",50,0,20, 1))
+                        .addCommand(CompoundCommandFactory.getRect("Right",70,0,50, 50));
 
         return builder.build();
     }

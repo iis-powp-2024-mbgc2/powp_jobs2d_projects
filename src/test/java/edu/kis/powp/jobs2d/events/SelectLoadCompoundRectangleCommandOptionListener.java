@@ -1,6 +1,6 @@
 package edu.kis.powp.jobs2d.events;
 
-import edu.kis.powp.jobs2d.command.factory.CompoundCommandRectangleFactory;
+import edu.kis.powp.jobs2d.command.factory.CompoundCommandFactory;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
@@ -11,6 +11,6 @@ public class SelectLoadCompoundRectangleCommandOptionListener implements ActionL
     @Override
     public void actionPerformed(ActionEvent e) {
         CommandManager manager = CommandsFeature.getCommandManager();
-        manager.setCurrentCommand(CompoundCommandRectangleFactory.getRectangleAction("RectangleCommand"));
+        manager.setCurrentCommand(CompoundCommandFactory.getRectangleAction("RectangleCommand"));
     }
 }

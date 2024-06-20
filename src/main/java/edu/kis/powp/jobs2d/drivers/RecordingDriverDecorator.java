@@ -27,9 +27,10 @@ public class RecordingDriverDecorator implements IDriver{
         return super.toString();
     }
 
+    public IDriver getDriver() { return this.driver; }
+
     @Override
     public void accept(DriverVisitor visitor) {
         visitor.visit(this);
-        if(driver != null) driver.accept(visitor);
     }
 }

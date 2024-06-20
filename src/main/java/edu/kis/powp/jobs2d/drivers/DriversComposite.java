@@ -3,6 +3,7 @@ package edu.kis.powp.jobs2d.drivers;
 import edu.kis.powp.jobs2d.drivers.visitor.DriverVisitor;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,10 +43,11 @@ public class DriversComposite implements IDriver {
         }
     }
 
+    public Iterator<IDriver> getIterator() { return this.list.iterator(); }
+
     @Override
     public void accept(DriverVisitor visitor) {
         visitor.visit(this);
-        list.forEach(it -> it.accept(visitor));
     }
 
     public String toString() {

@@ -54,8 +54,9 @@ public class UsageMonitorDriverDecorator implements IDriver {
         logger.info(String.format("Current distance made:\n- head distance: %f\n- op distance: %f", headDistance, opDistance));
     }
 
+    public IDriver getDriver() { return this.driver; }
+
     public void accept(DriverVisitor visitor) {
         visitor.visit(this);
-        if(driver != null) driver.accept(visitor);
     }
 }

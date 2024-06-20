@@ -4,6 +4,8 @@ import edu.kis.powp.jobs2d.commons.Pair;
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.features.RecordFeature;
 
+import java.util.Iterator;
+
 public class DriverDetailsVisitor implements DriverVisitor {
     private StringBuilder stringBuilder = new StringBuilder();
     public void clear() { stringBuilder = new StringBuilder(); }
@@ -27,6 +29,12 @@ public class DriverDetailsVisitor implements DriverVisitor {
         String details = "\nDriversComposite details:" +
                 "\n Registered drivers count: " + registeredDrivers;
         stringBuilder.append(details);
+
+        Iterator<IDriver> driverIterator = driverComposite.getIterator();
+        while(driverIterator.hasNext()) {
+            IDriver nextDriver = driverIterator.next();
+            nextDriver.accept(this);
+        }
     }
 
     @Override
@@ -36,6 +44,9 @@ public class DriverDetailsVisitor implements DriverVisitor {
                 "\n Recording: " + isRecordingLabel +
                 "\n Serviced drivers:";
         stringBuilder.append(details);
+
+        IDriver decoratedDriver = recordingDriverDecorator.getDriver();
+        decoratedDriver.accept(this);
     }
 
     @Override
@@ -45,5 +56,8 @@ public class DriverDetailsVisitor implements DriverVisitor {
                 "\n Current opDistance: " + usageMonitorDriverDecorator.getOpDistance() +
                 "\n Serviced driver:";
         stringBuilder.append(details);
+
+        IDriver decoratedDriver = usageMonitorDriverDecorator.getDriver();
+        decoratedDriver.accept(this);
     }
 }

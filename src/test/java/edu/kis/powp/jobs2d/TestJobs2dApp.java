@@ -15,10 +15,9 @@ import edu.kis.powp.jobs2d.command.gui.CommandManagerWindowCommandChangeObserver
 import edu.kis.powp.jobs2d.drivers.*;
 import edu.kis.powp.jobs2d.drivers.LoggerDriver;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
-import edu.kis.powp.jobs2d.drivers.transformators.FlippingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.RotatingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.ScalingDriverDecorator;
-import edu.kis.powp.jobs2d.drivers.transformators.ShiftingDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
+import edu.kis.powp.jobs2d.transformations.*;
 import edu.kis.powp.jobs2d.events.*;
 import edu.kis.powp.jobs2d.features.*;
 
@@ -62,6 +61,7 @@ public class TestJobs2dApp {
         application.addTest("Show current command stats", new VisitorTest());
         application.addTest("Save deep copy of loaded command", new DeepCopyVisitorSaveTest());
         application.addTest("Load deep copy of saved command", new DeepCopyVisitorTest());
+        application.addTest("Count loaded drivers", new DriverCountingVisitorTest());
     }
 
     private static void setupCommandTransformationVisitorTests(Application application) {
@@ -72,19 +72,19 @@ public class TestJobs2dApp {
     }
 
     /**
-     * Setup driver manager, and set default Job2dDriver for application.
+     * Setup driver manager, and set default IVisitableDriver for application.
      *
      * @param application Application context.
      */
     private static void setupDrivers(Application application) {
-        Job2dDriver loggerDriver = new LoggerDriver(false);
+        IVisitableDriver loggerDriver = new LoggerDriver(false);
         DriverFeature.addDriver("Simple Logger driver", loggerDriver);
 
-        Job2dDriver loggerDriver2 = new LoggerDriver(true);
+        IVisitableDriver loggerDriver2 = new LoggerDriver(true);
         DriverFeature.addDriver("Detailed Logger driver", loggerDriver2);
 
         DrawPanelController drawerController = DrawerFeature.getDrawerController();
-        Job2dDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
+        IVisitableDriver driver = new RecordingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"));
         DriverFeature.addDriver("Line Simulator with Recording Support", driver);
         DriverFeature.getDriverManager().setCurrentDriver(driver);
 
@@ -113,15 +113,16 @@ public class TestJobs2dApp {
         driversComposite.addDriver(new LoggerDriver(true));
         DriverFeature.addDriver("BasicLine with Logger", driversComposite);
 
-        Job2dDriver lineShiftAndFlip = FlippingDriverDecorator.getFlipVerticalDecorator(new ShiftingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 50, -20));
-        DriverFeature.addDriver("Line Shift and Flip", lineShiftAndFlip);
+        IVisitableDriver lineFlippedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new VerticalFlipTransformation());
+        DriverFeature.addDriver("Line vertical Flip", lineFlippedDriver);
 
-        Job2dDriver lineShiftAndRotate = RotatingDriverDecorator.getRotating90DegClockwiseDecorator(new ScalingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 0.5F));
-        DriverFeature.addDriver("Line Scale and Rotate", lineShiftAndRotate);
+        IVisitableDriver lineShiftedDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ShiftTransformation(50, -20));
+        IVisitableDriver lineShiftedAndFlippedDriver = new TransformingJob2dDriverDecorator(lineShiftedDriver, new HorizontalFlipTransformation());
+        DriverFeature.addDriver("Line Shift (50,-20) and horizontal Flip", lineShiftedAndFlippedDriver);
 
-        // Decorators in that order will cause the object first to flip horizontally, then rotate 90 deg clockwise, and then scale 1.5
-        Job2dDriver lineShiftAndRotateAndFlip = FlippingDriverDecorator.getFlipHorizontalDecorator(RotatingDriverDecorator.getRotating90DegClockwiseDecorator(new ScalingDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), 1.5F)));
-        DriverFeature.addDriver("Line Flip, Rotate and Scale", lineShiftAndRotateAndFlip);
+        IVisitableDriver lineScaledDriver = new TransformingJob2dDriverDecorator(new LineDriverAdapter(drawerController, LineFactory.getBasicLine(), "basic"), new ScaleTransformation(1.5));
+        IVisitableDriver lineScaledAndRotatedDriver = new TransformingJob2dDriverDecorator(lineScaledDriver, new RotateTransformation(90));
+        DriverFeature.addDriver("Line Scale 1.5 and Rotate 90deg", lineScaledAndRotatedDriver);
 
         DriverFeature.updateDriverInfo();
     }

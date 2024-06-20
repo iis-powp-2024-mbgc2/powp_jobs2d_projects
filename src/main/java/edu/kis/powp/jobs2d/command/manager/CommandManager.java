@@ -11,8 +11,11 @@ import edu.kis.powp.jobs2d.command.CommandVisitor;
 
 import edu.kis.powp.jobs2d.command.visitor.CommandVisitor;
 
+import java.util.List;
+
 import edu.kis.powp.jobs2d.command.DriverCommand;
-import edu.kis.powp.jobs2d.command.ICompoundCommand;
+import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
+import edu.kis.powp.jobs2d.drivers.visitor.IVisitableDriver;
 import edu.kis.powp.observer.Publisher;
 
 /**
@@ -70,10 +73,16 @@ public class CommandManager implements ICommandManager {
             }
         });
 
+        CompoundCommandBuilder builder = new CompoundCommandBuilder().setName(name);
+        for (DriverCommand command : commandList) {
+            builder.addCommand(command);
+        }
+        this.currentCommand = builder.build();
+        changePublisher.notifyObservers();
     }
 
     @Override
-    public synchronized void runCommand(Job2dDriver driver) {
+    public synchronized void runCommand(IVisitableDriver driver) {
         this.currentCommand.execute(driver);
     }
 

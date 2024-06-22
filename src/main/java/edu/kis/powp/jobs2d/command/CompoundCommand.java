@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class CompoundCommand implements ICompoundCommand {
     private List<DriverCommand> commands = new ArrayList<>();
     private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private final String name;
+    private String name;
 
     public CompoundCommand(String name) {
         this.name = name;
@@ -24,6 +24,10 @@ public class CompoundCommand implements ICompoundCommand {
 
     public void addCommand(DriverCommand command) {
         commands.add(command);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void addCommand(DriverCommand command, int index) {

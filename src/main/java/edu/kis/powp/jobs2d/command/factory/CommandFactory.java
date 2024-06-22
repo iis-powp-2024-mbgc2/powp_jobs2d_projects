@@ -29,7 +29,12 @@ public class CommandFactory {
     }
 
     public void addCommand(DriverCommand command) throws CloneNotSupportedException {
-        commands.put(command.toString().replace("Command name: ", ""), command);
+        String newName = command.toString();
+        DeepCopyVisitor deepCopyVisitor = new DeepCopyVisitor();
+        command.accept(deepCopyVisitor);
+
+        DriverCommand newCommand = deepCopyVisitor.getCopiedCommand();
+        commands.put(newName.replace("Command name: ", ""), newCommand);
     }
 
     public void removeCommand(String commandName) {

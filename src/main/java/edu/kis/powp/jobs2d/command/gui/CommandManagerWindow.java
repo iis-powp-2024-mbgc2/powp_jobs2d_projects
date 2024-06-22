@@ -136,6 +136,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private void setupCommandFactoryView(Container content, GridBagConstraints c) {
         List<Component> components = new ArrayList<>();
 
+        JLabel titleLabel = new JLabel("Commands Factory:");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        components.add(titleLabel);
+
         commandFactory = new DefaultListModel();
         JList commandFactoryList = new JList(commandFactory);
         JScrollPane scrollPane = new JScrollPane(commandFactoryList);
@@ -166,7 +170,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
         for (Component component : components) {
             content.add(component, c);
-            c.weighty++;
         }
     }
 

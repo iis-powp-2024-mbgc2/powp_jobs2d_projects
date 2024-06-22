@@ -2,11 +2,8 @@ package edu.kis.powp.jobs2d.command.factory;
 
 import edu.kis.powp.jobs2d.command.DeepCopyVisitor;
 import edu.kis.powp.jobs2d.command.DriverCommand;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class CommandFactory {
     private Map<String, DriverCommand> commands = new HashMap<>();
@@ -23,14 +20,8 @@ public class CommandFactory {
         DriverCommand resultCommand = null;
         DeepCopyVisitor deepCopyVisitor = new DeepCopyVisitor();
         if (commands.keySet().contains(commandName)) {
-            resultCommand = commands.get(commandName);
-            
-
-//            try {
-//                resultCommand = commandsMap.get(commandName);
-//            } catch (CloneNotSupportedException e) {
-//                throw new IllegalStateException("this should never happen: command has to be clonable since its cloned in addCommand", e);
-//            }
+            commands.get(commandName).accept(deepCopyVisitor);
+            resultCommand = deepCopyVisitor.getCopiedCommand();
         } else {
             throw new IllegalArgumentException(commandName + " not found");
         }
@@ -49,7 +40,4 @@ public class CommandFactory {
         }
     }
 
-    public Set<String> getCommandNames() {
-        return commands.keySet();
-    }
 }

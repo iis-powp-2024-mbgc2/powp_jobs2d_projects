@@ -2,9 +2,11 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,6 +24,7 @@ import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
+import edu.kis.powp.jobs2d.command.factory.CommandFactory;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
     private ICommandManager commandManager;
@@ -38,6 +41,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    private DefaultListModel commandFactory;
 
     /**
      *
@@ -46,7 +50,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     public CommandManagerWindow(ICommandManager commandManager, DriverManager driverManager1) {
         this.setTitle("Command Manager");
-        this.setSize(400, 400);
+        this.setSize(400, 800);
         Container content = this.getContentPane();
         content.setLayout(new GridBagLayout());
 
@@ -125,6 +129,57 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 1;
         content.add(btnClearObservers, c);
+
+        setupCommandFactoryView(content, c);
+    }
+
+    private void setupCommandFactoryView(Container content, GridBagConstraints c) {
+        List<Component> components = new ArrayList<>();
+
+        commandFactory = new DefaultListModel();
+        JList commandFactoryList = new JList(commandFactory);
+        JScrollPane scrollPane = new JScrollPane(commandFactoryList);
+        components.add(scrollPane);
+        components.add(createActionButton("Add current command to factory", (ActionEvent event) -> {
+            try {
+                CommandFactory.getInstance().addCommand(commandManager.getCurrentCommand());
+                addCommandToFactoryList(commandManager.getCurrentCommandString().replace("CompoundCommand name: ", ""));
+            } catch (CloneNotSupportedException exception) {
+                exception.printStackTrace();
+            }
+        }));
+        components.add(createActionButton("Set current command", (ActionEvent event) -> {
+            if (commandFactoryList.getSelectedIndex() != -1) {
+                DriverCommand command = CommandFactory.getInstance().getCommand((String) commandFactoryList.getSelectedValue());
+                commandManager.setCurrentCommand(command);
+            }
+        }));
+        components.add(createActionButton("Run current command", (ActionEvent event) -> {
+            this.runCommand();
+        }));
+        components.add(createActionButton("Remove command from factory", (ActionEvent event) -> {
+            if (commandFactoryList.getSelectedIndex() != -1) {
+                CommandFactory.getInstance().removeCommand((String) commandFactoryList.getSelectedValue());
+                commandFactory.remove(commandFactoryList.getSelectedIndex());
+            }
+        }));
+
+        for (Component component : components) {
+            content.add(component, c);
+            c.weighty++;
+        }
+    }
+
+    private JButton createActionButton(String text, ActionListener action) {
+        JButton result = new JButton(text);
+        result.addActionListener(action);
+        return result;
+    }
+
+    public void addCommandToFactoryList(String commandName) {
+        if (!commandFactory.contains(commandName)) {
+            commandFactory.add(commandFactory.getSize(), commandName);
+        }
     }
 
     private void importCommandFromFile() {

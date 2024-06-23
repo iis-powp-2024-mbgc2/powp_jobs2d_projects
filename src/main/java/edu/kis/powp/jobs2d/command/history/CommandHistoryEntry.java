@@ -22,7 +22,8 @@ public class CommandHistoryEntry {
         return date;
     }
 
-    public String getName()
+    @Override
+    public String toString()
     {
         return command.toString();
     }

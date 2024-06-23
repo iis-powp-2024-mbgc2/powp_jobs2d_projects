@@ -3,12 +3,16 @@ package edu.kis.powp.jobs2d.command.history;
 import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.CompoundCommand;
 import edu.kis.powp.jobs2d.command.DriverCommand;
+import edu.kis.powp.jobs2d.command.gui.CommandManagerWindow;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.features.CommandsFeature;
 
+import javax.swing.*;
+import java.util.List;
 import java.util.logging.Logger;
+
 
 public class HistoryFeature {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -25,15 +29,6 @@ public class HistoryFeature {
         });
         application.addComponentMenuElement(HistoryFeature.class, "Clear history", e -> {
             history.clear();
-        });
-        application.addComponentMenuElement(HistoryFeature.class, "Load history", e -> {
-            ICommandManager commandManager = CommandsFeature.getCommandManager();
-            DriverManager driverManager = new DriverManager();
-            for(DriverCommand command: history.getActionsHistory())
-            {
-                commandManager.setCurrentCommand(command);
-                commandManager.runCommand(driverManager.getCurrentDriver());
-            }
         });
 
     }

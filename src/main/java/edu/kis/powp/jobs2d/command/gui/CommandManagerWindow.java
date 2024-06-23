@@ -15,10 +15,11 @@ import edu.kis.legacy.drawer.panel.DrawPanelController;
 import edu.kis.legacy.drawer.shape.line.BasicLine;
 import edu.kis.powp.appbase.gui.WindowComponent;
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.command.history.CommandHistoryEntry;
+import edu.kis.powp.jobs2d.command.history.HistoryComboBox;
 import edu.kis.powp.jobs2d.command.importer.ICommandImporter;
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.importer.ImporterFactory;
-import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.drivers.DriverManager;
 import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
@@ -35,6 +36,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea observerListField;
 
     private DriverManager driverManager;
+
+
+    private HistoryComboBox historyComboBox;
     final private Job2dDriver previewLineDriver;
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -85,6 +89,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         JPanel drawArea = commandPreviewPanel.getDrawArea();
         drawArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         content.add(drawArea, c);
+
+        historyComboBox = new HistoryComboBox();
+        historyComboBox.comboBoxInit(c, content, driverManager, commandManager);
+        historyComboBox.initAction();
+
 
         JButton btnImportCommand = new JButton("Import command");
         btnImportCommand.addActionListener((ActionEvent e) -> this.importCommandFromFile());
@@ -201,4 +210,5 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     {
         return commandManager.getCurrentCommand();
     }
+
 }

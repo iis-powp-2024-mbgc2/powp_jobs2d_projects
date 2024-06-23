@@ -9,11 +9,12 @@ import java.util.List;
 public class CommandHistory {
 
     private static final List<CommandHistoryEntry> history = new ArrayList<>();
-    private static int entryNo = 1;
 
     public void clear()
     {
         history.clear();
+        HistoryComboBox historyComboBox = new HistoryComboBox();
+        historyComboBox.actualize();
     }
 
     public void add(DriverCommand command)
@@ -38,9 +39,23 @@ public class CommandHistory {
         List<DriverCommand> list = new ArrayList<>();
         for(CommandHistoryEntry entry: history)
         {
-            CompoundCommand command = new CompoundCommand(entry.getName());
-            list.add(entry.getCommand());
+            CompoundCommand command = new CompoundCommand(entry.toString());
+            list.add(command);
         }
         return list;
     }
+
+    public List<DriverCommand> getByName(DriverCommand driverCommand)
+    {
+        List<DriverCommand> list = new ArrayList<>();
+        for(CommandHistoryEntry entry: history)
+            if(entry.toString().equals(driverCommand.toString()))
+            {
+                list.add(entry.getCommand());
+                break;
+            }
+
+        return list;
+    }
+
 }

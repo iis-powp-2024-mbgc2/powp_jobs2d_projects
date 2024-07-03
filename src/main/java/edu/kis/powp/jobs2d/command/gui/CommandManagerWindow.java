@@ -151,7 +151,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         Box historyVBox = Box.createVerticalBox();
         Box commandHistoryVBox = Box.createVerticalBox();
 
-        JTextArea historyLabel = new JTextArea("History:");
+        JTextArea historyLabel = new JTextArea("Edit History:");
         historyLabel.setEditable(false);
         historyLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, historyLabel.getPreferredSize().height));
         historyVBox.add(historyLabel);

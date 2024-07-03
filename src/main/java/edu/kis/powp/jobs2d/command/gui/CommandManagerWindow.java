@@ -149,38 +149,42 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         historyHBox.add(btnRedo);
 
         Box historyVBox = Box.createVerticalBox();
+        Box commandHistoryVBox = Box.createVerticalBox();
 
         JTextArea historyLabel = new JTextArea("History:");
         historyLabel.setEditable(false);
+        historyLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, historyLabel.getPreferredSize().height));
         historyVBox.add(historyLabel);
 
         historyField = new JTextArea("");
         historyField.setEditable(false);
-
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.add(historyField);
-        historyVBox.add(scrollPane);
-        historyVBox.setMaximumSize(new Dimension(200,100));
-
-        historyHBox.add(historyVBox);
-
-        Box commandHistoryVBox = Box.createVerticalBox();
+        JScrollPane historyScrollPane = new JScrollPane(historyField);
+        historyScrollPane.setPreferredSize(new Dimension(200, 100));
+        historyScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        historyVBox.add(historyScrollPane);
 
         JTextArea commandHistoryLabel = new JTextArea("Command History:");
         commandHistoryLabel.setEditable(false);
+        commandHistoryLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, commandHistoryLabel.getPreferredSize().height));
         commandHistoryVBox.add(commandHistoryLabel);
 
         commandHistoryField = new JTextArea("");
         commandHistoryField.setEditable(false);
-
-        ScrollPane commandScrollPane = new ScrollPane();
-        commandScrollPane.add(historyField);
+        JScrollPane commandScrollPane = new JScrollPane(commandHistoryField);
+        commandScrollPane.setPreferredSize(new Dimension(200, 100));
+        commandScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         commandHistoryVBox.add(commandScrollPane);
-        commandHistoryVBox.setMaximumSize(new Dimension(200,100));
 
+        historyVBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        commandHistoryVBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        historyVBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        commandHistoryVBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+
+        historyHBox.add(historyVBox);
         historyHBox.add(commandHistoryVBox);
 
-
+        historyHBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        historyHBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         return historyHBox;
     }

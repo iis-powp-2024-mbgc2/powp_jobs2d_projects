@@ -33,6 +33,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private CommandEditor commandEditor;
     private JTextArea explanationField;
     private JTextArea historyField;
+
+    private JTextArea commandHistoryField;
     private JButton btnUndo, btnRedo;
 
     private final JPanel drawArea;
@@ -161,6 +163,25 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         historyVBox.setMaximumSize(new Dimension(200,100));
 
         historyHBox.add(historyVBox);
+
+        Box commandHistoryVBox = Box.createVerticalBox();
+
+        JTextArea commandHistoryLabel = new JTextArea("Command History:");
+        commandHistoryLabel.setEditable(false);
+        commandHistoryVBox.add(commandHistoryLabel);
+
+        commandHistoryField = new JTextArea("");
+        commandHistoryField.setEditable(false);
+
+        ScrollPane commandScrollPane = new ScrollPane();
+        commandScrollPane.add(historyField);
+        commandHistoryVBox.add(commandScrollPane);
+        commandHistoryVBox.setMaximumSize(new Dimension(200,100));
+
+        historyHBox.add(commandHistoryVBox);
+
+
+
         return historyHBox;
     }
 
@@ -246,5 +267,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
         String historyString = String.join("\n", history);
         this.historyField.setText(historyString);
+    }
+
+
+    public JTextArea getCommandHistoryField() {
+        return commandHistoryField;
     }
 }

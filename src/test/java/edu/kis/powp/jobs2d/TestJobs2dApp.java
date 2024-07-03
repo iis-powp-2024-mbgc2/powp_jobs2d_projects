@@ -122,6 +122,11 @@ public class TestJobs2dApp {
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
+
+        CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(() -> {
+            commandManager.getCommandHistoryField().setText(commandManager.getCommandHistoryField().getText() + CommandsFeature.getCommandManager().getCurrentCommandString() + "\n");
+        });
+
     }
 
 

@@ -25,11 +25,6 @@ import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class TestJobs2dApp {
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -122,11 +117,6 @@ public class TestJobs2dApp {
         CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
                 commandManager);
         CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(windowObserver);
-
-        CommandsFeature.getCommandManager().getChangePublisher().addSubscriber(() -> {
-            commandManager.getCommandHistoryField().setText(commandManager.getCommandHistoryField().getText() + CommandsFeature.getCommandManager().getCurrentCommandString() + "\n");
-        });
-
     }
 
 

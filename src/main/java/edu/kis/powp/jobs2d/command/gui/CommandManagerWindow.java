@@ -22,8 +22,9 @@ import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
-    private CommandManager commandManager;
 
+    private static CommandManagerWindow instance = null;
+    private CommandManager commandManager;
     private JTextArea currentCommandField;
     private DefaultDrawerFrame commandPreviewPanel;
     private DrawPanelController drawPanelController;
@@ -42,11 +43,11 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
 
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-
     /**
      *
      */
     private static final long serialVersionUID = 9204679248304669948L;
+    private CommandHistoryLogger commandHistoryLogger;
 
     public CommandManagerWindow(CommandManager commandManager) {
 
@@ -56,6 +57,8 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.setLayout(new GridBagLayout());
 
         this.commandManager = commandManager;
+        commandHistoryLogger = new CommandHistoryLogger(commandManager);
+        instance = this;
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -223,13 +226,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         commandEditor.restartMemento();
         if (commandManager.getCurrentCommand() != null)
             commandManager.getCurrentCommand().execute(previewLineDriver);
+        commandHistoryLogger.logCurrentCommand();
         System.out.println("updateCurrentCommandField");
     }
 
     public void updateExplanationField() {
         explanationField.setText(
                 "LMB - Drag to move points\n" +
-                "RMB - Open context menu");
+                        "RMB - Open context menu");
     }
 
     public void deleteObservers() {
@@ -265,7 +269,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         this.btnUndo.setEnabled(commandEditor.getHistory().getVirtualSize() > 0);
         this.btnRedo.setEnabled(commandEditor.getHistory().getVirtualSize() < commandEditor.getHistory().getHistoryList().size());
         List<String> history = commandEditor.getHistory().getHistoryList();
-        int virtualSize = commandEditor.getHistory().getVirtualSize()-1;
+        int virtualSize = commandEditor.getHistory().getVirtualSize() - 1;
         if (virtualSize >= 0)
             history.set(virtualSize, history.get(virtualSize) + " <-");
 
@@ -277,4 +281,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     public JTextArea getCommandHistoryField() {
         return commandHistoryField;
     }
+
+    public static CommandManagerWindow getInstance() {
+        return instance;
+    }
+
 }

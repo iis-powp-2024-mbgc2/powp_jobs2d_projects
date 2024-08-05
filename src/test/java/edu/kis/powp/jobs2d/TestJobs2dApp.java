@@ -25,6 +25,7 @@ import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapterRecordingDecorator;
 import edu.kis.powp.jobs2d.enums.Command;
 import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
 import edu.kis.powp.jobs2d.transformations.*;
+import edu.kis.powp.jobs2d.transformations.changedriver.ApplyTransformationToNewDriver;
 import edu.kis.powp.jobs2d.usage.ConfigOfDeviceUsageLoader;
 import edu.kis.powp.jobs2d.usage.DeviceServiceWindow;
 import edu.kis.powp.jobs2d.usage.Tank;
@@ -153,6 +154,7 @@ public class TestJobs2dApp {
         Job2dDriver specialLineWithRealTimeDrawingDriver = new RealTimeDecoratorDriver(specialLineDriver, application.getFreePanel());
         DriverFeature.addDriver("Special Line Simulator with Real Time Drawing", specialLineWithRealTimeDrawingDriver);
 
+        // Start of transforming
         Job2dDriver basicLineWithVerticalFlipDriver = new TransformingJob2dDriverDecorator(basicLineDriver, new VerticalFlipTransformation());
         DriverFeature.addDriver("Basic Line with Vertical Flip", basicLineWithVerticalFlipDriver);
 
@@ -257,9 +259,7 @@ public class TestJobs2dApp {
             public void run() {
                 Application app = new Application("Jobs 2D");
                 ConfigOfDeviceUsageLoader.loadConfig("src\\configOfDeviceUsage.xml");
-                
-                
-                
+
                 DrawerFeature.setupDrawerPlugin(app);
                 CommandsFeature.setupCommandManager();
                 CommandsFeature.setupPresetCommands(app);
@@ -270,6 +270,7 @@ public class TestJobs2dApp {
                 WorkspaceTransformationFeature.setupWorkspaceTransformationFeature(app);
                 CanvasFeature.setupCanvas(app);
                 HistoryFeature.setupHistory(app);
+                ApplyTransformationToNewDriver.setUpTransformationToNewDriver();
                 
                 setupWarningSystem(app);
                 setupDrivers(app);

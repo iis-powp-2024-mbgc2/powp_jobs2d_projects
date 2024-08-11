@@ -54,8 +54,6 @@ public class TestJobs2dApp {
 
         application.addTest("Load recorded command", new SelectLoadRecordedCommandOptionListener());
 
-        application.addTest("Add recorded command to history", new SelectHistoryAdditionRecordingOptionListener());
-
         application.addTest("Load deeply complex command", new SelectLoadDeeplyComplexCommandOptionListener());
 
         application.addTest("Run command", new SelectRunCurrentCommandOptionListener(DriverFeature.getDriverManager()));

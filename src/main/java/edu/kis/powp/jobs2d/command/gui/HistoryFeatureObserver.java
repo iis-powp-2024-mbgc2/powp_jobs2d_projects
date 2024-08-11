@@ -2,6 +2,8 @@ package edu.kis.powp.jobs2d.command.gui;
 
 import edu.kis.powp.jobs2d.command.DriverCommand;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
+import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
+import edu.kis.powp.jobs2d.features.RecordFeature;
 import edu.kis.powp.observer.Subscriber;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ public class HistoryFeatureObserver implements Subscriber {
     private CommandManager commandManager;
     public DriverCommand currentCommand;
     public List<DriverCommand> commandList = new ArrayList<>();
+    LoggerCommandChangeObserver logger = new LoggerCommandChangeObserver();
 
     public HistoryFeatureObserver(CommandManager commandManager) {
         super();
@@ -23,12 +26,14 @@ public class HistoryFeatureObserver implements Subscriber {
 
     public void addToCommandList(DriverCommand command) {
         commandList.add(command);
-        System.out.println("Recorded command added to history");
+        logger.update("Recorded command added to history");
     }
 
     @Override
     public void update() {
         this.currentCommand = commandManager.getCurrentCommand();
-        System.out.println("HistoryFeatureObserver: " + commandManager.getCurrentCommandString());
+        logger.update("Command set from history to: " + currentCommand.toString());
+
+         this.addToCommandList(RecordFeature.getRecordedCommand());
     }
 }

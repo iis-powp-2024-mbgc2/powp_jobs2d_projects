@@ -16,7 +16,7 @@ public class RecordCommandsForTransformation {
 
         start();
 
-        driverManager.getChangePublisher().addSubscriber(new WrapDriverWithRecordingDecoratorObserverWhileChaningDriver());
+        driverManager.getChangePublisher().addSubscriber(new WrapDriverWithRecordingDecoratorObserverWhileChangingDriver());
     }
 
     public static void wrapDriverWithRecordingDecorator() {

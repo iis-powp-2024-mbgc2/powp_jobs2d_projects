@@ -20,9 +20,6 @@ public class ApplyTransformationToNewDriver {
         DrawerFeature.getDrawerController().clearPanel();
         LinesRecorder.getLinesRecorder().clearLines();
 
-        CommandsFeature.getCommandManager().setCurrentCommand(RecordCommandsForTransformation.getRecordedCommand());
-
-        CommandsFeature.getCommandManager().getCurrentCommand().execute(DriverFeature.getDriverManager().getCurrentDriver());
-
+        RecordCommandsForTransformation.getRecordedCommand().execute(DriverFeature.getDriverManager().getCurrentDriver());
     }
 }

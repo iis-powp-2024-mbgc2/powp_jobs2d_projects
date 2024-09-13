@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.kis.powp.jobs2d.Job2dDriver;
+import edu.kis.powp.jobs2d.drivers.transformators.TransformingJob2dDriverDecorator;
+import edu.kis.powp.jobs2d.transformations.changedriver.ApplyTransformationToNewDriver;
 
 public class SelectDriverMenuOptionListener implements ActionListener {
     private DriverManager driverManager;
@@ -17,5 +19,8 @@ public class SelectDriverMenuOptionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         driverManager.setCurrentDriver(driver);
+        if(driver instanceof TransformingJob2dDriverDecorator) {
+            ApplyTransformationToNewDriver.applyTransformation(driver);
+        }
     }
 }

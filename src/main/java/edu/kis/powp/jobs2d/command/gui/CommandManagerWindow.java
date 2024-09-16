@@ -22,8 +22,9 @@ import edu.kis.powp.jobs2d.drivers.adapter.LineDriverAdapter;
 import edu.kis.powp.observer.Subscriber;
 
 public class CommandManagerWindow extends JFrame implements WindowComponent {
-    private CommandManager commandManager;
 
+    private static CommandManagerWindow instance = null;
+    private CommandManager commandManager;
     private JTextArea currentCommandField;
     private DefaultDrawerFrame commandPreviewPanel;
     private DrawPanelController drawPanelController;
@@ -33,18 +34,23 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private CommandEditor commandEditor;
     private JTextArea explanationField;
     private JTextArea historyField;
+
+    private JPanel  commandHistoryField;
     private JButton btnUndo, btnRedo;
 
     private final JPanel drawArea;
     final private Job2dDriver previewLineDriver;
 
+    CommandHistoryHandlerGUI guiHandler;
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 
 
     /**
      *
      */
     private static final long serialVersionUID = 9204679248304669948L;
+    private CommandHistoryLogger commandHistoryLogger;
 
     public CommandManagerWindow(CommandManager commandManager) {
 
@@ -54,6 +60,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.setLayout(new GridBagLayout());
 
         this.commandManager = commandManager;
+        instance = this;
 
         GridBagConstraints c = new GridBagConstraints();
 
@@ -108,6 +115,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnImportCommand, c);
 
+        guiHandler = new CommandHistoryHandlerGUI(commandHistoryField,commandManager);
+        commandHistoryLogger = new CommandHistoryLogger(commandManager, guiHandler);
+
         JButton btnClearCommand = new JButton("Clear command");
         btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
         c.fill = GridBagConstraints.BOTH;
@@ -147,20 +157,42 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         historyHBox.add(btnRedo);
 
         Box historyVBox = Box.createVerticalBox();
+        Box commandHistoryVBox = Box.createVerticalBox();
 
-        JTextArea historyLabel = new JTextArea("History:");
+        JTextArea historyLabel = new JTextArea("Edit History:");
         historyLabel.setEditable(false);
+        historyLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, historyLabel.getPreferredSize().height));
         historyVBox.add(historyLabel);
 
         historyField = new JTextArea("");
         historyField.setEditable(false);
+        JScrollPane historyScrollPane = new JScrollPane(historyField);
+        historyScrollPane.setPreferredSize(new Dimension(200, 100));
+        historyScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        historyVBox.add(historyScrollPane);
 
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.add(historyField);
-        historyVBox.add(scrollPane);
-        historyVBox.setMaximumSize(new Dimension(200,100));
+        JTextArea commandHistoryLabel = new JTextArea("Command History:");
+        commandHistoryLabel.setEditable(false);
+        commandHistoryLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, commandHistoryLabel.getPreferredSize().height));
+        commandHistoryVBox.add(commandHistoryLabel);
+
+        commandHistoryField = new JPanel();
+        JScrollPane commandScrollPane = new JScrollPane(commandHistoryField);
+        commandScrollPane.setPreferredSize(new Dimension(200, 100));
+        commandScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        commandHistoryVBox.add(commandScrollPane);
+
+        historyVBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        commandHistoryVBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        historyVBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        commandHistoryVBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         historyHBox.add(historyVBox);
+        historyHBox.add(commandHistoryVBox);
+
+        historyHBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        historyHBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+
         return historyHBox;
     }
 
@@ -188,6 +220,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
+        commandHistoryLogger.logCurrentCommand();
         updateHistory();
     }
 
@@ -198,13 +231,14 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         commandEditor.restartMemento();
         if (commandManager.getCurrentCommand() != null)
             commandManager.getCurrentCommand().execute(previewLineDriver);
+        commandHistoryLogger.logCurrentCommand();
         System.out.println("updateCurrentCommandField");
     }
 
     public void updateExplanationField() {
         explanationField.setText(
                 "LMB - Drag to move points\n" +
-                "RMB - Open context menu");
+                        "RMB - Open context menu");
     }
 
     public void deleteObservers() {
@@ -239,12 +273,48 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         this.historyField.setText("");
         this.btnUndo.setEnabled(commandEditor.getHistory().getVirtualSize() > 0);
         this.btnRedo.setEnabled(commandEditor.getHistory().getVirtualSize() < commandEditor.getHistory().getHistoryList().size());
+
         List<String> history = commandEditor.getHistory().getHistoryList();
-        int virtualSize = commandEditor.getHistory().getVirtualSize()-1;
+        int virtualSize = commandEditor.getHistory().getVirtualSize() - 1;
+
+
         if (virtualSize >= 0)
             history.set(virtualSize, history.get(virtualSize) + " <-");
 
         String historyString = String.join("\n", history);
         this.historyField.setText(historyString);
+
+
+        if (historyString.contains("Move"))
+            return;
+
+        for (int i = 0; i < history.size(); i++) {
+            JPanel entryPanel = new JPanel();
+            entryPanel.setLayout(new BorderLayout());
+
+            JLabel historyLabel = new JLabel(history.get(i));
+            entryPanel.add(historyLabel, BorderLayout.CENTER);
+
+            JButton btnR = new JButton("R");
+            int commandIndex = i;
+            btnR.addActionListener((ActionEvent e) -> redoCommand(commandIndex));
+            entryPanel.add(btnR, BorderLayout.EAST);
+
+            commandHistoryField.add(entryPanel);
+        }
     }
+
+    private void redoCommand(int commandIndex) {
+        guiHandler.redoCommand(commandIndex);
+    }
+
+
+    public JPanel getCommandHistoryField() {
+        return commandHistoryField;
+    }
+
+    public static CommandManagerWindow getInstance() {
+        return instance;
+    }
+
 }

@@ -41,7 +41,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private final JPanel drawArea;
     final private Job2dDriver previewLineDriver;
 
+    CommandHistoryHandlerGUI guiHandler;
     private final static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+
 
     /**
      *
@@ -112,7 +115,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.weighty = 1;
         content.add(btnImportCommand, c);
 
-        CommandHistoryHandlerGUI guiHandler = new CommandHistoryHandlerGUI(commandHistoryField);
+        guiHandler = new CommandHistoryHandlerGUI(commandHistoryField,commandManager);
         commandHistoryLogger = new CommandHistoryLogger(commandManager, guiHandler);
 
         JButton btnClearCommand = new JButton("Clear command");
@@ -298,7 +301,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     }
 
     private void redoCommand(int commandIndex) {
-        commandHistoryLogger.redoCommand(commandIndex);
+        guiHandler.redoCommand(commandIndex);
     }
 
 

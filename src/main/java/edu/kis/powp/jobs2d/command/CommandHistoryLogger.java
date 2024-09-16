@@ -12,9 +12,6 @@ public class CommandHistoryLogger {
     private final CommandManager commandManager;
     private final CommandHistoryHandler historyHandler;
 
-    List<DriverCommand> commands = new ArrayList<>();
-
-
 
     public CommandHistoryLogger(CommandManager commandManager, CommandHistoryHandler historyHandler) {
         this.commandManager = commandManager;
@@ -25,17 +22,14 @@ public class CommandHistoryLogger {
         String currentCommand = commandManager.getCurrentCommandString();
         String timestamp = getCurrentTimestamp();
         String logEntry = String.format("%s - %s\n", timestamp, currentCommand);
-        historyHandler.handleHistoryUpdate(logEntry);
-        commands.add(commandManager.getCurrentCommand());
+        historyHandler.handleHistoryUpdate(commandManager.getCurrentCommand(),logEntry);
     }
 
-    public void redoCommand(int positionFromTop)
-    {
-        commandManager.setCurrentCommand(commands.get(positionFromTop));
-    }
 
     private String getCurrentTimestamp() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return LocalDateTime.now().format(formatter);
     }
+
+
 }

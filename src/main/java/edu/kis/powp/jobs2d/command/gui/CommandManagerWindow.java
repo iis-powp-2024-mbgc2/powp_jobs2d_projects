@@ -35,7 +35,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private JTextArea explanationField;
     private JTextArea historyField;
 
-    private JTextArea commandHistoryField;
+    private JPanel  commandHistoryField;
     private JButton btnUndo, btnRedo;
 
     private final JPanel drawArea;
@@ -173,8 +173,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         commandHistoryLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, commandHistoryLabel.getPreferredSize().height));
         commandHistoryVBox.add(commandHistoryLabel);
 
-        commandHistoryField = new JTextArea("");
-        commandHistoryField.setEditable(false);
+        commandHistoryField = new JPanel();
         JScrollPane commandScrollPane = new JScrollPane(commandHistoryField);
         commandScrollPane.setPreferredSize(new Dimension(200, 100));
         commandScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -271,17 +270,39 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         this.historyField.setText("");
         this.btnUndo.setEnabled(commandEditor.getHistory().getVirtualSize() > 0);
         this.btnRedo.setEnabled(commandEditor.getHistory().getVirtualSize() < commandEditor.getHistory().getHistoryList().size());
+
         List<String> history = commandEditor.getHistory().getHistoryList();
         int virtualSize = commandEditor.getHistory().getVirtualSize() - 1;
+
+
         if (virtualSize >= 0)
             history.set(virtualSize, history.get(virtualSize) + " <-");
 
         String historyString = String.join("\n", history);
         this.historyField.setText(historyString);
+
+        for (int i = 0; i < history.size(); i++) {
+            JPanel entryPanel = new JPanel();
+            entryPanel.setLayout(new BorderLayout());
+
+            JLabel historyLabel = new JLabel(history.get(i));
+            entryPanel.add(historyLabel, BorderLayout.CENTER);
+
+            JButton btnR = new JButton("R");
+            int commandIndex = i;
+            btnR.addActionListener((ActionEvent e) -> redoCommand(commandIndex));
+            entryPanel.add(btnR, BorderLayout.EAST);
+
+            commandHistoryField.add(entryPanel);
+        }
+    }
+
+    private void redoCommand(int commandIndex) {
+        commandHistoryLogger.redoCommand(commandIndex);
     }
 
 
-    public JTextArea getCommandHistoryField() {
+    public JPanel getCommandHistoryField() {
         return commandHistoryField;
     }
 

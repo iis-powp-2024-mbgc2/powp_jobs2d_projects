@@ -284,6 +284,10 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         String historyString = String.join("\n", history);
         this.historyField.setText(historyString);
 
+
+        if (historyString.contains("Move"))
+            return;
+
         for (int i = 0; i < history.size(); i++) {
             JPanel entryPanel = new JPanel();
             entryPanel.setLayout(new BorderLayout());

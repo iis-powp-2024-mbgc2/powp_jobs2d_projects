@@ -19,10 +19,12 @@ public class CommandHistoryLogger {
     }
 
     public void logCurrentCommand() {
-        String currentCommand = commandManager.getCurrentCommandString();
+        DriverCommand currentCommand = commandManager.getCurrentCommand();
+        if (currentCommand == null) return;
+        String currentCommandStr = commandManager.getCurrentCommandString();
         String timestamp = getCurrentTimestamp();
-        String logEntry = String.format("%s - %s\n", timestamp, currentCommand);
-        historyHandler.handleHistoryUpdate(commandManager.getCurrentCommand(),logEntry);
+        String logEntry = String.format("%s - %s\n", timestamp, currentCommandStr);
+        historyHandler.handleHistoryUpdate(currentCommand,logEntry);
     }
 
 

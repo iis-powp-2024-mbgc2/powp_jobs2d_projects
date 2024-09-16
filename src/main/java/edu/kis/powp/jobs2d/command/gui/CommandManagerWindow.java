@@ -57,7 +57,6 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         content.setLayout(new GridBagLayout());
 
         this.commandManager = commandManager;
-        commandHistoryLogger = new CommandHistoryLogger(commandManager);
         instance = this;
 
         GridBagConstraints c = new GridBagConstraints();
@@ -112,6 +111,9 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
         c.gridx = 0;
         c.weighty = 1;
         content.add(btnImportCommand, c);
+
+        CommandHistoryHandlerGUI guiHandler = new CommandHistoryHandlerGUI(commandHistoryField);
+        commandHistoryLogger = new CommandHistoryLogger(commandManager, guiHandler);
 
         JButton btnClearCommand = new JButton("Clear command");
         btnClearCommand.addActionListener((ActionEvent e) -> this.clearCommand());
@@ -216,6 +218,7 @@ public class CommandManagerWindow extends JFrame implements WindowComponent {
     private void clearCommand() {
         commandManager.clearCurrentCommand();
         updateCurrentCommandField();
+        commandHistoryLogger.logCurrentCommand();
         updateHistory();
     }
 

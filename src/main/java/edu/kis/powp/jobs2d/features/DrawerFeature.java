@@ -4,7 +4,7 @@ import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.events.SelectClearPanelOptionListener;
 import edu.kis.legacy.drawer.panel.DrawPanelController;
 
-public class DrawerFeature {
+public class DrawerFeature implements Feature{
 
     private static DrawPanelController drawerController;
 
@@ -29,5 +29,10 @@ public class DrawerFeature {
      */
     public static DrawPanelController getDrawerController() {
         return drawerController;
+    }
+
+    @Override
+    public void setup(Application app) {
+        setupDrawerPlugin(app);
     }
 }

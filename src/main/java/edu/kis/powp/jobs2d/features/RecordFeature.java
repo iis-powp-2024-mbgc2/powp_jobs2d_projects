@@ -6,7 +6,7 @@ import edu.kis.powp.jobs2d.command.builder.CompoundCommandBuilder;
 import edu.kis.powp.jobs2d.enums.RecordingOption;
 import edu.kis.powp.jobs2d.events.SelectRecordingOptionListener;
 
-public class RecordFeature {
+public class RecordFeature implements Feature{
     private static Application application;
     private static CompoundCommandBuilder recordCommandBuilder;
 
@@ -41,5 +41,10 @@ public class RecordFeature {
 
     public static DriverCommand getRecordedCommand() {
         return recordCommandBuilder.build();
+    }
+
+    @Override
+    public void setup(Application app) {
+        setupRecorderPlugin(app);
     }
 }

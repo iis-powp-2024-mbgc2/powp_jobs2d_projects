@@ -7,7 +7,7 @@ import edu.kis.powp.jobs2d.enums.MouseOption;
 import edu.kis.powp.jobs2d.events.MouseClickListener;
 import edu.kis.powp.jobs2d.events.SelectMouseOptionListener;
 
-public class MouseSettingsFeature {
+public class MouseSettingsFeature implements Feature{
     private static Application application;
     public static MouseClickListener mouseClickListener;
 
@@ -44,4 +44,8 @@ public class MouseSettingsFeature {
 
     }
 
+    @Override
+    public void setup(Application app) {
+        setupMouseSettingsFeature(app);
+    }
 }

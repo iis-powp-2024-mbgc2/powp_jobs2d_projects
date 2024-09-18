@@ -1,10 +1,11 @@
 package edu.kis.powp.jobs2d.features;
 
+import edu.kis.powp.appbase.Application;
 import edu.kis.powp.jobs2d.command.manager.CommandManager;
 import edu.kis.powp.jobs2d.command.manager.ICommandManager;
 import edu.kis.powp.jobs2d.command.manager.LoggerCommandChangeObserver;
 
-public class CommandsFeature {
+public class CommandsFeature implements Feature{
 
     private static ICommandManager commandManager;
 
@@ -21,5 +22,10 @@ public class CommandsFeature {
      */
     public static ICommandManager getCommandManager() {
         return commandManager;
+    }
+
+    @Override
+    public void setup(Application app) {
+        setupCommandManager();
     }
 }

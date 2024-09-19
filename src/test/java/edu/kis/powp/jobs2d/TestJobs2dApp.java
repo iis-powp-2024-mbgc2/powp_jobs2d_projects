@@ -168,20 +168,13 @@ public class TestJobs2dApp {
             public void run() {
                 Application app = new Application("Jobs 2D");
 
-                FeatureFactory drawerFactory = new DrawerFeatureFactory();
-                drawerFactory.create(app);
+                FeatureFactory.addFeature(new DrawerFeature()); //Example of 1 version of addFeature
+                FeatureFactory.addFeature(new RecordFeature());
+                FeatureFactory.addFeature(CommandsFeature.class); //Example of 2 version of addFeature
+                FeatureFactory.addFeature(DriverFeature.class);
+                FeatureFactory.addFeature(new MouseSettingsFeature());
 
-                FeatureFactory commandsFactory = new CommandsFeatureFactory();
-                commandsFactory.create(app);
-
-                FeatureFactory driverFactory = new DriverFeatureFactory();
-                driverFactory.create(app);
-
-                FeatureFactory mouseSettingsFactory = new MouseSettingsFeatureFactory();
-                mouseSettingsFactory.create(app);
-
-                FeatureFactory recordFactory = new RecordFeatureFactory();
-                recordFactory.create(app);
+                FeatureFactory.initializeAllFeatures(app);
 
                 setupDrivers(app);
                 setupPresetTests(app);

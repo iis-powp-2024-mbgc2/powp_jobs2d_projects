@@ -167,11 +167,15 @@ public class TestJobs2dApp {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Application app = new Application("Jobs 2D");
-                DrawerFeature.setupDrawerPlugin(app);
-                CommandsFeature.setupCommandManager();
-                RecordFeature.setupRecorderPlugin(app);
-                DriverFeature.setupDriverPlugin(app);
-                MouseSettingsFeature.setupMouseSettingsFeature(app);
+
+                FeatureFactory.addFeature(new DrawerFeature()); //Example of 1 version of addFeature
+                FeatureFactory.addFeature(new RecordFeature());
+                FeatureFactory.addFeature(CommandsFeature.class); //Example of 2 version of addFeature
+                FeatureFactory.addFeature(DriverFeature.class);
+                FeatureFactory.addFeature(new MouseSettingsFeature());
+
+                FeatureFactory.initializeAllFeatures(app);
+
                 setupDrivers(app);
                 setupPresetTests(app);
                 setupCommandTests(app);
